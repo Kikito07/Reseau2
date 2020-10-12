@@ -17,7 +17,7 @@ class SimpleBGPTopo(IPTopo):
      i./ The script must be run as root since mininet will create routers inside your own machine
          $ chmod +x main.py
          $ sudo ./main.py
-
+    
     ii./ The network should be started. The "mininet" CLI should appear on screen
     '''
     mininet>
@@ -136,67 +136,16 @@ class SimpleBGPTopo(IPTopo):
         lan_as3_h3 = 'taco:d0d0:i5:dead::/64'
 
         # first step, adding routers
-        # routers of as1
-        as1_rr1 = self.addRouter("as1_rr1", config=RouterConfig)
-        as1_rr2 = self.addRouter("as1_rr2", config=RouterConfig)
-
-        as1_s1 = self.addRouter("as1_s1", config=RouterConfig)
-        as1_s2 = self.addRouter("as1_s2", config=RouterConfig)
+        # routers of MRS
+        MR1 = self.addRouter("as1_rr1", config=RouterConfig)
+        MR2 = self.addRouter("as1_rr2", config=RouterConfig)
 
         # adding OSPF6 as IGP
-        as1_rr1.addDaemon(OSPF6)
-        as1_rr2.addDaemon(OSPF6)
-        as1_s1.addDaemon(OSPF6)
-        as1_s2.addDaemon(OSPF6)
-
-        # adding BGP to establish iBGP sessions
-        as1_rr1.addDaemon(BGP, address_families=(AF_INET6(networks=(lan_as1_h1,),),))
-        as1_rr2.addDaemon(BGP, address_families=(AF_INET6(networks=(lan_as1_h1,),),))
-        as1_s1.addDaemon(BGP, address_families=(family,))
-        as1_s2.addDaemon(BGP, address_families=(family,))
-
+        MR1.addDaemon(OSPF6)
+        MR2.addDaemon(OSPF6)
+    
         # set the ASN for routers belonging to AS1
-        self.addAS(1, (as1_rr1, as1_rr2, as1_s1, as1_s2))
-
-        # configure as1_rr{1,2} as route reflectors
-        set_rr(self, rr=as1_rr1, peers=[as1_s2, as1_rr2])
-        set_rr(self, rr=as1_rr2, peers=[as1_s1, as1_rr1])
-
-        # routers of as2
-        as2_cl1 = self.addRouter("as2_cl1", config=RouterConfig)
-        as2_cl2 = self.addRouter("as2_cl2", config=RouterConfig)
-
-        # adding a BGP daemon for AS2 routers
-        as2_cl1.addDaemon(BGP, address_families=(AF_INET6(redistribute=['connected']),))
-        as2_cl2.addDaemon(BGP, address_families=(AF_INET6(redistribute=['connected']),))
-
-        # set the ASN for routers belonging to AS2
-        self.addAS(2, (as2_cl1, as2_cl2))
-
-        # we add a host in as1
-        as1_h1 = self.addHost("as1_h1")
-        # and also in as2
-        as2_h2 = self.addHost("as2_h2")
-        # and also as3 
-        as3_h3 = self.addHost("as2_h3")
-
-        # routers of as3
-
-        as3_s1 = self.addRouter("as3_s1", config=RouterConfig)
-        as3_s2 = self.addRouter("as3_s2", config=RouterConfig)
-        as3_s3 = self.addRouter("as3_s3", config=RouterConfig)
-        as3_s4 = self.addRouter("as3_s4", config=RouterConfig)
-
-        as3_s1.addDaemon(BGP, address_families=(AF_INET6(redistribute=['connected']),))
-        as3_s2.addDaemon(BGP, address_families=(AF_INET6(redistribute=['connected']),))
-        as3_s3.addDaemon(BGP, address_families=(AF_INET6(redistribute=['connected']),))
-        as3_s4.addDaemon(BGP, address_families=(AF_INET6(redistribute=['connected']),))
-
-
-        # set the ASN for routers belonging to AS3
-        self.addAS(1, (as3_s1, as3_s2, as3_s3, as3_s4))
-
-        # The goal of this network is to establish a connection between h1 and h2
+        self.addAS(1, (MR1, MR2))
 
         # adding links between the routers (and hosts)
         self.addLink(as1_rr1, as1_rr2, igp_metric=5)
@@ -204,22 +153,6 @@ class SimpleBGPTopo(IPTopo):
                       (as1_s2, as1_rr1),
                       (as1_rr1, as2_cl1), (as1_rr2, as2_cl2),
                       (as1_h1, as1_s2), (as2_cl1, as2_h2), (as2_cl2, as2_h2))
-
-        #as3
-        self.addLinks((as3_s1, as3_s2),(as3_s2, as3_s3),(as3_s3, as3_s4),(as3_s4, as3_s1))
-        self.addLinks((as3_s1, as3_h3))
-    
-
-        # adding a subnet between hosts and routers
-        self.addSubnet((as1_s2, as1_h1), subnets=(lan_as1_h1,))
-        self.addSubnet((as2_cl1, as2_h2), subnets=(lan_as2_h2,))
-        self.addSubnet((as2_cl2, as2_h2), subnets=(lan_as2_h2,))
-        self.addSubnet((as3_s1, as3_h3), subnets=(lan_as3_h3,))
-
-        # adding eBGP sessions between the two ASes
-        ebgp_session(self, as2_cl1, as1_rr1, link_type=SHARE)
-        ebgp_session(self, as2_cl2, as1_rr2, link_type=SHARE)
-        ebgp_session(self, as1_s1, as3_s1, link_type=SHARE)
 
         super().build(*args, **kwargs)
 
