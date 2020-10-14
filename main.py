@@ -132,27 +132,61 @@ class SimpleBGPTopo(IPTopo):
     def build(self, *args, **kwargs):
         family = AF_INET6()
         lan_as1_h1 = 'cafe:babe:dead:beaf::/64'
-        lan_as2_h2 = 'c1a4:4ad:c0ff:ee::/64'
-        lan_as3_h3 = 'taco:d0d0:i5:dead::/64'
 
         # first step, adding routers
         # routers of MRS
-        MR1 = self.addRouter("as1_rr1", config=RouterConfig)
-        MR2 = self.addRouter("as1_rr2", config=RouterConfig)
-
+        MR1 = self.addRouter("MR1", config=RouterConfig)
+        MR2 = self.addRouter("MR2", config=RouterConfig)
+        # routers of SIN
+        SIN1 = self.addRouter("SIN1", config=RouterConfig)
+        SIN2 = self.addRouter("SIN2", config=RouterConfig)
+        # routers of SYD
+        SYD1 = self.addRouter("SYD1", config=RouterConfig)
+        SYD2 = self.addRouter("SYD2", config=RouterConfig)
+        # routers of LAX
+        LAX1 = self.addRouter("LAX1", config=RouterConfig)
+        LAX2 = self.addRouter("LAX2", config=RouterConfig)
+        # routers of SJO
+        SJO1 = self.addRouter("SJO1", config=RouterConfig)
+        #routers of ASH
+        ASH1 = self.addRouter("ASH1", config=RouterConfig)
+        ASH2 = self.addRouter("ASH2", config=RouterConfig)
+        #routers of PAR
+        PAR1 = self.addRouter("PAR1", config=RouterConfig)
+        
+        
         # adding OSPF6 as IGP
         MR1.addDaemon(OSPF6)
         MR2.addDaemon(OSPF6)
+
+        SIN1.addDaemon(OSPF6)
+        SIN2.addDaemon(OSPF6)
+
+        SYD1.addDaemon(OSPF6)
+        SYD2.addDaemon(OSPF6)
+
+        LAX1.addDaemon(OSPF6)        
+        LAX2.addDaemon(OSPF6)
+
+        SJO1.addDaemon(OSPF6)
+
+        ASH1.addDaemon(OSPF6)
+        ASH2.addDaemon(OSPF6)
+
+        PAR1.addDaemon(OSPF6)
+
     
         # set the ASN for routers belonging to AS1
         self.addAS(1, (MR1, MR2))
 
         # adding links between the routers (and hosts)
-        self.addLink(as1_rr1, as1_rr2, igp_metric=5)
-        self.addLinks((as1_s1, as1_s2), (as1_s1, as1_rr2),
-                      (as1_s2, as1_rr1),
-                      (as1_rr1, as2_cl1), (as1_rr2, as2_cl2),
-                      (as1_h1, as1_s2), (as2_cl1, as2_h2), (as2_cl2, as2_h2))
+        self.addLinks((MR1, MR2), (SIN1, SIN2), (SYD1, SYD2), (ASH1, ASH2), (LAX1, LAX2),
+                      (MR1, SIN1), (MR2, SIN2), (SIN1, SYD1), (SIN2, SYD2),
+                      (MRS1, PAR1), (MRS2, PAR1),
+                      (PAR1, ASH1),(PAR1, ASH2),
+                      (ASH1, LAX1),(ASH2, LAX2), (ASH2, LAX1),
+                      (SIN1, SJO1), (SJO1, LAX2))
+
 
         super().build(*args, **kwargs)
 
