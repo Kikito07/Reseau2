@@ -153,10 +153,6 @@ class SimpleBGPTopo(IPTopo):
         ASH2 = self.addRouter("ASH2", config=RouterConfig)
         #routers of PAR
         PAR1 = self.addRouter("PAR1", config=RouterConfig)
-
-        H1_SIN1 = self.addHost("H1_SIN1")
-        H1_PAR1 = self.addHost("H1_PAR1")
-        
         
         # adding OSPF6 as IGP
         MR1.addDaemon(OSPF6)
@@ -178,18 +174,13 @@ class SimpleBGPTopo(IPTopo):
 
         PAR1.addDaemon(OSPF6)
 
-    
-        # set the ASN for routers belonging to AS1
-        self.addAS(1, (MR1, MR2))
-
         # adding links between the routers (and hosts)
         self.addLinks((MR1, MR2), (SIN1, SIN2), (SYD1, SYD2), (ASH1, ASH2), (LAX1, LAX2),
                       (MR1, SIN1), (MR2, SIN2), (SIN1, SYD1), (SIN2, SYD2),
                       (MRS1, PAR1), (MRS2, PAR1),
                       (PAR1, ASH1),(PAR1, ASH2),
                       (ASH1, LAX1),(ASH2, LAX2), (ASH2, LAX1),
-                      (SIN1, SJO1), (SJO1, LAX2),
-                      (H1_SIN1, SIN1), (H1_PAR1, PAR1))
+                      (SIN1, SJO1), (SJO1, LAX2))
 
 
         super().build(*args, **kwargs)
