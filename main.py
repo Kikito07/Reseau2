@@ -174,13 +174,16 @@ class SimpleBGPTopo(IPTopo):
 
         PAR1.addDaemon(OSPF6)
 
+        H1_SIN1 = self.addHost("H1_SIN1")
+        H1_PAR1 = self.addHost("H1_PAR1")
+
         # adding links between the routers (and hosts)
         self.addLinks((MR1, MR2), (SIN1, SIN2), (SYD1, SYD2), (ASH1, ASH2), (LAX1, LAX2),
                       (MR1, SIN1), (MR2, SIN2), (SIN1, SYD1), (SIN2, SYD2),
                       (MR1, PAR1), (MR2, PAR1),
                       (PAR1, ASH1),(PAR1, ASH2),
                       (ASH1, LAX1),(ASH2, LAX2), (ASH2, LAX1),
-                      (SIN1, SJO1), (SJO1, LAX2))
+                      (SIN1, SJO1), (SJO1, LAX2), (H1_PAR1, PAR1), (H1_SIN1, SIN1))
 
 
         super().build(*args, **kwargs)
