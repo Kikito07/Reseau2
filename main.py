@@ -123,40 +123,50 @@ class SimpleBGPTopo(IPTopo):
     # 2. This small network is faulty. Can you find the problem ?
     # 3. Propose a fix to make this network operational again
     # 4. How can you do to check the LSDB of OSPF ?
-    # 5. Again use it to show details about the BGP sessions.
+    # 5. Again use it to show details abol_PAR1_PAR2[PAR1].addParams(ip=(europe_ipv6 + "00:1201::/64"))ut the BGP sessions.
     # 6. Add a new AS (AS3) on top of this topology which will contain 4 routers, each running
     #    OSPFv3 and BGP. Add also a new host as3_h3 in a new lan taco:d0d0:i5:dead::/64 in one of the 4 routers.
     #    h1, h2 and h3 must reach each other. The iBGP sessions, this time, must be in
     #    full mesh configuration. AS3 will have only one eBGP peering with AS1 on the as1_s1 router.
 
     def build(self, *args, **kwargs):
-        family = AF_INET6()
-        lan_as1_h1 = 'cafe:babe:dead:beaf::/64'
 
+        monde_ipv6 = "2001:2001"
+        europe_ipv6 = monde_ipv6 + ":01"
+        NA_ipv6 = monde_ipv6 + ":02"
+        asia_ipv6 = monde_ipv6 + ":03"
+
+
+        family = AF_INET6()
         # first step, adding routers
+       
         # routers of MRS
-        MR1 = self.addRouter("MR1", config=RouterConfig)
-        MR2 = self.addRouter("MR2", config=RouterConfig)
+        MRS1 = self.addRouter("MRS1", lo_addresses=[europe_ipv6 + "00:0001::/64"])
+        MRS2 = self.addRouter("MRS2", lo_addresses=[europe_ipv6 + "00:0002::/64"])
+         #routers of PAR
+        PAR1 = self.addRouter("PAR1", lo_addresses=[europe_ipv6 + "01:0001::/64"])
+        PAR2 = self.addRouter("PAR2", lo_addresses=[europe_ipv6 + "01:0002::/64"])
         # routers of SIN
-        SIN1 = self.addRouter("SIN1", config=RouterConfig)
-        SIN2 = self.addRouter("SIN2", config=RouterConfig)
+        SIN1 = self.addRouter("SIN1", lo_addresses=[asie_ipv6 + "00:0001::/64"])
+        SIN2 = self.addRouter("SIN2", lo_addresses=[asia_ipv6 + "00:0002::/64"])
         # routers of SYD
-        SYD1 = self.addRouter("SYD1", config=RouterConfig)
-        SYD2 = self.addRouter("SYD2", config=RouterConfig)
+        SYD1 = self.addRouter("SYD1", lo_addresses=[asie_ipv6 + "01:0001::/64"])
+        SYD2 = self.addRouter("SYD2", lo_addresses=[asie_ipv6 + "01:0002::/64"])
         # routers of LAX
-        LAX1 = self.addRouter("LAX1", config=RouterConfig)
-        LAX2 = self.addRouter("LAX2", config=RouterConfig)
+        LAX1 = self.addRouter("LAX1", lo_addresses=[NA_ipv6 + "00:0001::/64"])
+        LAX2 = self.addRouter("LAX2", lo_addresses=[NA_ipv6 + "00:0001::/64"])
         # routers of SJO
-        SJO1 = self.addRouter("SJO1", config=RouterConfig)
+        SJO1 = self.addRouter("SJO1", lo_addresses=[NA_ipv6 + "01:0001::/64"])
+        SJO2 = self.addRouter("SJO2", lo_addresses=[NA_pv6 + "01:0002::/64"])
         #routers of ASH
-        ASH1 = self.addRouter("ASH1", config=RouterConfig)
-        ASH2 = self.addRouter("ASH2", config=RouterConfig)
-        #routers of PAR
-        PAR1 = self.addRouter("PAR1", config=RouterConfig)
+        ASH1 = self.addRouter("ASH1", lo_addresses=[NA_ipv6 + "02:0001::/64"])
+        ASH2 = self.addRouter("ASH2", lo_addresses=[NA_ipv6 + "02:0002::/64"])
+        
+        
         
         # adding OSPF6 as IGP
-        MR1.addDaemon(OSPF6)
-        MR2.addDaemon(OSPF6)
+        MRS1.addDaemon(OSPF6)
+        MRS2.addDaemon(OSPF6)
 
         SIN1.addDaemon(OSPF6)
         SIN2.addDaemon(OSPF6)
@@ -168,23 +178,65 @@ class SimpleBGPTopo(IPTopo):
         LAX2.addDaemon(OSPF6)
 
         SJO1.addDaemon(OSPF6)
+        SJO2.addDaemon(OSPF6)
 
         ASH1.addDaemon(OSPF6)
         ASH2.addDaemon(OSPF6)
 
         PAR1.addDaemon(OSPF6)
+        PAR2.addDaemon(OSPF6)
 
         H1_SIN1 = self.addHost("H1_SIN1")
         H1_PAR1 = self.addHost("H1_PAR1")
 
         # adding links between the routers (and hosts)
-        self.addLinks((MR1, MR2), (SIN1, SIN2), (SYD1, SYD2), (ASH1, ASH2), (LAX1, LAX2),
-                      (MR1, SIN1), (MR2, SIN2), (SIN1, SYD1), (SIN2, SYD2),
-                      (MR1, PAR1), (MR2, PAR1),
-                      (PAR1, ASH1),(PAR1, ASH2),
-                      (ASH1, LAX1),(ASH2, LAX2), (ASH2, LAX1),
-                      (SIN1, SJO1), (SJO1, LAX2), (H1_PAR1, PAR1), (H1_SIN1, SIN1))
+        l_MRS1_MRS2 = self.addLink(MRS1, MRS2)
+        l_MRS1_MRS2[MRS1].addParams(ip=(europe_ipv6 + "00:1201::/64"))
+        l_MRS1_MRS2[MRS2].addParams(ip=(europe_ipv6 + "00:1202::/64"))
 
+        l_SIN1_SIN2 = self.addLink(SIN1, SIN2)
+        l_SIN1_SIN2[SIN1].addParams(ip=asia_ipv6 + "00:1201::/64")
+        l_SIN1_SIN2[SIN1].addParams(ip=asia_ipv6 + "00:1202::/64")
+
+        l_SYD1_SYD2 = self.addLink(SYD1, SYD2)
+        l_SYD1_SYD2[SYD1] = addParams(ip=asia_ipv6 + "01:1201::/64")
+        l_SYD1_SYD2[SYD1] = addParams(ip=asia_ipv6 + "01:1202::/64")
+
+        l_PAR1_PAR2 = self.addLink(MRS1, MRS2)
+        l_PAR1_PAR2[PAR1].addParams(ip=(europe_ipv6 + "00:1201::/64"))
+        l_PAR1_PAR2[PAR2].addParams(ip=(europe_ipv6 + "00:1202::/64"))
+
+        l_ASH1_ASH2 = self.addLink(ASH1, ASH2)
+        l_ASH1_ASH2[ASH1].addParams(ip=(NA_ipv6 + "02:1201::/64"))
+        l_ASH1_ASH2[ASH1].addParams(ip=(NA_ipv6 + "02:1202::/64"))
+
+        l_LAX1_LAX2 = self.addLink(LAX1, LAX2)
+        l_LAX1_LAX2[LAX1].addParams(ip=(NA_ipv6 + "00:1201::/64"))
+        l_LAX1_LAX2[LAX2].addParams(ip=(NA_ipv6 + "00:1202::/64"))
+
+        l_SJO1_SJ2 = self.addLink(SJO1, SJO2)
+        l_SJO1_SJO2[SJO1].addParams(ip=(NA_ipv6 + "01:1201::/64"))
+        l_SJO1_SJO2[SJO2].addParams(ip=(NA_ipv6 + "01:1202::/64"))
+
+        l_MRS1_SIN1 = self.addLink(MRS1, SIN1)
+        l_MRS1_SIN1[MRS1].addParams(ip=(europe_ipv6 + "00:1101::/64"))
+        l_MRS1_SIN1[SIN1].addParams(ip=(europe_ipv6 + "00:1101::/64"))
+
+        l_MRS2_SIN2 = self.addLink(MRS2, SIN2)
+        l_MRS1_SIN1[MRS2].addParams(ip=(europe_ipv6 + "00:2202::/64"))
+        l_MRS1_SIN1[SIN2].addParams(ip=(europe_ipv6 + "00:2202::/64"))
+
+        l_SIN1_SYD1 = self.addLink(SIN1, SYD1)
+        l_SIN1_SYD1[SIN1].addParams(ip=(asia_ipv6 + "00:1101::/64"))
+        l_SIN1_SYD1[SYD1].addParams(ip=(asia_ipv6 + "01:1101::/64"))
+
+        l_SIN2_SYD2 = self.addLink(SIN1, SYD1)
+        l_SIN2_SYD2[SIN2].addParams(ip=(asia_ipv6 + "00:2202::/64"))
+        l_SIN2_SYD2[SYD12.addParams(ip=(asia_ipv6 + "01:2202::/64"))
+
+        l_ASH1_LAX1 = self.addLink(SIN1, SYD1)
+        l_ASH1_LAX1[ASH1].addParams(ip=(asia_ipv6 + "00:1101::/64"))
+        l_ASH1_LAX1[LAX1].addParams(ip=(asia_ipv6 + "02:1101::/64"))
 
         super().build(*args, **kwargs)
 
