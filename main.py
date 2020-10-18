@@ -230,13 +230,73 @@ class SimpleBGPTopo(IPTopo):
         l_SIN1_SYD1[SIN1].addParams(ip=(asia_ipv6 + "00:1101::/64"))
         l_SIN1_SYD1[SYD1].addParams(ip=(asia_ipv6 + "01:1101::/64"))
 
-        l_SIN2_SYD2 = self.addLink(SIN1, SYD1)
+        l_SIN2_SYD2 = self.addLink(SIN1, SYD2)
         l_SIN2_SYD2[SIN2].addParams(ip=(asia_ipv6 + "00:2202::/64"))
-        l_SIN2_SYD2[SYD12.addParams(ip=(asia_ipv6 + "01:2202::/64"))
+        l_SIN2_SYD2[SYD1].addParams(ip=(asia_ipv6 + "01:2202::/64"))
 
-        l_ASH1_LAX1 = self.addLink(SIN1, SYD1)
-        l_ASH1_LAX1[ASH1].addParams(ip=(asia_ipv6 + "00:1101::/64"))
-        l_ASH1_LAX1[LAX1].addParams(ip=(asia_ipv6 + "02:1101::/64"))
+        l_ASH1_LAX1 = self.addLink(ASH1, LAX1)
+        l_ASH1_LAX1[ASH1].addParams(ip=(NA_ipv6 + "NA_ipv6 + 02:1302::/64"))
+        l_ASH1_LAX1[LAX1].addParams(ip=(NA_ipv6 + "NA_ipv6 + 01:1301::/64"))
+
+        l_ASH2_LAX2 = self.addLink(ASH2, LAX2)
+        l_ASH2_LAX2[ASH2].addParams(ip=(NA_ipv6 + "NA_ipv6 + 02:1302::/64"))
+        l_ASH2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "NA_ipv6 + 01:1301::/64"))
+
+        l_ASH1_LAX2 = self.addLink(ASH1, LAX2)
+        l_ASH1_LAX2[ASH1].addParams(ip=(NA_ipv6 + "NA_ipv6 + 02:1302::/64"))
+        l_ASH1_LAX2[LAX2].addParams(ip=(NA_ipv6 + "NA_ipv6 + 01:1301::/64"))
+
+        l_SIN2_SJO1 = self.addLink(l_SIN2_SJO1)
+        l_SIN2_SJO1[SIN2] = addParams(ip=(asia_ipv6 + "00:1302::/64"))
+        l_SIN2_SJO1[SJO1] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+
+        l_SIN2_SJO2 = self.addLink(l_SIN2_SJO2)
+        l_SIN2_SJO1[SIN2] = addParams(ip=(asia_ipv6 + "00:2302::/64"))
+        l_SIN2_SJO1[SJO1] = addParams(ip=(NA_ipv6 + "00:2301::/64"))
+
+        l_SJO1_LAX1 = self.addLink(l_SJO1_LAX1)
+        l_SIN2_SJO1[SIN2] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+        l_SIN2_SJO1[SJO1] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+
+        l_SJO2_LAX2 = self.addLink(l_SJO2_LAX2)
+        l_SIN2_SJO1[SIN2] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+        l_SIN2_SJO1[SJO1] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+
+        l_SJO2_LAX2 = self.addLink(l_SJO2_LAX2)
+        l_SIN2_SJO1[SIN2] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+        l_SIN2_SJO1[SJO1] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+
+        l_PAR1_ASH1 = self.addLink(l_PAR1_ASH1)
+        l_PAR1_ASH1[PAR1] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+        l_PAR1_ASH1[ASH1] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+
+        l_PAR2_ASH2 = self.addLink(l_PAR2_ASH2)
+        l_PAR2_ASH2[PAR1] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+        l_PAR2_ASH2[ASH2] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+
+        l_PAR1_MAR1 = self.addLink(l_PAR1_MAR1)
+        l_PAR1_MAR1[PAR1] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+        l_PAR1_MAR1[MAR1] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+
+        l_PAR2_MAR2 = self.addLink(l_PAR1_MAR2)
+        l_PAR2_MAR2[PAR2] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+        l_PAR2_MAR2[MAR2] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+
+        l_SYD2_LAX2 = self.addLink(l_SYD2_LAX2)
+        l_SYD2_LAX2[SYD2] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+        l_SYD2_LAX2[LAX2] = addParams(ip=(NA_ipv6 + "00:1301::/64"))
+
+
+
+
+
+
+        
+
+
+
+
+
 
         super().build(*args, **kwargs)
 
