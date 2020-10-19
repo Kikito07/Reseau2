@@ -141,30 +141,34 @@ class SimpleBGPTopo(IPTopo):
        
 
         PAR1 = self.addRouter("PAR1", lo_addresses=[europe_ipv6 + "200::/64"])
-        PAR2 = self.addRouter("PAR2", lo_addresses=[europe_ipv6 + "300::/64"])    
+        PAR2 = self.addRouter("PAR2", lo_addresses=[europe_ipv6 + "300::/64"])
+   
         
         # firewall for router
         
         
         # adding OSPF6 as IGP
+
+        
        
-        PAR2.addDaemon(OSPF6)
+        PAR1.addDaemon(OSPF6)
+        PAR1.addDaemon(OSPF6)
         #PAR2.addDaemon(IP6Tables, rules=ip_rules_PAR2)
 
         H1 = self.addHost("H1")
         H2 = self.addHost("H2")
        
         l_PAR1_PAR2 = self.addLink(PAR1, PAR2)
-        l_PAR1_PAR2[PAR1].addParams(ip=(europe_ipv6 + "201::/64"))
-        l_PAR1_PAR2[PAR2].addParams(ip=(europe_ipv6 + "301::/64"))
+        l_PAR1_PAR2[PAR1].addParams(ip=(europe_ipv6 + "201::1/64"))
+        l_PAR1_PAR2[PAR2].addParams(ip=(europe_ipv6 + "201::2/64"))
 
         l_PAR1_H1 = self.addLink(PAR1, H1)
-        l_PAR1_H1[PAR1].addParams(ip=(europe_ipv6 + "202::/64"))
-        l_PAR1_H1[H1].addParams(ip=(europe_ipv6 + "001::/64"))
+        l_PAR1_H1[PAR1].addParams(ip=(europe_ipv6 + "202::1/64"))
+        l_PAR1_H1[H1].addParams(ip=(europe_ipv6 + "202::a/64"))
 
         l_PAR2_H2 = self.addLink(PAR2, H2)
-        l_PAR2_H2[PAR2].addParams(ip=(europe_ipv6 + "302::/64"))
-        l_PAR2_H2[H2].addParams(ip=(europe_ipv6 + "002::/64"))
+        l_PAR2_H2[PAR2].addParams(ip=(europe_ipv6 + "302::2/64"))
+        l_PAR2_H2[H2].addParams(ip=(europe_ipv6 + "302::b/64"))
 
         
 
