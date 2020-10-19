@@ -138,10 +138,14 @@ class SimpleBGPTopo(IPTopo):
         asia_ipv6 = monde_ipv6 + ":2"
 
         # first step, adding routers
-       
+       ip_rules = [Rule("-P INPUT DROP"),
+                   Rule("-A INPUT -p tcp -m iprange --src-range 1627:6100:0000::-1627:6100:0000:ffff:ffff:ffff:ffff:ffff -j ""ACCEPT"),
+                   Rule("-A INPUT -p tcp -m iprange --dst-range 1627:6100:0000::-1627:6100:0000:ffff:ffff:ffff:ffff:ffff -j ""ACCEPT")]
 
         PAR1 = self.addRouter("PAR1", lo_addresses=[europe_ipv6 + "200::/64"])
         PAR2 = self.addRouter("PAR2", lo_addresses=[europe_ipv6 + "300::/64"])
+        PAR1.addDaemon(IP6Tables, rules=ip_rules)
+        PAR2.addDaemon(IP6Tables, rules=ip_rules)
    
         
         # firewall for router

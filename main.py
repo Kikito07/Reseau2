@@ -137,7 +137,6 @@ class SimpleBGPTopo(IPTopo):
         NA_ipv6 = monde_ipv6 + ":1"
         asia_ipv6 = monde_ipv6 + ":2"
 
-
         family = AF_INET6()
         # first step, adding routers
        
