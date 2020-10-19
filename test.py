@@ -159,8 +159,8 @@ class SimpleBGPTopo(IPTopo):
         H2 = self.addHost("H2")
        
         l_PAR1_PAR2 = self.addLink(PAR1, PAR2)
-        l_PAR1_PAR2[PAR1].addParams(ip=(europe_ipv6 + "201::1/64"))
-        l_PAR1_PAR2[PAR2].addParams(ip=(europe_ipv6 + "201::2/64"))
+        l_PAR1_PAR2[PAR1].addParams(ip=(europe_ipv6 + "201::2/64"))
+        l_PAR1_PAR2[PAR2].addParams(ip=(europe_ipv6 + "301::3/64"))
 
         l_PAR1_H1 = self.addLink(PAR1, H1)
         l_PAR1_H1[PAR1].addParams(ip=(europe_ipv6 + "202::1/64"))

@@ -133,9 +133,9 @@ class SimpleBGPTopo(IPTopo):
 
         monde_ipv6 = "1627:6000:0000"
         monde_ipv4 = "16.0.0.0"
-        europe_ipv6 = monde_ipv6 + "0"
-        NA_ipv6 = monde_ipv6 + "1"
-        asia_ipv6 = monde_ipv6 + "2"
+        europe_ipv6 = monde_ipv6 + ":0"
+        NA_ipv6 = monde_ipv6 + ":1"
+        asia_ipv6 = monde_ipv6 + ":2"
 
 
         family = AF_INET6()
@@ -148,11 +148,11 @@ class SimpleBGPTopo(IPTopo):
         PAR1 = self.addRouter("PAR1", lo_addresses=[europe_ipv6 + "200::/64"])
         PAR2 = self.addRouter("PAR2", lo_addresses=[europe_ipv6 + "300::/64"])
         # routers of SIN
-        SIN1 = self.addRouter("SIN1", lo_addresses=[asie_ipv6 + "000::/64"])
+        SIN1 = self.addRouter("SIN1", lo_addresses=[asia_ipv6 + "000::/64"])
         SIN2 = self.addRouter("SIN2", lo_addresses=[asia_ipv6 + "100::/64"])
         # routers of SYD
-        SYD1 = self.addRouter("SYD1", lo_addresses=[asie_ipv6 + "200::/64"])
-        SYD2 = self.addRouter("SYD2", lo_addresses=[asie_ipv6 + "300::/64"])
+        SYD1 = self.addRouter("SYD1", lo_addresses=[asia_ipv6 + "200::/64"])
+        SYD2 = self.addRouter("SYD2", lo_addresses=[asia_ipv6 + "300::/64"])
         # routers of LAX
         LAX1 = self.addRouter("LAX1", lo_addresses=[NA_ipv6 + "000::/64"])
         LAX2 = self.addRouter("LAX2", lo_addresses=[NA_ipv6 + "100::/64"])
@@ -187,9 +187,6 @@ class SimpleBGPTopo(IPTopo):
         PAR1.addDaemon(OSPF6)
         PAR2.addDaemon(OSPF6)
 
-        H1_SIN1 = self.addHost("H1_SIN1")
-        H1_PAR1 = self.addHost("H1_PAR1")
-
         # linkin twin datacenters
         #=========================================================
 
@@ -202,8 +199,8 @@ class SimpleBGPTopo(IPTopo):
         l_SIN1_SIN2[SIN2].addParams(ip=asia_ipv6 + "101::/64")
 
         l_SYD1_SYD2 = self.addLink(SYD1, SYD2)
-        l_SYD1_SYD2[SYD1] = addParams(ip=asia_ipv6 + "201::/64")
-        l_SYD1_SYD2[SYD1] = addParams(ip=asia_ipv6 + "301::/64")
+        l_SYD1_SYD2[SYD1].addParams(ip=asia_ipv6 + "201::/64")
+        l_SYD1_SYD2[SYD1].addParams(ip=asia_ipv6 + "301::/64")
 
         l_PAR1_PAR2 = self.addLink(PAR1, PAR2)
         l_PAR1_PAR2[PAR1].addParams(ip=(europe_ipv6 + "201::/64"))
@@ -217,7 +214,7 @@ class SimpleBGPTopo(IPTopo):
         l_LAX1_LAX2[LAX1].addParams(ip=(NA_ipv6 + "001::/64"))
         l_LAX1_LAX2[LAX2].addParams(ip=(NA_ipv6 + "101::/64"))
 
-        l_SJO1_SJ2 = self.addLink(SJO1, SJO2)
+        l_SJO1_SJO2 = self.addLink(SJO1, SJO2)
         l_SJO1_SJO2[SJO1].addParams(ip=(NA_ipv6 + "201::/64"))
         l_SJO1_SJO2[SJO2].addParams(ip=(NA_ipv6 + "301::/64"))
 
@@ -228,24 +225,24 @@ class SimpleBGPTopo(IPTopo):
         l_MRS1_SIN1[SIN1].addParams(ip=(europe_ipv6 + "002::/64"))
 
         l_MRS2_SIN2 = self.addLink(MRS2, SIN2)
-        l_MRS1_SIN1[MRS2].addParams(ip=(europe_ipv6 + "102::/64"))
-        l_MRS1_SIN1[SIN2].addParams(ip=(europe_ipv6 + "102::/64"))
+        l_MRS2_SIN2[MRS2].addParams(ip=(europe_ipv6 + "102::/64"))
+        l_MRS2_SIN2[SIN2].addParams(ip=(europe_ipv6 + "102::/64"))
 
         l_SIN1_SYD1 = self.addLink(SIN1, SYD1)
         l_SIN1_SYD1[SIN1].addParams(ip=(asia_ipv6 + "003::/64"))
         l_SIN1_SYD1[SYD1].addParams(ip=(asia_ipv6 + "202::/64"))
 
-        l_SIN2_SYD2 = self.addLink(SIN1, SYD2)
+        l_SIN2_SYD2 = self.addLink(SIN2, SYD2)
         l_SIN2_SYD2[SIN2].addParams(ip=(asia_ipv6 + "103::/64"))
-        l_SIN2_SYD2[SYD1].addParams(ip=(asia_ipv6 + "302::/64"))
+        l_SIN2_SYD2[SYD2].addParams(ip=(asia_ipv6 + "302::/64"))
 
-        l_SIN2_SJO1 = self.addLink(l_SIN2_SJO1)
-        l_SIN2_SJO1[SIN2].addParams(ip=(asia_ipv6 + "00:1302::/64"))
-        l_SIN2_SJO1[SJO1].addParams(ip=(NA_ipv6 + "00:1301::/64"))
+        l_SIN2_SJO1 = self.addLink(SIN2, SJO1)
+        l_SIN2_SJO1[SIN2].addParams(ip=(asia_ipv6 + "105::/64"))
+        l_SIN2_SJO1[SJO1].addParams(ip=(NA_ipv6 + "205::/64"))
 
-        l_SIN2_SJO2 = self.addLink(l_SIN2_SJO2)
-        l_SIN2_SJO1[SIN2].addParams(ip=(asia_ipv6 + "00:2302::/64"))
-        l_SIN2_SJO1[SJO1].addParams(ip=(NA_ipv6 + "00:2301::/64"))
+        l_SIN2_SJO2 = self.addLink(SIN2, SJO2)
+        l_SIN2_SJO2[SIN2].addParams(ip=(asia_ipv6 + "106::/64"))
+        l_SIN2_SJO2[SJO2].addParams(ip=(NA_ipv6 + "305::/64"))
 
         #=======================================================
 
@@ -266,40 +263,47 @@ class SimpleBGPTopo(IPTopo):
         l_SJO1_LAX1[SJO1].addParams(ip=(NA_ipv6 + "202::/64"))
         l_SJO1_LAX1[LAX1].addParams(ip=(NA_ipv6 + "003::/64"))
 
-        l_SJO2_LAX2 = self.addLink(SJO2_LAX2)
+        l_SJO2_LAX2 = self.addLink(SJO2,LAX2)
         l_SJO2_LAX2[SJO2].addParams(ip=(NA_ipv6 + "303::/64"))
         l_SJO2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "104::/64"))
 
-        l_PAR1_ASH1 = self.addLink(l_PAR1_ASH1)
+        l_PAR1_ASH1 = self.addLink(PAR1,ASH1)
         l_PAR1_ASH1[PAR1].addParams(ip=(europe_ipv6 + "202::/64"))
         l_PAR1_ASH1[ASH1].addParams(ip=(NA_ipv6 + "104::/64"))
 
-        l_PAR2_ASH2 = self.addLink(l_PAR2_ASH2)
-        l_PAR2_ASH2[PAR2] = addParams(ip=(europe_ipv6 + "302::/64"))
-        l_PAR2_ASH2[ASH2] = addParams(ip=(NA_ipv6 + "503::/64"))
+        l_PAR2_ASH2 = self.addLink(PAR2,ASH2)
+        l_PAR2_ASH2[PAR2].addParams(ip=(europe_ipv6 + "302::/64"))
+        l_PAR2_ASH2[ASH2].addParams(ip=(NA_ipv6 + "503::/64"))
 
-        l_PAR1_MRS1 = self.addLink(l_PAR1_MRS1)
-        l_PAR1_MRS1[PAR1] = addParams(ip=(NA_ipv6 + "203::/64"))
-        l_PAR1_MRS1[MRS1] = addParams(ip=(NA_ipv6 + "003::/64"))
+        l_PAR1_MRS1 = self.addLink(PAR1,MRS1)
+        l_PAR1_MRS1[PAR1].addParams(ip=(NA_ipv6 + "203::/64"))
+        l_PAR1_MRS1[MRS1].addParams(ip=(NA_ipv6 + "003::/64"))
 
-        l_PAR2_MRS2 = self.addLink(l_PAR1_MRS2)
-        l_PAR2_MRS2[PAR2] = addParams(ip=(NA_ipv6 + "303::/64"))
-        l_PAR2_MAR2[MRS2] = addParams(ip=(NA_ipv6 + "004::/64"))
+        l_PAR2_MRS2 = self.addLink(PAR2, MRS2)
+        l_PAR2_MRS2[PAR2].addParams(ip=(NA_ipv6 + "303::/64"))
+        l_PAR2_MRS2[MRS2].addParams(ip=(NA_ipv6 + "004::/64"))
 
-        l_SYD2_LAX2 = self.addLink(l_SYD2_LAX2)
-        l_SYD2_LAX2[SYD2] = addParams(ip=(NA_ipv6 + "303::/64"))
-        l_SYD2_LAX2[LAX2] = addParams(ip=(NA_ipv6 + "103::/64"))
+        l_SYD2_LAX2 = self.addLink(SYD2,LAX2)
+        l_SYD2_LAX2[SYD2].addParams(ip=(NA_ipv6 + "303::/64"))
+        l_SYD2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "103::/64"))
 
+        H1 = self.addHost("H1")
+        H2 = self.addHost("H2")
 
+        l_H1_PAR1 = self.addLink(H1, PAR1)
+        l_H1_PAR1[PAR1].addParams(ip=(europe_ipv6 + "20a::2/64"))
+        l_H1_PAR1[H1].addParams(ip=(europe_ipv6 + "20a::a/64"))
 
-
-
+        l_H2_SIN1 = self.addLink(H2, SIN1)
+        l_H2_SIN1[SIN1].addParams(ip=(asia_ipv6 + "00a::0/64"))
+        l_H2_SIN1[H2].addParams(ip=(asia_ipv6 + "00a::a/64"))
+    
         super().build(*args, **kwargs)
 
 
 # Press the green button to run the script.
 if __name__ == '__main__':
-    net = IPNet(topo=SimpleBGPTopo())
+    net = IPNet(topo=SimpleBGPTopo(), allocate_IPs = False)
     try:
         net.start()
         IPCLI(net)
