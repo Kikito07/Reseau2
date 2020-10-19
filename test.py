@@ -132,24 +132,18 @@ class SimpleBGPTopo(IPTopo):
 
     def build(self, *args, **kwargs):
 
-        monde_ipv6 = "2001:2001"
-        europe_ipv6 = monde_ipv6 + ":01"
-        NA_ipv6 = monde_ipv6 + ":02"
-        asia_ipv6 = monde_ipv6 + ":03"
+        monde_ipv6 = "1627:6100:0000"
+        europe_ipv6 = monde_ipv6 + ":0"
+        NA_ipv6 = monde_ipv6 + ":1"
+        asia_ipv6 = monde_ipv6 + ":2"
 
-
-        family = AF_INET6()
         # first step, adding routers
        
 
-        PAR2 = self.addRouter("PAR2", lo_addresses=[europe_ipv6 + "01:0002::/64"])  
+        PAR1 = self.addRouter("PAR1", lo_addresses=[europe_ipv6 + "200::/64"])
+        PAR2 = self.addRouter("PAR2", lo_addresses=[europe_ipv6 + "300::/64"])    
         
-        # firewall for routers
-
-        
-
-
-
+        # firewall for router
         
         
         # adding OSPF6 as IGP
@@ -157,18 +151,20 @@ class SimpleBGPTopo(IPTopo):
         PAR2.addDaemon(OSPF6)
         #PAR2.addDaemon(IP6Tables, rules=ip_rules_PAR2)
 
-        
-        H1_PAR2 = self.addHost("H1_PAR2")
-        H2_PAR2 = self.addHost("H2_PAR2")
+        H1 = self.addHost("H1")
+        H2 = self.addHost("H2")
        
-        # adding links between the routers (and hosts)
-        l_PAR2_H1 = self.addLink(H1_PAR2, PAR2)
-        l_PAR2_H1[PAR2].addParams(ip= "1627:6100:0000:1::/48" )
-        l_PAR2_H1[H1_PAR2].addParams(ip= "1627:6100:0000:2::/48" )
+        l_PAR1_PAR2 = self.addLink(PAR1, PAR2)
+        l_PAR1_PAR2[PAR1].addParams(ip=(europe_ipv6 + "201::/64"))
+        l_PAR1_PAR2[PAR2].addParams(ip=(europe_ipv6 + "301::/64"))
 
-        l_PAR2_H2 = self.addLink(H2_PAR2, PAR2)
-        l_PAR2_H2[PAR2].addParams(ip= "1627:6100:0000:3::/48" )
-        l_PAR2_H2[H2_PAR2].addParams(ip= "1627:6100:0000:4::/48" )
+        l_PAR1_H1 = self.addLink(PAR1, H1)
+        l_PAR1_H1[PAR1].addParams(ip=(europe_ipv6 + "202::/64"))
+        l_PAR1_H1[H1].addParams(ip=(europe_ipv6 + "001::/64"))
+
+        l_PAR2_H2 = self.addLink(PAR2, H2)
+        l_PAR2_H2[PAR2].addParams(ip=(europe_ipv6 + "302::/64"))
+        l_PAR2_H2[H2].addParams(ip=(europe_ipv6 + "002::/64"))
 
         
 
