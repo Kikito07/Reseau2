@@ -131,16 +131,19 @@ class SimpleBGPTopo(IPTopo):
     #    full mesh configuration. AS3 will have only one eBGP peering with AS1 on the as1_s1 router.
 
     def build(self, *args, **kwargs):
-
+        
         monde_ipv6 = "1627:6100:0000"
         europe_ipv6 = monde_ipv6 + ":0"
         NA_ipv6 = monde_ipv6 + ":1"
         asia_ipv6 = monde_ipv6 + ":2"
 
         # first step, adding routers
-        ip_rules = [Rule("-P INPUT DROP"),
-        Rule("-A INPUT -s 1627:6100::/0 -j ACCEPT"),
-        Rule("-A INPUT -d 1627:6100::/0 -j ACCEPT")]
+        ip_rules = [Rule("-A INPUT -s 1627:6100::/48 -j ACCEPT"),
+        Rule("-A OUTPUT -d 1627:6100::/48 -j ACCEPT"),
+        Rule("-P INPUT DROP")]
+
+        
+
 
         PAR1 = self.addRouter("PAR1", lo_addresses=[europe_ipv6 + "200::/64"])
         PAR2 = self.addRouter("PAR2", lo_addresses=[europe_ipv6 + "300::/64"])
@@ -148,9 +151,7 @@ class SimpleBGPTopo(IPTopo):
         PAR2.addDaemon(IP6Tables, rules=ip_rules)
    
         
-        # firewall for router
-        
-        
+        # firewall for router        
         # adding OSPF6 as IGP
 
         
