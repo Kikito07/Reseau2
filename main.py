@@ -3,7 +3,7 @@
 from ipmininet.ipnet import IPNet
 from ipmininet.cli import IPCLI
 from ipmininet.iptopo import IPTopo
-from ipmininet.router.config import BGP, OSPF6, RouterConfig, AF_INET6, set_rr, ebgp_session, SHARE
+from ipmininet.router.config import BGP, OSPF6, RouterConfig, AF_INET6, set_rr, ebgp_session, SHARE, IP6Tables, InputFilter, Deny, Allow, Rule
 
 
 class SimpleBGPTopo(IPTopo):
@@ -130,11 +130,14 @@ class SimpleBGPTopo(IPTopo):
     #    full mesh configuration. AS3 will have only one eBGP peering with AS1 on the as1_s1 router.
 
     def build(self, *args, **kwargs):
-
+        
         monde_ipv6 = "1627:6000:0000"
         europe_ipv6 = monde_ipv6 + ":0"
         NA_ipv6 = monde_ipv6 + ":1"
         asia_ipv6 = monde_ipv6 + ":2"
+        peer_ipv6 = "dead:beaf:0000::"
+
+
 
         MRS_ipv4 = "162.76.0."
         PAR_ipv4 = "162.76.1."
@@ -144,10 +147,25 @@ class SimpleBGPTopo(IPTopo):
         SJO_ipv4 = "162.76.5."
         ASH_ipv4 = "162.76.6."
 
+        VDF_ipv4 = "174.50.0"
+        EQX_ipv4 = "174.50.1"
+        NTT_ipv4 = "174.50.2"
+
+        lan_vodafone_ipv4 = "174.50.0."
+        lan_vodafone_ipv6 = "dead:beaf:0000::"
+        lan_equinix_ipv4 = "174.50.1."
+        lan_equinix_ipv6 = "dead:beaf:0001::"
+        lan_ntt_ipv4 = "174.50.2"
+        lan_ntt_ipv6 = "dead:beaf:0002::"
+
 
 
         family = AF_INET6()
+
+
+
         # first step, adding routers
+        #=========================================================
        
         # routers of MRS
         MRS1 = self.addRouter("MRS1", lo_addresses=[europe_ipv6 + "000::/64", MRS_ipv4 + "128/32"])
@@ -170,10 +188,21 @@ class SimpleBGPTopo(IPTopo):
         #routers of ASH
         ASH1 = self.addRouter("ASH1", lo_addresses=[NA_ipv6 + "400::/64", ASH_ipv4 + "128/32"])
         ASH2 = self.addRouter("ASH2", lo_addresses=[NA_ipv6 + "500::/64", ASH_ipv4 + "64/32"])
+        #routers peering vodafone
+        VDF_PAR2 = self.addRouter("VDF_PAR2", lo_addresses=["dead:beaf:0000:0000::/64", "174.50.0.0/32"])
+        VDF_ASH1 = self.addRouter("VDF_ASH1", lo_addresses=["dead:beaf:0000:0001::/64", "174.50.0.1/32"])
+        VDF_SIN1 = self.addRouter("VDF_SIN1", lo_addresses=["dead:beaf:0000:0002::/64", "174.50.0.2/32"])
+        VDF_SIN2 = self.addRouter("VDF_SIN2", lo_addresses=["dead:beaf:0000:0002::/64", "174.50.0.2/32"])
+        #routers peering equinix
+        EQX_SIN1 = self.addRouter("EQX_SIN1", lo_addresses=["dead:beaf:0001:0000::/64", "174.50.1.0/32"])
+        EQX_SYD2 = self.addRouter("EQX_SYD2", lo_addresses=["dead:beaf:0001:0001::/64", "174.50.1.1/32"])
+        #routers peering NTT
+        NTT_SYD1 = self.addRouter("NTT_SYD1", lo_addresses=["dead:beaf:0002:0000::/64", "174.50.2.0/32"])
         
         
         
         # adding OSPF6 as IGP
+        #=========================================================
         MRS1.addDaemon(OSPF6)
         MRS2.addDaemon(OSPF6)
 
@@ -194,6 +223,71 @@ class SimpleBGPTopo(IPTopo):
 
         PAR1.addDaemon(OSPF6)
         PAR2.addDaemon(OSPF6)
+
+        VDF_PAR2.addDaemon(OSPF6)
+        VDF_ASH1.addDaemon(OSPF6)
+        VDF_SIN1.addDaemon(OSPF6)
+        VDF_SIN2.addDaemon(OSPF6)
+
+        EQX_SIN1.addDaemon(OSPF6)
+        EQX_SYD2.addDaemon(OSPF6)
+
+        NTT_SYD1.addDaemon(OSPF6)
+
+        # adding BGP 
+        #=========================================================
+        MRS1.addDaemon(BGP)
+        MRS2.addDaemon(BGP)
+
+        SIN1.addDaemon(BGP)
+        SIN2.addDaemon(BGP)
+
+        SYD1.addDaemon(BGP)
+        SYD2.addDaemon(BGP)
+
+        LAX1.addDaemon(BGP)        
+        LAX2.addDaemon(BGP)
+
+        SJO1.addDaemon(BGP)
+        SJO2.addDaemon(BGP)
+
+        ASH1.addDaemon(BGP)
+        ASH2.addDaemon(BGP)
+
+        PAR1.addDaemon(BGP)
+        PAR2.addDaemon(BGP)
+
+        VDF_PAR2.addDaemon(BGP)
+        VDF_ASH1.addDaemon(BGP)
+        VDF_SIN1.addDaemon(BGP)
+        VDF_SIN2.addDaemon(BGP)
+
+        EQX_SIN1.addDaemon(BGP)
+        EQX_SYD2.addDaemon(BGP)
+
+        NTT_SYD1.addDaemon(BGP)
+
+
+        
+
+        #add firewall to the affected routers
+        #=========================================================
+        
+        #rules for the routers
+        ip_rules = [Rule("-A INPUT -s 1627:6100::/32 -j REJECT"),
+        Rule("-A OUTPUT -d 1627:6100::/32 -j REJECT")]
+
+        #adding to the routers
+        SIN1.addDaemon(IP6Tables, rules=ip_rules)
+        SIN2.addDaemon(IP6Tables, rules=ip_rules)
+        SYD1.addDaemon(IP6Tables, rules=ip_rules)
+        SYD2.addDaemon(IP6Tables, rules=ip_rules)
+        ASH1.addDaemon(IP6Tables, rules=ip_rules)
+        PAR2.addDaemon(IP6Tables, rules=ip_rules)
+        
+
+
+
 
         # linkin twin datacenters10.12.0.1
         #=========================================================
@@ -294,6 +388,21 @@ class SimpleBGPTopo(IPTopo):
         l_SYD2_LAX2 = self.addLink(SYD2,LAX2)
         l_SYD2_LAX2[SYD2].addParams(ip=(europe_ipv6 + "303::/64", SYD_ipv4 + "5/30"))
         l_SYD2_LAX2[LAX2].addParams(ip=(europe_ipv6 + "103::/64", SYD_ipv4 + "6/30"))
+
+        l_VDF_PAR2 = self.addLink(VDF_PAR2, PAR2)
+        l_VDF_PAR2[VDF_PAR2].addParams(ip=(peer_ipv6 + "011::1/64", ))
+
+        l_VDF_ASH1 = self.addLink(VDF_ASH1,ASH1)
+
+        l_VDF_SIN1 = self.addLink(VDF_SIN1, SIN1)
+
+        l_VDF_SIN2 = self.addLink(VDF_SIN2, SIN2)
+
+        l_EQX_SIN1 = self.addLink(EQX_SIN1, SIN1)
+
+        l_EQX_SYD2 = self.addLink(EQX_SYD2, SYD2)
+
+        l_NTT_SYD1 = self.addLink(NTT_SYD1, SYD1)
 
         H1 = self.addHost("H1")
         H2 = self.addHost("H2")
