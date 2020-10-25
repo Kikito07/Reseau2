@@ -3,7 +3,7 @@
 from ipmininet.ipnet import IPNet
 from ipmininet.cli import IPCLI
 from ipmininet.iptopo import IPTopo
-from ipmininet.router.config import BGP, OSPF6, RouterConfig, AF_INET6, set_rr, ebgp_session, SHARE, IP6Tables, InputFilter, Deny, Allow, Rule, bgp_fullmesh, bgp_peering, ebgp_session
+from ipmininet.router.config import BGP, OSPF6, RouterConfig, AF_INET6, AF_INET, set_rr, ebgp_session, SHARE, IP6Tables, InputFilter, Deny, Allow, Rule, bgp_fullmesh, bgp_peering, ebgp_session
 
 
 class SimpleBGPTopo(IPTopo):
@@ -242,24 +242,24 @@ class SimpleBGPTopo(IPTopo):
         PAR1.addDaemon(BGP)
         PAR2.addDaemon(BGP)
 
-        VDF.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),))
-        EQX.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),))
-        NTT.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),))
+        VDF.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),))
+        EQX.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),))
+        NTT.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),))
 
         #add firewall to the affected routers
         #=========================================================
         
         #rules for the routers
-        ip_rules = [Rule("-A INPUT -s 1627:6100::/32 -j REJECT"),
-        Rule("-A OUTPUT -d 1627:6100::/32 -j REJECT")]
+        # ip_rules = [Rule("-A INPUT -s 1627:6100::/32 -j REJECT"),
+        # Rule("-A OUTPUT -d 1627:6100::/32 -j REJECT")]
 
-        #adding to the routers
-        SIN1.addDaemon(IP6Tables, rules=ip_rules)
-        SIN2.addDaemon(IP6Tables, rules=ip_rules)
-        SYD1.addDaemon(IP6Tables, rules=ip_rules)
-        SYD2.addDaemon(IP6Tables, rules=ip_rules)
-        ASH1.addDaemon(IP6Tables, rules=ip_rules)
-        PAR2.addDaemon(IP6Tables, rules=ip_rules)
+        # #adding to the routers
+        # SIN1.addDaemon(IP6Tables, rules=ip_rules)
+        # SIN2.addDaemon(IP6Tables, rules=ip_rules)
+        # SYD1.addDaemon(IP6Tables, rules=ip_rules)
+        # SYD2.addDaemon(IP6Tables, rules=ip_rules)
+        # ASH1.addDaemon(IP6Tables, rules=ip_rules)
+        # PAR2.addDaemon(IP6Tables, rules=ip_rules)
         
 
         # linkin twin datacenters
@@ -400,16 +400,15 @@ class SimpleBGPTopo(IPTopo):
 
         #=============================================================================
         #BGP setup
-        self.addAS(1, routers=[MRS1,MRS2,PAR1,PAR1,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2])
-        set_rr(self, rr=SIN1, peers=[SYD1, MRS1, SIN2, MRS2,SJO2])
-        set_rr(self, rr=SYD2, peers=[SYD1, SIN2, SJO1, LAX1])
-        set_rr(self, rr=ASH1, peers=[SJO1, SJO2, LAX1, LAX2, PAR1, ASH2])
-        set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2])
-        bgp_fullmesh(self, [SIN1, SYD2, ASH1, PAR2])
+        self.addAS(1,(MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2))
+        set_rr(self, rr=SIN1, peers=[SYD1, MRS1, SIN2, MRS2, SJO2, SYD2, ASH1, PAR2])
+        set_rr(self, rr=SYD2, peers=[SYD1, SIN2, SJO1, LAX1, SIN1, ASH1, PAR2])
+        set_rr(self, rr=ASH1, peers=[SJO1, SJO2, LAX1, LAX2, PAR1, ASH2, SIN1, SYD2, PAR2])
+        set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2, SIN1, SYD2, ASH1])
 
-        self.addAS(2, routers=[EQX])
-        self.addAS(3, routers=[VDF])
-        self.addAS(4, routers=[NTT])
+        self.addAS(2, (EQX,))
+        self.addAS(3, (VDF,))
+        self.addAS(4, (NTT,))
 
         ebgp_session(self, VDF, PAR2)
         ebgp_session(self, VDF, ASH1)
@@ -426,8 +425,8 @@ class SimpleBGPTopo(IPTopo):
         H3 = self.addHost("H3")
 
         l_H1_VDF = self.addLink(H1, VDF)
-        l_H1_VDF[H1].addParams(ip=(europe_ipv6 + "aaa::2/64", VDF_ipv4 + "1/30"))
-        l_H1_VDF[VDF].addParams(ip=(europe_ipv6 + "aaa::a/64", VDF_ipv4 + "2/30"))
+        l_H1_VDF[H1].addParams(ip=(europe_ipv6 + "aaa::2/64", VDF_ipv4 + "4/30"))
+        l_H1_VDF[VDF].addParams(ip=(europe_ipv6 + "aaa::a/64", VDF_ipv4 + "5/30"))
 
         l_H2_EQX = self.addLink(H2, EQX)
         l_H2_EQX[H2].addParams(ip=(europe_ipv6 + "bbb::2/64", VDF_ipv4 + "9/30"))
