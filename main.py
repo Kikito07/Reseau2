@@ -242,9 +242,9 @@ class SimpleBGPTopo(IPTopo):
         PAR1.addDaemon(BGP)
         PAR2.addDaemon(BGP)
 
-        VDF.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),))
-        EQX.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),))
-        NTT.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),))
+        VDF.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),))
+        EQX.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),))
+        NTT.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),))
 
         #add firewall to the affected routers
         #=========================================================
@@ -425,8 +425,8 @@ class SimpleBGPTopo(IPTopo):
         H3 = self.addHost("H3")
 
         l_H1_VDF = self.addLink(H1, VDF)
-        l_H1_VDF[H1].addParams(ip=(europe_ipv6 + "aaa::2/64", VDF_ipv4 + "4/30"))
-        l_H1_VDF[VDF].addParams(ip=(europe_ipv6 + "aaa::a/64", VDF_ipv4 + "5/30"))
+        l_H1_VDF[H1].addParams(ip=(europe_ipv6 + "aaa::2/64", VDF_ipv4 + "5/30"))
+        l_H1_VDF[VDF].addParams(ip=(europe_ipv6 + "aaa::a/64", VDF_ipv4 + "6/30"))
 
         l_H2_EQX = self.addLink(H2, EQX)
         l_H2_EQX[H2].addParams(ip=(europe_ipv6 + "bbb::2/64", VDF_ipv4 + "9/30"))
