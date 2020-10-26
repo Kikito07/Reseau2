@@ -147,9 +147,9 @@ class SimpleBGPTopo(IPTopo):
         SJO_ipv4 = "162.76.5."
         ASH_ipv4 = "162.76.6."
 
-        VDF_ipv4 = "162.76.1."
-        EQX_ipv4 = "162.76.2."
-        NTT_ipv4 = "162.76.3."
+        VDF_ipv4 = "162.76.7."
+        EQX_ipv4 = "162.76.8."
+        NTT_ipv4 = "162.76.9."
         VDF_ipv6 = "1627:6100:0000:0"
         EQX_ipv6 = "1627:6200:0000:0"
         NTT_ipv6 = "1627:6300:0000:0"
@@ -359,8 +359,8 @@ class SimpleBGPTopo(IPTopo):
         l_PAR2_MRS1[MRS1].addParams(ip=(europe_ipv6 + "202::2/64", PAR_ipv4 + "34/30"))
 
         l_SYD2_LAX2 = self.addLink(SYD2,LAX2,igp_cost=10)
-        l_SYD2_LAX2[SYD2].addParams(ip=(europe_ipv6 + "303::/64", SYD_ipv4 + "5/30"))
-        l_SYD2_LAX2[LAX2].addParams(ip=(europe_ipv6 + "103::/64", SYD_ipv4 + "6/30"))
+        l_SYD2_LAX2[SYD2].addParams(ip=(europe_ipv6 + "303::1/64", SYD_ipv4 + "5/30"))
+        l_SYD2_LAX2[LAX2].addParams(ip=(europe_ipv6 + "303::2/64", SYD_ipv4 + "6/30"))
 
         #=============================================================================
         #Peering links
@@ -394,8 +394,8 @@ class SimpleBGPTopo(IPTopo):
         l_NTT_SYD2[SYD2].addParams(ip=(asia_ipv6 + "4fb::2/64",SYD_ipv4 + "82/30"))
 
         l_NTT_SYD1 = self.addLink(NTT, SYD1)
-        l_NTT_SYD1[NTT].addParams(ip=(asia_ipv6 + "5fa::1/64",SYD_ipv4 + "73/30"))
-        l_NTT_SYD1[SYD1].addParams(ip=(asia_ipv6 + "5fa::2/64",SYD_ipv4 + "74/30"))
+        l_NTT_SYD1[NTT].addParams(ip=(asia_ipv6 + "5fa::1/64",SYD_ipv4 + "89/30"))
+        l_NTT_SYD1[SYD1].addParams(ip=(asia_ipv6 + "5fa::2/64",SYD_ipv4 + "90/30"))
 
 
         #=============================================================================
