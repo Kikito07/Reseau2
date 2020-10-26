@@ -147,9 +147,9 @@ class SimpleBGPTopo(IPTopo):
         SJO_ipv4 = "162.76.5."
         ASH_ipv4 = "162.76.6."
 
-        VDF_ipv4 = "162.76.7."
-        EQX_ipv4 = "162.76.8."
-        NTT_ipv4 = "162.76.9."
+        VDF_ipv4 = "160.76.7."
+        EQX_ipv4 = "160.76.8."
+        NTT_ipv4 = "160.76.9."
         VDF_ipv6 = "1627:6100:0000:0"
         EQX_ipv6 = "1627:6200:0000:0"
         NTT_ipv6 = "1627:6300:0000:0"
