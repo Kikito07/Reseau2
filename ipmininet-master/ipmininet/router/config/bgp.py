@@ -485,7 +485,7 @@ def AF_INET6(*args, **kwargs):
 
 class Peer:
     """A BGP peer"""
-    def __init__(self, base: 'Router', node: str, v6=False):
+    def __init__(self, base: 'Router', node: str, v6=False, bgp_hop_limit=1):
         """:param base: The base router that has this peer
         :param node: The actual peer"""
         self.peer, other = self._find_peer_address(base, node, v6=v6)
@@ -504,6 +504,7 @@ class Peer:
         ebgp = self.asn != base.asn
         self.ebgp_multihop = ebgp
         self.description = '%s (%sBGP)' % (node, 'e' if ebgp else 'i')
+        self.hop_limit = bgp_hop_limit
 
     @staticmethod
     def _find_peer_address(base: 'Router', peer: str, v6=False) \

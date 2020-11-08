@@ -3,7 +3,7 @@
 from ipmininet.ipnet import IPNet
 from ipmininet.cli import IPCLI
 from ipmininet.iptopo import IPTopo
-from ipmininet.router.config import BGP, OSPF6, OSPF, RouterConfig, AF_INET6, AF_INET, set_rr, ebgp_session, SHARE, IP6Tables, InputFilter, Deny, Allow, Rule, bgp_fullmesh, bgp_peering, ebgp_session
+from ipmininet.router.config import BGP, OSPF6, RouterConfig, AF_INET6, AF_INET, set_rr, ebgp_session, SHARE, IP6Tables, InputFilter, Deny, Allow, Rule, bgp_fullmesh, bgp_peering, ebgp_session
 
 
 class SimpleBGPTopo(IPTopo):
@@ -180,11 +180,11 @@ class SimpleBGPTopo(IPTopo):
         ASH1 = self.addRouter("ASH1", lo_addresses=[NA_ipv6 + "400::/64", ASH_ipv4 + "128/32"])
         ASH2 = self.addRouter("ASH2", lo_addresses=[NA_ipv6 + "500::/64", ASH_ipv4 + "64/32"])
         #routers peering vodafone
-        VDF = self.addRouter("VDF", lo_addresses=[VDF_ipv6 + "000::/64", VDF_ipv4 + "0/32"])
+        VDF = self.addRouter("VDF", lo_addresses=[VDF_ipv6 + "000::/64", VDF_ipv4 + "0/32"],bgp_hop_limit=10)
         #routers peering equinix
-        EQX = self.addRouter("EQX", lo_addresses=[EQX_ipv6 + "000::/64", EQX_ipv4 + "0/32"])
+        EQX = self.addRouter("EQX", lo_addresses=[EQX_ipv6 + "000::/64", EQX_ipv4 + "0/32"],bgp_hop_limit=5)
         #routers peering NTT
-        NTT = self.addRouter("NTT", lo_addresses=[NTT_ipv6 + "000::/64", NTT_ipv4 + "0/32"])
+        NTT = self.addRouter("NTT", lo_addresses=[NTT_ipv6 + "000::/64", NTT_ipv4 + "0/32"],bgp_hop_limit=2)
         
         
         
@@ -261,7 +261,7 @@ class SimpleBGPTopo(IPTopo):
         # linkin twin datacenters
         #=========================================================
         l_MRS1_MRS2 = self.addLink(MRS1, MRS2,igp_cost=1)
-        l_MRS1_MRS2[MRS1].addParams(ip=(europe_ipv6 + "00a::1/64", MRS_ipv4 + "129/30"),ospf_key="yo")
+        l_MRS1_MRS2[MRS1].addParams(ip=(europe_ipv6 + "00a::1/64", MRS_ipv4 + "129/30"))
         l_MRS1_MRS2[MRS2].addParams(ip=(europe_ipv6 + "00a::2/64", MRS_ipv4 + "130/30"))
 
         l_SIN1_SIN2 = self.addLink(SIN1, SIN2,igp_cost=1)
@@ -448,6 +448,7 @@ if __name__ == '__main__':
     net = IPNet(topo=SimpleBGPTopo(), allocate_IPs = False)
     try:
         net.start()
+        #print(net['PAR1'].cmd('python3 scripts/script.py'))
         IPCLI(net)
     finally:
         net.stop()
