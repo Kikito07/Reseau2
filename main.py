@@ -180,11 +180,11 @@ class SimpleBGPTopo(IPTopo):
         ASH1 = self.addRouter("ASH1", lo_addresses=[NA_ipv6 + "400::/64", ASH_ipv4 + "128/32"])
         ASH2 = self.addRouter("ASH2", lo_addresses=[NA_ipv6 + "500::/64", ASH_ipv4 + "64/32"])
         #routers peering vodafone
-        VDF = self.addRouter("VDF", lo_addresses=[VDF_ipv6 + "000::/64", VDF_ipv4 + "0/32"],bgp_hop_limit=10)
+        VDF = self.addRouter("VDF", lo_addresses=[VDF_ipv6 + "000::/64", VDF_ipv4 + "0/32"])
         #routers peering equinix
-        EQX = self.addRouter("EQX", lo_addresses=[EQX_ipv6 + "000::/64", EQX_ipv4 + "0/32"],bgp_hop_limit=5)
+        EQX = self.addRouter("EQX", lo_addresses=[EQX_ipv6 + "000::/64", EQX_ipv4 + "0/32"])
         #routers peering NTT
-        NTT = self.addRouter("NTT", lo_addresses=[NTT_ipv6 + "000::/64", NTT_ipv4 + "0/32"],bgp_hop_limit=2)
+        NTT = self.addRouter("NTT", lo_addresses=[NTT_ipv6 + "000::/64", NTT_ipv4 + "0/32"])
         
         
         
@@ -220,7 +220,7 @@ class SimpleBGPTopo(IPTopo):
         MRS1.addDaemon(BGP)
         MRS2.addDaemon(BGP)
 
-        SIN1.addDaemon(BGP)
+        SIN1.addDaemon(BGP,bgp_hop_limit=10)
         SIN2.addDaemon(BGP)
 
         SYD1.addDaemon(BGP)

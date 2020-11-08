@@ -156,7 +156,7 @@ class BGPConfig:
         :param local_pref: The local pref value to set
         :param from_peer: The peer on which the local pref is applied
         :param matching: A list of AccessList and/or CommunityList
-        :return: self
+        :retbgp seturn: self
         """
         self.add_set_action(peer=from_peer,
                             set_action=RouteMapSetAction('local-preference',
@@ -369,6 +369,10 @@ class BGP(QuaggaDaemon):
         cfg.community_lists = self.build_community_list()
         cfg.route_maps = self.build_route_map(cfg.neighbors)
         cfg.rr = self._node.get('bgp_rr_info')
+        if(self.options.bgp_hop_limit):
+            cfg.hop_limit = self.options.bgp_hop_limit
+        else:
+            cfg.hop_limit = 1
 
         return cfg
 
@@ -485,7 +489,7 @@ def AF_INET6(*args, **kwargs):
 
 class Peer:
     """A BGP peer"""
-    def __init__(self, base: 'Router', node: str, v6=False, bgp_hop_limit=1):
+    def __init__(self, base: 'Router', node: str, v6=False):
         """:param base: The base router that has this peer
         :param node: The actual peer"""
         self.peer, other = self._find_peer_address(base, node, v6=v6)
@@ -504,7 +508,6 @@ class Peer:
         ebgp = self.asn != base.asn
         self.ebgp_multihop = ebgp
         self.description = '%s (%sBGP)' % (node, 'e' if ebgp else 'i')
-        self.hop_limit = bgp_hop_limit
 
     @staticmethod
     def _find_peer_address(base: 'Router', peer: str, v6=False) \

@@ -19,7 +19,7 @@ router bgp ${node.bgpd.asn}
     neighbor ${n.peer} port ${n.port}
     neighbor ${n.peer} description ${n.description}
     % if n.ebgp_multihop:
-    neighbor ${n.peer} ttl-security hops ${n.hop_limit}
+    neighbor ${n.peer} ttl-security hops ${node.bgpd.hop_limit}
     % endif
     <%block name="neighbor"/>
 % endfor
