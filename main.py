@@ -135,7 +135,8 @@ class SimpleBGPTopo(IPTopo):
         europe_ipv6 = monde_ipv6 + ":0"
         NA_ipv6 = monde_ipv6 + ":1"
         asia_ipv6 = monde_ipv6 + ":2"
-        peer_ipv6 = "dead:beaf:0000::"
+        server_ipv6 = monde_ipv6 + ":3"
+        server_ipv4 = "162.76.7."
 
 
 
@@ -146,6 +147,7 @@ class SimpleBGPTopo(IPTopo):
         LAX_ipv4 = "162.76.4."
         SJO_ipv4 = "162.76.5."
         ASH_ipv4 = "162.76.6."
+        
 
         VDF_ipv4 = "160.76.7."
         EQX_ipv4 = "160.76.8."
@@ -153,6 +155,7 @@ class SimpleBGPTopo(IPTopo):
         VDF_ipv6 = "1627:6100:0000:0"
         EQX_ipv6 = "1627:6200:0000:0"
         NTT_ipv6 = "1627:6300:0000:0"
+
 
 
         # first step, adding routers
@@ -190,30 +193,30 @@ class SimpleBGPTopo(IPTopo):
         
         # adding OSPF6 as IGP
         #=========================================================
-        MRS1.addDaemon(OSPF6)
-        MRS2.addDaemon(OSPF6)
+        # MRS1.addDaemon(OSPF6)
+        # MRS2.addDaemon(OSPF6)
 
-        SIN1.addDaemon(OSPF6)
-        SIN2.addDaemon(OSPF6)
+        # SIN1.addDaemon(OSPF6)
+        # SIN2.addDaemon(OSPF6)
 
-        SYD1.addDaemon(OSPF6)
-        SYD2.addDaemon(OSPF6)
+        # SYD1.addDaemon(OSPF6)
+        # SYD2.addDaemon(OSPF6)
 
-        LAX1.addDaemon(OSPF6)        
-        LAX2.addDaemon(OSPF6)
+        # LAX1.addDaemon(OSPF6)        
+        # LAX2.addDaemon(OSPF6)
 
-        SJO1.addDaemon(OSPF6)
-        SJO2.addDaemon(OSPF6)
+        # SJO1.addDaemon(OSPF6)
+        # SJO2.addDaemon(OSPF6)
 
-        ASH1.addDaemon(OSPF6)
-        ASH2.addDaemon(OSPF6)
+        # ASH1.addDaemon(OSPF6)
+        # ASH2.addDaemon(OSPF6)
 
-        PAR1.addDaemon(OSPF6)
-        PAR2.addDaemon(OSPF6)
+        # PAR1.addDaemon(OSPF6)
+        # PAR2.addDaemon(OSPF6)
 
-        VDF.addDaemon(OSPF6)
-        EQX.addDaemon(OSPF6)
-        NTT.addDaemon(OSPF6)
+        # VDF.addDaemon(OSPF6)
+        # EQX.addDaemon(OSPF6)
+        # NTT.addDaemon(OSPF6)
 
         # adding BGP 
         #=========================================================
@@ -394,6 +397,32 @@ class SimpleBGPTopo(IPTopo):
 
 
         #=============================================================================
+        #servers
+
+        S1 = self.addRouter("S1", config=RouterConfig, lo_addresses=[server_ipv6 + "::/64", server_ipv4 + "1/32"])
+        S2 = self.addRouter("S2", config=RouterConfig, lo_addresses=[server_ipv6 + "::/64", server_ipv4 + "1/32"])
+
+        #Adding BGP daemons to manage failures
+
+        S1.addDaemon(BGP)
+        S2.addDaemon(BGP)
+
+        self.addAS(64512, (S1,))
+        self.addAS(64512, (S2,))
+
+        l_S1_SIN1 = self.addLink(S1,SIN1)
+        l_S1_SIN1[S1].addParams(ip=(server_ipv6 + "a1a::1/64",server_ipv4 + "5/30"))
+        l_S1_SIN1[SIN1].addParams(ip=(server_ipv6 + "a1a::2/64",server_ipv4 + "6/30"))
+
+        l_S2_ASH1 = self.addLink(S2,ASH1)
+        l_S2_ASH1[S2].addParams(ip=(server_ipv6 + "a2a::1/64",server_ipv4 + "9/30"))
+        l_S2_ASH1[ASH1].addParams(ip=(server_ipv6 + "a2a::2/64",server_ipv4 + "10/30"))
+
+        ebgp_session(self,S1, SIN1)
+        ebgp_session(self,S2, ASH1)
+        
+
+        #=============================================================================
         #BGP setup
         self.addAS(1,(MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2))
         set_rr(self, rr=SIN1, peers=[SYD1, MRS1, SIN2, MRS2, SJO1, SJO2])
@@ -420,6 +449,8 @@ class SimpleBGPTopo(IPTopo):
         H1 = self.addHost("H1")
         H2 = self.addHost("H2")
         H3 = self.addHost("H3")
+        
+
 
         l_H1_VDF = self.addLink(H1, VDF)
         l_H1_VDF[H1].addParams(ip=(europe_ipv6 + "aaa::2/64", VDF_ipv4 + "5/30"))
