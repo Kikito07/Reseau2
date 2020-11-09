@@ -162,32 +162,32 @@ class SimpleBGPTopo(IPTopo):
         #=========================================================
        
         # routers of MRS
-        MRS1 = self.addRouter("MRS1", lo_addresses=[europe_ipv6 + "000::/64", MRS_ipv4 + "128/32"])
-        MRS2 = self.addRouter("MRS2", lo_addresses=[europe_ipv6 + "100::/64", MRS_ipv4 + "64/32"])
+        MRS1 = self.addRouter("MRS1", lo_addresses=[europe_ipv6 + "000::/64", MRS_ipv4 + "253/32"])
+        MRS2 = self.addRouter("MRS2", lo_addresses=[europe_ipv6 + "100::/64", MRS_ipv4 + "254/32"])
          #routers of PAR
-        PAR1 = self.addRouter("PAR1", lo_addresses=[europe_ipv6 + "200::/64", PAR_ipv4 + "128/32"])
-        PAR2 = self.addRouter("PAR2", lo_addresses=[europe_ipv6 + "300::/64", PAR_ipv4 + "64/32"])
+        PAR1 = self.addRouter("PAR1", lo_addresses=[europe_ipv6 + "200::/64", PAR_ipv4 + "253/32"])
+        PAR2 = self.addRouter("PAR2", lo_addresses=[europe_ipv6 + "300::/64", PAR_ipv4 + "254/32"])
         # routers of SIN
-        SIN1 = self.addRouter("SIN1", lo_addresses=[asia_ipv6 + "000::/64", SIN_ipv4 + "128/32"])
-        SIN2 = self.addRouter("SIN2", lo_addresses=[asia_ipv6 + "100::/64", SIN_ipv4 + "64/32"])
+        SIN1 = self.addRouter("SIN1", lo_addresses=[asia_ipv6 + "000::/64", SIN_ipv4 + "253/32"])
+        SIN2 = self.addRouter("SIN2", lo_addresses=[asia_ipv6 + "100::/64", SIN_ipv4 + "254/32"])
         # routers of SYD
-        SYD1 = self.addRouter("SYD1", lo_addresses=[asia_ipv6 + "200::/64", SYD_ipv4 + "128/32"])
-        SYD2 = self.addRouter("SYD2", lo_addresses=[asia_ipv6 + "300::/64", SYD_ipv4 + "64/32"])
+        SYD1 = self.addRouter("SYD1", lo_addresses=[asia_ipv6 + "200::/64", SYD_ipv4 + "253/32"])
+        SYD2 = self.addRouter("SYD2", lo_addresses=[asia_ipv6 + "300::/64", SYD_ipv4 + "254/32"])
         # routers of LAX
-        LAX1 = self.addRouter("LAX1", lo_addresses=[NA_ipv6 + "000::/64", LAX_ipv4 + "128/32"])
-        LAX2 = self.addRouter("LAX2", lo_addresses=[NA_ipv6 + "100::/64", LAX_ipv4 + "64/32"])
+        LAX1 = self.addRouter("LAX1", lo_addresses=[NA_ipv6 + "000::/64", LAX_ipv4 + "253/32"])
+        LAX2 = self.addRouter("LAX2", lo_addresses=[NA_ipv6 + "100::/64", LAX_ipv4 + "254/32"])
         # routers of SJO
-        SJO1 = self.addRouter("SJO1", lo_addresses=[NA_ipv6 + "200::/64", SJO_ipv4 + "128/32"])
-        SJO2 = self.addRouter("SJO2", lo_addresses=[NA_ipv6 + "300::/64", SJO_ipv4 + "64/32"])
+        SJO1 = self.addRouter("SJO1", lo_addresses=[NA_ipv6 + "200::/64", SJO_ipv4 + "253/32"])
+        SJO2 = self.addRouter("SJO2", lo_addresses=[NA_ipv6 + "300::/64", SJO_ipv4 + "254/32"])
         #routers of ASH
-        ASH1 = self.addRouter("ASH1", lo_addresses=[NA_ipv6 + "400::/64", ASH_ipv4 + "128/32"])
-        ASH2 = self.addRouter("ASH2", lo_addresses=[NA_ipv6 + "500::/64", ASH_ipv4 + "64/32"])
+        ASH1 = self.addRouter("ASH1", lo_addresses=[NA_ipv6 + "400::/64", ASH_ipv4 + "253/32"])
+        ASH2 = self.addRouter("ASH2", lo_addresses=[NA_ipv6 + "500::/64", ASH_ipv4 + "254/32"])
         #routers peering vodafone
-        VDF = self.addRouter("VDF", lo_addresses=[VDF_ipv6 + "000::/64", VDF_ipv4 + "0/32"])
+        VDF = self.addRouter("VDF", lo_addresses=[VDF_ipv6 + "000::/64", VDF_ipv4 + "253/32"])
         #routers peering equinix
-        EQX = self.addRouter("EQX", lo_addresses=[EQX_ipv6 + "000::/64", EQX_ipv4 + "0/32"])
+        EQX = self.addRouter("EQX", lo_addresses=[EQX_ipv6 + "000::/64", EQX_ipv4 + "253/32"])
         #routers peering NTT
-        NTT = self.addRouter("NTT", lo_addresses=[NTT_ipv6 + "000::/64", NTT_ipv4 + "0/32"])
+        NTT = self.addRouter("NTT", lo_addresses=[NTT_ipv6 + "000::/64", NTT_ipv4 + "253/32"])
         
         
         
