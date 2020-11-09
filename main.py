@@ -162,120 +162,105 @@ class SimpleBGPTopo(IPTopo):
         #=========================================================
        
         # routers of MRS
-        MRS1 = self.addRouter("MRS1", lo_addresses=[europe_ipv6 + "000::/64", MRS_ipv4 + "253/32"])
-        MRS2 = self.addRouter("MRS2", lo_addresses=[europe_ipv6 + "100::/64", MRS_ipv4 + "254/32"])
+        MRS1 = self.addRouter("MRS1",config=RouterConfig, lo_addresses=[europe_ipv6 + "000::/64", MRS_ipv4 + "253/32"])
+        MRS2 = self.addRouter("MRS2",config=RouterConfig, lo_addresses=[europe_ipv6 + "100::/64", MRS_ipv4 + "254/32"])
          #routers of PAR
-        PAR1 = self.addRouter("PAR1", lo_addresses=[europe_ipv6 + "200::/64", PAR_ipv4 + "253/32"])
-        PAR2 = self.addRouter("PAR2", lo_addresses=[europe_ipv6 + "300::/64", PAR_ipv4 + "254/32"])
+        PAR1 = self.addRouter("PAR1",config=RouterConfig, lo_addresses=[europe_ipv6 + "200::/64", PAR_ipv4 + "253/32"])
+        PAR2 = self.addRouter("PAR2",config=RouterConfig, lo_addresses=[europe_ipv6 + "300::/64", PAR_ipv4 + "254/32"])
         # routers of SIN
-        SIN1 = self.addRouter("SIN1", lo_addresses=[asia_ipv6 + "000::/64", SIN_ipv4 + "253/32"])
-        SIN2 = self.addRouter("SIN2", lo_addresses=[asia_ipv6 + "100::/64", SIN_ipv4 + "254/32"])
+        SIN1 = self.addRouter("SIN1",config=RouterConfig, lo_addresses=[asia_ipv6 + "000::/64", SIN_ipv4 + "253/32"])
+        SIN2 = self.addRouter("SIN2",config=RouterConfig, lo_addresses=[asia_ipv6 + "100::/64", SIN_ipv4 + "254/32"])
         # routers of SYD
-        SYD1 = self.addRouter("SYD1", lo_addresses=[asia_ipv6 + "200::/64", SYD_ipv4 + "253/32"])
-        SYD2 = self.addRouter("SYD2", lo_addresses=[asia_ipv6 + "300::/64", SYD_ipv4 + "254/32"])
+        SYD1 = self.addRouter("SYD1",config=RouterConfig, lo_addresses=[asia_ipv6 + "200::/64", SYD_ipv4 + "253/32"])
+        SYD2 = self.addRouter("SYD2",config=RouterConfig, lo_addresses=[asia_ipv6 + "300::/64", SYD_ipv4 + "254/32"])
         # routers of LAX
-        LAX1 = self.addRouter("LAX1", lo_addresses=[NA_ipv6 + "000::/64", LAX_ipv4 + "253/32"])
-        LAX2 = self.addRouter("LAX2", lo_addresses=[NA_ipv6 + "100::/64", LAX_ipv4 + "254/32"])
+        LAX1 = self.addRouter("LAX1",config=RouterConfig, lo_addresses=[NA_ipv6 + "000::/64", LAX_ipv4 + "253/32"])
+        LAX2 = self.addRouter("LAX2",config=RouterConfig, lo_addresses=[NA_ipv6 + "100::/64", LAX_ipv4 + "254/32"])
         # routers of SJO
-        SJO1 = self.addRouter("SJO1", lo_addresses=[NA_ipv6 + "200::/64", SJO_ipv4 + "253/32"])
-        SJO2 = self.addRouter("SJO2", lo_addresses=[NA_ipv6 + "300::/64", SJO_ipv4 + "254/32"])
+        SJO1 = self.addRouter("SJO1",config=RouterConfig, lo_addresses=[NA_ipv6 + "200::/64", SJO_ipv4 + "253/32"])
+        SJO2 = self.addRouter("SJO2",config=RouterConfig, lo_addresses=[NA_ipv6 + "300::/64", SJO_ipv4 + "254/32"])
         #routers of ASH
-        ASH1 = self.addRouter("ASH1", lo_addresses=[NA_ipv6 + "400::/64", ASH_ipv4 + "253/32"])
-        ASH2 = self.addRouter("ASH2", lo_addresses=[NA_ipv6 + "500::/64", ASH_ipv4 + "254/32"])
+        ASH1 = self.addRouter("ASH1",config=RouterConfig, lo_addresses=[NA_ipv6 + "400::/64", ASH_ipv4 + "253/32"])
+        ASH2 = self.addRouter("ASH2", config=RouterConfig,lo_addresses=[NA_ipv6 + "500::/64", ASH_ipv4 + "254/32"])
         #routers peering vodafone
-        VDF = self.addRouter("VDF", lo_addresses=[VDF_ipv6 + "000::/64", VDF_ipv4 + "253/32"])
+        VDF = self.addRouter("VDF",config=RouterConfig, lo_addresses=[VDF_ipv6 + "000::/64", VDF_ipv4 + "253/32"])
         #routers peering equinix
-        EQX = self.addRouter("EQX", lo_addresses=[EQX_ipv6 + "000::/64", EQX_ipv4 + "253/32"])
+        EQX = self.addRouter("EQX",config=RouterConfig, lo_addresses=[EQX_ipv6 + "000::/64", EQX_ipv4 + "253/32"])
         #routers peering NTT
-        NTT = self.addRouter("NTT", lo_addresses=[NTT_ipv6 + "000::/64", NTT_ipv4 + "253/32"])
+        NTT = self.addRouter("NTT",config=RouterConfig, lo_addresses=[NTT_ipv6 + "000::/64", NTT_ipv4 + "253/32"])
         
         
         
         # adding OSPF6 as IGP
         #=========================================================
-        # MRS1.addDaemon(OSPF6)
-        # MRS2.addDaemon(OSPF6)
+        MRS1.addDaemon(OSPF6)
+        MRS2.addDaemon(OSPF6)
 
-        # SIN1.addDaemon(OSPF6)
-        # SIN2.addDaemon(OSPF6)
+        SIN1.addDaemon(OSPF6)
+        SIN2.addDaemon(OSPF6)
 
-        # SYD1.addDaemon(OSPF6)
-        # SYD2.addDaemon(OSPF6)
+        SYD1.addDaemon(OSPF6)
+        SYD2.addDaemon(OSPF6)
 
-        # LAX1.addDaemon(OSPF6)        
-        # LAX2.addDaemon(OSPF6)
+        LAX1.addDaemon(OSPF6)        
+        LAX2.addDaemon(OSPF6)
 
-        # SJO1.addDaemon(OSPF6)
-        # SJO2.addDaemon(OSPF6)
+        SJO1.addDaemon(OSPF6)
+        SJO2.addDaemon(OSPF6)
 
-        # ASH1.addDaemon(OSPF6)
-        # ASH2.addDaemon(OSPF6)
+        ASH1.addDaemon(OSPF6)
+        ASH2.addDaemon(OSPF6)
 
-        # PAR1.addDaemon(OSPF6)
-        # PAR2.addDaemon(OSPF6)
+        PAR1.addDaemon(OSPF6)
+        PAR2.addDaemon(OSPF6)
 
-        # VDF.addDaemon(OSPF6)
-        # EQX.addDaemon(OSPF6)
-        # NTT.addDaemon(OSPF6)
+        VDF.addDaemon(OSPF6)
+        EQX.addDaemon(OSPF6)
+        NTT.addDaemon(OSPF6)
 
         # adding BGP 
         #=========================================================
-        MRS1.addDaemon(BGP)
-        MRS2.addDaemon(BGP)
+        MRS1.addDaemon(BGP,debug=(("updates",)))
+        MRS2.addDaemon(BGP,debug=(("updates",)))
 
-        SIN1.addDaemon(BGP,bgp_hop_limit=10)
-        SIN2.addDaemon(BGP)
+        SIN1.addDaemon(BGP,debug=(("updates",)))
+        SIN2.addDaemon(BGP,debug=(("updates",)))
 
-        SYD1.addDaemon(BGP)
-        SYD2.addDaemon(BGP)
+        SYD1.addDaemon(BGP,debug=(("updates",)))
+        SYD2.addDaemon(BGP,debug=(("updates",)))
 
-        LAX1.addDaemon(BGP)        
-        LAX2.addDaemon(BGP)
+        LAX1.addDaemon(BGP,debug=(("updates",)))       
+        LAX2.addDaemon(BGP,debug=(("updates",)))
 
-        SJO1.addDaemon(BGP)
-        SJO2.addDaemon(BGP)
+        SJO1.addDaemon(BGP,debug=(("updates",)))
+        SJO2.addDaemon(BGP,debug=(("updates",)))
 
-        ASH1.addDaemon(BGP)
-        ASH2.addDaemon(BGP)
+        ASH1.addDaemon(BGP,debug=(("updates",)))
+        ASH2.addDaemon(BGP,debug=(("updates",)))
 
-        PAR1.addDaemon(BGP)
-        PAR2.addDaemon(BGP)
+        PAR1.addDaemon(BGP,debug=(("updates",)))
+        PAR2.addDaemon(BGP,debug=(("updates",)))
 
-        VDF.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
-        EQX.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
-        NTT.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
+        VDF.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=(("updates",)))
+        EQX.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=(("updates",)))
+        NTT.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=(("updates",)))
 
-        #add firewall to the affected routers
-        #=========================================================
-        
-        #rules for the routers
-        # ip_rules = [Rule("-A INPUT -s 1627:6100::/32 -j REJECT"),
-        # Rule("-A OUTPUT -d 1627:6100::/32 -j REJECT")]
-
-        # #adding to the routers
-        # SIN1.addDaemon(IP6Tables, rules=ip_rules)
-        # SIN2.addDaemon(IP6Tables, rules=ip_rules)
-        # SYD1.addDaemon(IP6Tables, rules=ip_rules)
-        # SYD2.addDaemon(IP6Tables, rules=ip_rules)
-        # ASH1.addDaemon(IP6Tables, rules=ip_rules)
-        # PAR2.addDaemon(IP6Tables, rules=ip_rules)
-        
-
+      
         # linkin twin datacenters
         #=========================================================
-        l_MRS1_MRS2 = self.addLink(MRS1, MRS2,igp_cost=1)
+        l_MRS1_MRS2 = self.addLink(MRS1,MRS2,igp_cost=1)
         l_MRS1_MRS2[MRS1].addParams(ip=(europe_ipv6 + "00a::1/64", MRS_ipv4 + "129/30"))
         l_MRS1_MRS2[MRS2].addParams(ip=(europe_ipv6 + "00a::2/64", MRS_ipv4 + "130/30"))
 
-        l_SIN1_SIN2 = self.addLink(SIN1, SIN2,igp_cost=1)
+        l_SIN1_SIN2 = self.addLink(SIN1,SIN2,igp_cost=1)
         l_SIN1_SIN2[SIN1].addParams(ip=(asia_ipv6 + "00a::1/64", SIN_ipv4 + "129/30"))
         l_SIN1_SIN2[SIN2].addParams(ip=(asia_ipv6 + "00a::2/64", SIN_ipv4 + "130/30"))
 
-        l_SYD1_SYD2 = self.addLink(SYD1, SYD2,igp_cost=1)
+        l_SYD1_SYD2 = self.addLink(SYD1,SYD2,igp_cost=1)
         l_SYD1_SYD2[SYD1].addParams(ip=(asia_ipv6 + "00c::1/64", SYD_ipv4 + "129/30"))
         l_SYD1_SYD2[SYD2].addParams(ip=(asia_ipv6 + "00c::2/64", SYD_ipv4 + "130/30"))
 
-        l_PAR1_PAR2 = self.addLink(PAR1, PAR2,igp_cost=1)
+        l_PAR1_PAR2 = self.addLink(PAR1,PAR2,igp_cost=1)
         l_PAR1_PAR2[PAR1].addParams(ip=(europe_ipv6 + "00b::1/64", PAR_ipv4 + "129/30"))
         l_PAR1_PAR2[PAR2].addParams(ip=(europe_ipv6 + "00b::2/64", PAR_ipv4 + "130/30"))
 
@@ -301,11 +286,11 @@ class SimpleBGPTopo(IPTopo):
         l_MRS2_SIN2[MRS2].addParams(ip=(europe_ipv6 + "022::1/64", MRS_ipv4 + "9/30"))
         l_MRS2_SIN2[SIN2].addParams(ip=(europe_ipv6 + "022::2/64", MRS_ipv4 + "10/30"))
 
-        l_SIN1_SYD1 = self.addLink(SIN1, SYD1,igp_cost=2)
+        l_SIN1_SYD1 = self.addLink(SIN1, SYD1,igp_cost=3)
         l_SIN1_SYD1[SIN1].addParams(ip=(asia_ipv6 + "011::1/64", SIN_ipv4 + "5/30"))
         l_SIN1_SYD1[SYD1].addParams(ip=(asia_ipv6 + "011::2/64", SIN_ipv4 + "6/30"))
 
-        l_SIN2_SYD2 = self.addLink(SIN2, SYD2,igp_cost=2)
+        l_SIN2_SYD2 = self.addLink(SIN2, SYD2,igp_cost=3)
         l_SIN2_SYD2[SIN2].addParams(ip=(asia_ipv6 + "022::1/64", SIN_ipv4 + "9/30"))
         l_SIN2_SYD2[SYD2].addParams(ip=(asia_ipv6 + "022::2/64", SIN_ipv4 + "10/30"))
 
@@ -320,23 +305,23 @@ class SimpleBGPTopo(IPTopo):
         #=======================================================
 
 
-        l_ASH1_LAX1 = self.addLink(ASH1, LAX1,igp_cost=2)
+        l_ASH1_LAX1 = self.addLink(ASH1, LAX1,igp_cost=3)
         l_ASH1_LAX1[ASH1].addParams(ip=(NA_ipv6 + "011::1/64", ASH_ipv4 + "5/30"))
         l_ASH1_LAX1[LAX1].addParams(ip=(NA_ipv6 + "011::2/64", ASH_ipv4 + "6/30"))
 
-        l_ASH2_LAX2 = self.addLink(ASH2, LAX2,igp_cost=2)
+        l_ASH2_LAX2 = self.addLink(ASH2, LAX2,igp_cost=3)
         l_ASH2_LAX2[ASH2].addParams(ip=(NA_ipv6 + "022::1/64", ASH_ipv4 + "9/30"))
         l_ASH2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "022::2/64", ASH_ipv4 + "10/30"))
 
-        l_ASH1_LAX2 = self.addLink(ASH1, LAX2,igp_cost=2)
+        l_ASH1_LAX2 = self.addLink(ASH1, LAX2,igp_cost=3)
         l_ASH1_LAX2[ASH1].addParams(ip=(NA_ipv6 + "012::1/64", ASH_ipv4 + "17/30"))
         l_ASH1_LAX2[LAX2].addParams(ip=(NA_ipv6 + "012::2/64", ASH_ipv4 + "18/30"))
 
-        l_SJO1_LAX1 = self.addLink(SJO1, LAX1,igp_cost=2)
+        l_SJO1_LAX1 = self.addLink(SJO1, LAX1,igp_cost=3)
         l_SJO1_LAX1[SJO1].addParams(ip=(NA_ipv6 + "110::1/64", SJO_ipv4 + "5/30"))
         l_SJO1_LAX1[LAX1].addParams(ip=(NA_ipv6 + "110::2/64", SJO_ipv4 + "6/30"))
 
-        l_SJO2_LAX2 = self.addLink(SJO2,LAX2,igp_cost=2)
+        l_SJO2_LAX2 = self.addLink(SJO2,LAX2,igp_cost=3)
         l_SJO2_LAX2[SJO2].addParams(ip=(NA_ipv6 + "220::1/64", SJO_ipv4 + "9/30"))
         l_SJO2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "220::2/64", SJO_ipv4 + "10/30"))
 
@@ -348,11 +333,11 @@ class SimpleBGPTopo(IPTopo):
         l_PAR2_ASH2[PAR2].addParams(ip=(europe_ipv6 + "220::1/64", PAR_ipv4 + "9/30"))
         l_PAR2_ASH2[ASH2].addParams(ip=(europe_ipv6 + "220::2/64", PAR_ipv4 + "10/30"))
 
-        l_PAR1_MRS2 = self.addLink(PAR1,MRS2,igp_cost=2)
+        l_PAR1_MRS2 = self.addLink(PAR1,MRS2,igp_cost=3)
         l_PAR1_MRS2[PAR1].addParams(ip=(europe_ipv6 + "101::1/64", PAR_ipv4 + "17/30"))
         l_PAR1_MRS2[MRS2].addParams(ip=(europe_ipv6 + "101::2/64", PAR_ipv4 + "18/30"))
 
-        l_PAR2_MRS1 = self.addLink(PAR2, MRS1,igp_cost=2)
+        l_PAR2_MRS1 = self.addLink(PAR2, MRS1,igp_cost=3)
         l_PAR2_MRS1[PAR2].addParams(ip=(europe_ipv6 + "202::1/64", PAR_ipv4 + "33/30"))
         l_PAR2_MRS1[MRS1].addParams(ip=(europe_ipv6 + "202::2/64", PAR_ipv4 + "34/30"))
 
@@ -404,22 +389,22 @@ class SimpleBGPTopo(IPTopo):
 
         #Adding BGP daemons to manage failures
 
-        S1.addDaemon(BGP)
-        S2.addDaemon(BGP)
+        S1.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
+        S2.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
 
         self.addAS(64512, (S1,))
         self.addAS(64512, (S2,))
 
-        l_S1_SIN1 = self.addLink(S1,SIN1)
-        l_S1_SIN1[S1].addParams(ip=(server_ipv6 + "a1a::1/64",server_ipv4 + "5/30"))
-        l_S1_SIN1[SIN1].addParams(ip=(server_ipv6 + "a1a::2/64",server_ipv4 + "6/30"))
+        l_S1_SJO1 = self.addLink(S1,SJO1)
+        l_S1_SJO1[S1].addParams(ip=(server_ipv6 + "a1a::1/64",server_ipv4 + "5/30"))
+        l_S1_SJO1[SJO1].addParams(ip=(server_ipv6 + "a1a::2/64",server_ipv4 + "6/30"))
 
-        l_S2_ASH1 = self.addLink(S2,ASH1)
-        l_S2_ASH1[S2].addParams(ip=(server_ipv6 + "a2a::1/64",server_ipv4 + "9/30"))
-        l_S2_ASH1[ASH1].addParams(ip=(server_ipv6 + "a2a::2/64",server_ipv4 + "10/30"))
+        l_S2_PAR1 = self.addLink(S2,PAR1)
+        l_S2_PAR1[S2].addParams(ip=(server_ipv6 + "a2a::1/64",server_ipv4 + "9/30"))
+        l_S2_PAR1[PAR1].addParams(ip=(server_ipv6 + "a2a::2/64",server_ipv4 + "10/30"))
 
-        ebgp_session(self,S1, SIN1)
-        ebgp_session(self,S2, ASH1)
+        ebgp_session(self,S1, SJO1)
+        ebgp_session(self,S2, PAR1)
         
 
         #=============================================================================
@@ -430,8 +415,8 @@ class SimpleBGPTopo(IPTopo):
         set_rr(self, rr=ASH1, peers=[SJO1, SJO2, LAX1, LAX2, PAR1, ASH2])
         set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2])
         bgp_fullmesh(self, [SIN1, SYD2, ASH1, PAR2])
-
-
+        # bgp_fullmesh(self, [MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2])
+       
         self.addAS(2, (EQX,))
         self.addAS(3, (VDF,))
         self.addAS(4, (NTT,))
@@ -457,12 +442,12 @@ class SimpleBGPTopo(IPTopo):
         l_H1_VDF[VDF].addParams(ip=(europe_ipv6 + "aaa::a/64", VDF_ipv4 + "6/30"))
 
         l_H2_EQX = self.addLink(H2, EQX)
-        l_H2_EQX[H2].addParams(ip=(europe_ipv6 + "bbb::2/64", VDF_ipv4 + "9/30"))
-        l_H2_EQX[EQX].addParams(ip=(europe_ipv6 + "bbb::a/64", VDF_ipv4 + "10/30"))
+        l_H2_EQX[H2].addParams(ip=(europe_ipv6 + "bbb::2/64", EQX_ipv4 + "9/30"))
+        l_H2_EQX[EQX].addParams(ip=(europe_ipv6 + "bbb::a/64", EQX_ipv4 + "10/30"))
 
         l_H3_NTT = self.addLink(H3, NTT)
-        l_H3_NTT[H3].addParams(ip=(europe_ipv6 + "ccc::2/64", VDF_ipv4 + "17/30"))
-        l_H3_NTT[NTT].addParams(ip=(europe_ipv6 + "ccc::a/64", VDF_ipv4 + "18/30"))
+        l_H3_NTT[H3].addParams(ip=(europe_ipv6 + "ccc::2/64", NTT_ipv4 + "17/30"))
+        l_H3_NTT[NTT].addParams(ip=(europe_ipv6 + "ccc::a/64", NTT_ipv4 + "18/30"))
 
 
         #=============================================================================
@@ -479,7 +464,7 @@ if __name__ == '__main__':
     net = IPNet(topo=SimpleBGPTopo(), allocate_IPs = False)
     try:
         net.start()
-        #print(net['PAR1'].cmd('python3 scripts/script.py'))
+        #net['PAR1'].cmd('python3 scripts/script.py')
         IPCLI(net)
     finally:
         net.stop()
