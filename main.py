@@ -276,100 +276,100 @@ class SimpleBGPTopo(IPTopo):
       
         # linkin twin datacenters
         #=========================================================
-        l_MRS1_MRS2 = self.addLink(MRS1,MRS2,igp_cost=1)
+        l_MRS1_MRS2 = self.addLink(MRS1,MRS2,igp_metric=1)
         l_MRS1_MRS2[MRS1].addParams(ip=(europe_ipv6 + "00a::1/64", MRS_ipv4 + "129/30"))
         l_MRS1_MRS2[MRS2].addParams(ip=(europe_ipv6 + "00a::2/64", MRS_ipv4 + "130/30"))
 
-        l_SIN1_SIN2 = self.addLink(SIN1,SIN2,igp_cost=1)
+        l_SIN1_SIN2 = self.addLink(SIN1,SIN2,igp_metric=1)
         l_SIN1_SIN2[SIN1].addParams(ip=(asia_ipv6 + "00a::1/64", SIN_ipv4 + "129/30"))
         l_SIN1_SIN2[SIN2].addParams(ip=(asia_ipv6 + "00a::2/64", SIN_ipv4 + "130/30"))
 
-        l_SYD1_SYD2 = self.addLink(SYD1,SYD2,igp_cost=1)
+        l_SYD1_SYD2 = self.addLink(SYD1,SYD2,igp_metric=1)
         l_SYD1_SYD2[SYD1].addParams(ip=(asia_ipv6 + "00c::1/64", SYD_ipv4 + "129/30"))
         l_SYD1_SYD2[SYD2].addParams(ip=(asia_ipv6 + "00c::2/64", SYD_ipv4 + "130/30"))
 
-        l_PAR1_PAR2 = self.addLink(PAR1,PAR2,igp_cost=1)
+        l_PAR1_PAR2 = self.addLink(PAR1,PAR2,igp_metric=1)
         l_PAR1_PAR2[PAR1].addParams(ip=(europe_ipv6 + "00b::1/64", PAR_ipv4 + "129/30"))
         l_PAR1_PAR2[PAR2].addParams(ip=(europe_ipv6 + "00b::2/64", PAR_ipv4 + "130/30"))
 
-        l_ASH1_ASH2 = self.addLink(ASH1, ASH2,igp_cost=1)
+        l_ASH1_ASH2 = self.addLink(ASH1, ASH2,igp_metric=1)
         l_ASH1_ASH2[ASH1].addParams(ip=(NA_ipv6 + "00a::1/64", ASH_ipv4 + "129/30"))
         l_ASH1_ASH2[ASH2].addParams(ip=(NA_ipv6 + "00a::2/64", ASH_ipv4 + "130/30"))
 
-        l_LAX1_LAX2 = self.addLink(LAX1, LAX2,igp_cost=1)
+        l_LAX1_LAX2 = self.addLink(LAX1, LAX2,igp_metric=1)
         l_LAX1_LAX2[LAX1].addParams(ip=(NA_ipv6 + "00b::1/64", LAX_ipv4 + "129/30"))
         l_LAX1_LAX2[LAX2].addParams(ip=(NA_ipv6 + "00b::2/64", LAX_ipv4 + "130/30"))
 
-        l_SJO1_SJO2 = self.addLink(SJO1, SJO2,igp_cost=1)
+        l_SJO1_SJO2 = self.addLink(SJO1, SJO2,igp_metric=1)
         l_SJO1_SJO2[SJO1].addParams(ip=(NA_ipv6 + "00c::1/64", SJO_ipv4 + "129/30"))
         l_SJO1_SJO2[SJO2].addParams(ip=(NA_ipv6 + "00c::2/64", SJO_ipv4 + "130/30"))
 
         #=========================================================
 
-        l_MRS1_SIN1 = self.addLink(MRS1, SIN1,igp_cost=10)
+        l_MRS1_SIN1 = self.addLink(MRS1, SIN1,igp_metric=10)
         l_MRS1_SIN1[MRS1].addParams(ip=(europe_ipv6 + "011::1/64", MRS_ipv4 + "5/30"))
         l_MRS1_SIN1[SIN1].addParams(ip=(europe_ipv6 + "011::2/64", MRS_ipv4 + "6/30"))
 
-        l_MRS2_SIN2 = self.addLink(MRS2, SIN2,igp_cost=10)
+        l_MRS2_SIN2 = self.addLink(MRS2, SIN2,igp_metric=10)
         l_MRS2_SIN2[MRS2].addParams(ip=(europe_ipv6 + "022::1/64", MRS_ipv4 + "9/30"))
         l_MRS2_SIN2[SIN2].addParams(ip=(europe_ipv6 + "022::2/64", MRS_ipv4 + "10/30"))
 
-        l_SIN1_SYD1 = self.addLink(SIN1, SYD1,igp_cost=3)
+        l_SIN1_SYD1 = self.addLink(SIN1, SYD1,igp_metric=3)
         l_SIN1_SYD1[SIN1].addParams(ip=(asia_ipv6 + "011::1/64", SIN_ipv4 + "5/30"))
         l_SIN1_SYD1[SYD1].addParams(ip=(asia_ipv6 + "011::2/64", SIN_ipv4 + "6/30"))
 
-        l_SIN2_SYD2 = self.addLink(SIN2, SYD2,igp_cost=3)
+        l_SIN2_SYD2 = self.addLink(SIN2, SYD2,igp_metric=3)
         l_SIN2_SYD2[SIN2].addParams(ip=(asia_ipv6 + "022::1/64", SIN_ipv4 + "9/30"))
         l_SIN2_SYD2[SYD2].addParams(ip=(asia_ipv6 + "022::2/64", SIN_ipv4 + "10/30"))
 
-        l_SIN2_SJO1 = self.addLink(SIN2, SJO1,igp_cost=10)
+        l_SIN2_SJO1 = self.addLink(SIN2, SJO1,igp_metric=10)
         l_SIN2_SJO1[SIN2].addParams(ip=(asia_ipv6 + "021::1/64", SIN_ipv4 + "17/30"))
         l_SIN2_SJO1[SJO1].addParams(ip=(asia_ipv6 + "021::2/64", SIN_ipv4 + "18/30"))
 
-        l_SIN1_SJO2 = self.addLink(SIN1, SJO2,igp_cost=10)
+        l_SIN1_SJO2 = self.addLink(SIN1, SJO2,igp_metric=10)
         l_SIN1_SJO2[SIN1].addParams(ip=(asia_ipv6 + "220::1/64", SIN_ipv4 + "33/30"))
         l_SIN1_SJO2[SJO2].addParams(ip=(asia_ipv6 + "220::2/64", SIN_ipv4 + "34/30"))
 
         #=======================================================
 
 
-        l_ASH1_LAX1 = self.addLink(ASH1, LAX1,igp_cost=3)
+        l_ASH1_LAX1 = self.addLink(ASH1, LAX1,igp_metric=3)
         l_ASH1_LAX1[ASH1].addParams(ip=(NA_ipv6 + "011::1/64", ASH_ipv4 + "5/30"))
         l_ASH1_LAX1[LAX1].addParams(ip=(NA_ipv6 + "011::2/64", ASH_ipv4 + "6/30"))
 
-        l_ASH2_LAX2 = self.addLink(ASH2, LAX2,igp_cost=3)
+        l_ASH2_LAX2 = self.addLink(ASH2, LAX2,igp_metric=3)
         l_ASH2_LAX2[ASH2].addParams(ip=(NA_ipv6 + "022::1/64", ASH_ipv4 + "9/30"))
         l_ASH2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "022::2/64", ASH_ipv4 + "10/30"))
 
-        l_ASH1_LAX2 = self.addLink(ASH1, LAX2,igp_cost=3)
+        l_ASH1_LAX2 = self.addLink(ASH1, LAX2,igp_metric=3)
         l_ASH1_LAX2[ASH1].addParams(ip=(NA_ipv6 + "012::1/64", ASH_ipv4 + "17/30"))
         l_ASH1_LAX2[LAX2].addParams(ip=(NA_ipv6 + "012::2/64", ASH_ipv4 + "18/30"))
 
-        l_SJO1_LAX1 = self.addLink(SJO1, LAX1,igp_cost=3)
+        l_SJO1_LAX1 = self.addLink(SJO1, LAX1,igp_metric=3)
         l_SJO1_LAX1[SJO1].addParams(ip=(NA_ipv6 + "110::1/64", SJO_ipv4 + "5/30"))
         l_SJO1_LAX1[LAX1].addParams(ip=(NA_ipv6 + "110::2/64", SJO_ipv4 + "6/30"))
 
-        l_SJO2_LAX2 = self.addLink(SJO2,LAX2,igp_cost=3)
+        l_SJO2_LAX2 = self.addLink(SJO2,LAX2,igp_metric=3)
         l_SJO2_LAX2[SJO2].addParams(ip=(NA_ipv6 + "220::1/64", SJO_ipv4 + "9/30"))
         l_SJO2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "220::2/64", SJO_ipv4 + "10/30"))
 
-        l_PAR1_ASH1 = self.addLink(PAR1,ASH1,igp_cost=10)
+        l_PAR1_ASH1 = self.addLink(PAR1,ASH1,igp_metric=10)
         l_PAR1_ASH1[PAR1].addParams(ip=(europe_ipv6 + "110::1/64", PAR_ipv4 + "5/30"))
         l_PAR1_ASH1[ASH1].addParams(ip=(europe_ipv6 + "110::2/64", PAR_ipv4 + "6/30"))
 
-        l_PAR2_ASH2 = self.addLink(PAR2,ASH2,igp_cost=10)
+        l_PAR2_ASH2 = self.addLink(PAR2,ASH2,igp_metric=10)
         l_PAR2_ASH2[PAR2].addParams(ip=(europe_ipv6 + "220::1/64", PAR_ipv4 + "9/30"))
         l_PAR2_ASH2[ASH2].addParams(ip=(europe_ipv6 + "220::2/64", PAR_ipv4 + "10/30"))
 
-        l_PAR1_MRS2 = self.addLink(PAR1,MRS2,igp_cost=3)
+        l_PAR1_MRS2 = self.addLink(PAR1,MRS2,igp_metric=3)
         l_PAR1_MRS2[PAR1].addParams(ip=(europe_ipv6 + "101::1/64", PAR_ipv4 + "17/30"))
         l_PAR1_MRS2[MRS2].addParams(ip=(europe_ipv6 + "101::2/64", PAR_ipv4 + "18/30"))
 
-        l_PAR2_MRS1 = self.addLink(PAR2, MRS1,igp_cost=3)
+        l_PAR2_MRS1 = self.addLink(PAR2, MRS1,igp_metric=3)
         l_PAR2_MRS1[PAR2].addParams(ip=(europe_ipv6 + "202::1/64", PAR_ipv4 + "33/30"))
         l_PAR2_MRS1[MRS1].addParams(ip=(europe_ipv6 + "202::2/64", PAR_ipv4 + "34/30"))
 
-        l_SYD2_LAX2 = self.addLink(SYD2,LAX2,igp_cost=10)
+        l_SYD2_LAX2 = self.addLink(SYD2,LAX2,igp_metric=10)
         l_SYD2_LAX2[SYD2].addParams(ip=(europe_ipv6 + "303::1/64", SYD_ipv4 + "5/30"))
         l_SYD2_LAX2[LAX2].addParams(ip=(europe_ipv6 + "303::2/64", SYD_ipv4 + "6/30"))
 
