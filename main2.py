@@ -131,30 +131,30 @@ class SimpleBGPTopo(IPTopo):
 
     def build(self, *args, **kwargs):
         
-        monde_ipv6 = "1627:6000:0000"
-        europe_ipv6 = monde_ipv6 + ":0"
-        NA_ipv6 = monde_ipv6 + ":1"
-        asia_ipv6 = monde_ipv6 + ":2"
-        server_ipv6 = monde_ipv6 + ":3"
-        server_ipv4 = "162.76.7."
+        # monde_ipv6 = "1627:6000:0000"
+        # europe_ipv6 = monde_ipv6 + ":0"
+        # NA_ipv6 = monde_ipv6 + ":1"
+        # asia_ipv6 = monde_ipv6 + ":2"
+        # server_ipv6 = monde_ipv6 + ":3"
+        # server_ipv4 = "162.76.7."
 
 
 
-        MRS_ipv4 = "162.76.0."
-        PAR_ipv4 = "162.76.1."
-        SIN_ipv4 = "162.76.2."
-        SYD_ipv4 = "162.76.3."
-        LAX_ipv4 = "162.76.4."
-        SJO_ipv4 = "162.76.5."
-        ASH_ipv4 = "162.76.6."
+        # MRS_ipv4 = "162.76.0."
+        # PAR_ipv4 = "162.76.1."
+        # SIN_ipv4 = "162.76.2."
+        # SYD_ipv4 = "162.76.3."
+        # LAX_ipv4 = "162.76.4."
+        # SJO_ipv4 = "162.76.5."
+        # ASH_ipv4 = "162.76.6."
         
 
-        VDF_ipv4 = "160.76.7."
-        EQX_ipv4 = "160.76.8."
-        NTT_ipv4 = "160.76.9."
-        VDF_ipv6 = "1627:6100:0000:0"
-        EQX_ipv6 = "1627:6200:0000:0"
-        NTT_ipv6 = "1627:6300:0000:0"
+        # VDF_ipv4 = "160.76.7."
+        # EQX_ipv4 = "160.76.8."
+        # NTT_ipv4 = "160.76.9."
+        # VDF_ipv6 = "1627:6100:0000:0"
+        # EQX_ipv6 = "1627:6200:0000:0"
+        # NTT_ipv6 = "1627:6300:0000:0"
 
 
 
@@ -183,11 +183,11 @@ class SimpleBGPTopo(IPTopo):
         ASH1 = self.addRouter("ASH1",config=RouterConfig)
         ASH2 = self.addRouter("ASH2", config=RouterConfig)
         #routers peering vodafone
-        VDF = self.addRouter("VDF",config=RouterConfig)
-        #routers peering equinix
-        EQX = self.addRouter("EQX",config=RouterConfig)
-        #routers peering NTT
-        NTT = self.addRouter("NTT",config=RouterConfig)
+        # VDF = self.addRouter("VDF",config=RouterConfig)
+        # #routers peering equinix
+        # EQX = self.addRouter("EQX",config=RouterConfig)
+        # #routers peering NTT
+        # NTT = self.addRouter("NTT",config=RouterConfig)
         
         
         
@@ -214,9 +214,9 @@ class SimpleBGPTopo(IPTopo):
         PAR1.addDaemon(OSPF6)
         PAR2.addDaemon(OSPF6)
         
-        VDF.addDaemon(OSPF6)
-        EQX.addDaemon(OSPF6)
-        NTT.addDaemon(OSPF6)
+        # VDF.addDaemon(OSPF6)
+        # EQX.addDaemon(OSPF6)
+        # NTT.addDaemon(OSPF6)
 
         # adding OSPF
         #=========================================================
@@ -242,165 +242,165 @@ class SimpleBGPTopo(IPTopo):
         PAR1.addDaemon(OSPF)
         PAR2.addDaemon(OSPF)
 
-        VDF.addDaemon(OSPF)
-        EQX.addDaemon(OSPF)
-        NTT.addDaemon(OSPF)
+        # VDF.addDaemon(OSPF)
+        # EQX.addDaemon(OSPF)
+        # NTT.addDaemon(OSPF)
 
         # adding BGP 
         #=========================================================
-        MRS1.addDaemon(BGP,debug=(("updates",)))
-        MRS2.addDaemon(BGP,debug=(("updates",)))
+        # MRS1.addDaemon(BGP,debug=(("updates",)))
+        # MRS2.addDaemon(BGP,debug=(("updates",)))
 
-        SIN1.addDaemon(BGP,debug=(("updates",)))
-        SIN2.addDaemon(BGP,debug=(("updates",)))
+        # SIN1.addDaemon(BGP,debug=(("updates",)))
+        # SIN2.addDaemon(BGP,debug=(("updates",)))
 
-        SYD1.addDaemon(BGP,debug=(("updates",)))
-        SYD2.addDaemon(BGP,debug=(("updates",)))
+        # SYD1.addDaemon(BGP,debug=(("updates",)))
+        # SYD2.addDaemon(BGP,debug=(("updates",)))
 
-        LAX1.addDaemon(BGP,debug=(("updates",)))       
-        LAX2.addDaemon(BGP,debug=(("updates",)))
+        # LAX1.addDaemon(BGP,debug=(("updates",)))       
+        # LAX2.addDaemon(BGP,debug=(("updates",)))
 
-        SJO1.addDaemon(BGP,debug=(("updates",)))
-        SJO2.addDaemon(BGP,debug=(("updates",)))
+        # SJO1.addDaemon(BGP,debug=(("updates",)))
+        # SJO2.addDaemon(BGP,debug=(("updates",)))
 
-        ASH1.addDaemon(BGP,debug=(("updates",)))
-        ASH2.addDaemon(BGP,debug=(("updates",)))
+        # ASH1.addDaemon(BGP,debug=(("updates",)))
+        # ASH2.addDaemon(BGP,debug=(("updates",)))
 
-        PAR1.addDaemon(BGP,debug=(("updates",)))
-        PAR2.addDaemon(BGP,debug=(("updates",)))
+        # PAR1.addDaemon(BGP,debug=(("updates",)))
+        # PAR2.addDaemon(BGP,debug=(("updates",)))
 
-        VDF.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=(("updates",)))
-        EQX.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=(("updates",)))
-        NTT.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=(("updates",)))
+        # VDF.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=(("updates",)))
+        # EQX.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=(("updates",)))
+        # NTT.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=(("updates",)))
 
       
         # linkin twin datacenters
         #=========================================================
-        l_MRS1_MRS2 = self.addLink(MRS1,MRS2,igp_cost=1)
+        l_MRS1_MRS2 = self.addLink(MRS1,MRS2,igp_metric=1)
      
-        l_SIN1_SIN2 = self.addLink(SIN1,SIN2,igp_cost=1)
+        l_SIN1_SIN2 = self.addLink(SIN1,SIN2,igp_metric=1)
      
-        l_SYD1_SYD2 = self.addLink(SYD1,SYD2,igp_cost=1)
+        l_SYD1_SYD2 = self.addLink(SYD1,SYD2,igp_metric=1)
       
-        l_PAR1_PAR2 = self.addLink(PAR1,PAR2,igp_cost=1)
+        l_PAR1_PAR2 = self.addLink(PAR1,PAR2,igp_metric=1)
       
-        l_ASH1_ASH2 = self.addLink(ASH1, ASH2,igp_cost=1)
+        l_ASH1_ASH2 = self.addLink(ASH1, ASH2,igp_metric=1)
      
-        l_LAX1_LAX2 = self.addLink(LAX1, LAX2,igp_cost=1)
+        l_LAX1_LAX2 = self.addLink(LAX1, LAX2,igp_metric=1)
   
-        l_SJO1_SJO2 = self.addLink(SJO1, SJO2,igp_cost=1)
+        l_SJO1_SJO2 = self.addLink(SJO1, SJO2,igp_metric=1)
       
         #=========================================================
 
-        l_MRS1_SIN1 = self.addLink(MRS1, SIN1,igp_cost=10)
+        l_MRS1_SIN1 = self.addLink(MRS1, SIN1,igp_metric=10)
      
-        l_MRS2_SIN2 = self.addLink(MRS2, SIN2,igp_cost=10)
+        l_MRS2_SIN2 = self.addLink(MRS2, SIN2,igp_metric=10)
      
-        l_SIN1_SYD1 = self.addLink(SIN1, SYD1,igp_cost=3)
+        l_SIN1_SYD1 = self.addLink(SIN1, SYD1,igp_metric=3)
        
-        l_SIN2_SYD2 = self.addLink(SIN2, SYD2,igp_cost=3)
+        l_SIN2_SYD2 = self.addLink(SIN2, SYD2,igp_metric=3)
    
-        l_SIN2_SJO1 = self.addLink(SIN2, SJO1,igp_cost=10)
+        l_SIN2_SJO1 = self.addLink(SIN2, SJO1,igp_metric=10)
    
-        l_SIN1_SJO2 = self.addLink(SIN1, SJO2,igp_cost=10)
+        l_SIN1_SJO2 = self.addLink(SIN1, SJO2,igp_metric=10)
      
         #=======================================================
 
 
-        l_ASH1_LAX1 = self.addLink(ASH1, LAX1,igp_cost=3)
+        l_ASH1_LAX1 = self.addLink(ASH1, LAX1)
      
-        l_ASH2_LAX2 = self.addLink(ASH2, LAX2,igp_cost=3)
+        l_ASH2_LAX2 = self.addLink(ASH2, LAX2)
      
-        l_ASH1_LAX2 = self.addLink(ASH1, LAX2,igp_cost=3)
+        l_ASH1_LAX2 = self.addLink(ASH1, LAX2)
       
-        l_SJO1_LAX1 = self.addLink(SJO1, LAX1,igp_cost=3)
+        l_SJO1_LAX1 = self.addLink(SJO1, LAX1)
     
-        l_SJO2_LAX2 = self.addLink(SJO2,LAX2,igp_cost=3)
+        l_SJO2_LAX2 = self.addLink(SJO2,LAX2)
        
-        l_PAR1_ASH1 = self.addLink(PAR1,ASH1,igp_cost=10)
+        l_PAR1_ASH1 = self.addLink(PAR1,ASH1)
      
-        l_PAR2_ASH2 = self.addLink(PAR2,ASH2,igp_cost=10)
+        l_PAR2_ASH2 = self.addLink(PAR2,ASH2)
         
-        l_PAR1_MRS2 = self.addLink(PAR1,MRS2,igp_cost=3)
+        l_PAR1_MRS2 = self.addLink(PAR1,MRS2)
        
-        l_PAR2_MRS1 = self.addLink(PAR2, MRS1,igp_cost=3)
+        l_PAR2_MRS1 = self.addLink(PAR2, MRS1)
      
-        l_SYD2_LAX2 = self.addLink(SYD2,LAX2,igp_cost=10)
+        l_SYD2_LAX2 = self.addLink(SYD2,LAX2)
        
         #=============================================================================
         #Peering links
 
-        l_VDF_PAR2 = self.addLink(VDF, PAR2)
+        # l_VDF_PAR2 = self.addLink(VDF, PAR2)
        
-        l_VDF_ASH1 = self.addLink(VDF,ASH1)
+        # l_VDF_ASH1 = self.addLink(VDF,ASH1)
     
-        l_VDF_SIN1 = self.addLink(VDF, SIN1)
+        # l_VDF_SIN1 = self.addLink(VDF, SIN1)
         
-        l_VDF_SIN2 = self.addLink(VDF, SIN2)
+        # l_VDF_SIN2 = self.addLink(VDF, SIN2)
      
-        l_EQX_SIN1 = self.addLink(EQX, SIN1)
+        # l_EQX_SIN1 = self.addLink(EQX, SIN1)
       
-        l_EQX_SYD2 = self.addLink(EQX, SYD2)
+        # l_EQX_SYD2 = self.addLink(EQX, SYD2)
      
-        l_NTT_SYD2 = self.addLink(NTT, SYD2)
+        # l_NTT_SYD2 = self.addLink(NTT, SYD2)
       
-        l_NTT_SYD1 = self.addLink(NTT, SYD1)
+        # l_NTT_SYD1 = self.addLink(NTT, SYD1)
 
 
         #=============================================================================
         #servers
 
-        S1 = self.addRouter("S1", config=RouterConfig, lo_addresses=[server_ipv6 + "::/64", server_ipv4 + "1/32"])
-        S2 = self.addRouter("S2", config=RouterConfig, lo_addresses=[server_ipv6 + "::/64", server_ipv4 + "1/32"])
+        # S1 = self.addRouter("S1", config=RouterConfig, lo_addresses=[server_ipv6 + "::/64", server_ipv4 + "1/32"])
+        # S2 = self.addRouter("S2", config=RouterConfig, lo_addresses=[server_ipv6 + "::/64", server_ipv4 + "1/32"])
 
-        #Adding BGP daemons to manage failures
+        # #Adding BGP daemons to manage failures
 
-        S1.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
-        S2.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
+        # S1.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
+        # S2.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
 
-        self.addAS(64512, (S1,))
-        self.addAS(64512, (S2,))
+        # self.addAS(64512, (S1,))
+        # self.addAS(64512, (S2,))
 
-        l_S1_SJO1 = self.addLink(S1,SJO1)
-        l_S2_PAR1 = self.addLink(S2,PAR1)
+        # l_S1_SJO1 = self.addLink(S1,SJO1)
+        # l_S2_PAR1 = self.addLink(S2,PAR1)
 
-        ebgp_session(self,S1, SJO1)
-        ebgp_session(self,S2, PAR1)
+        # ebgp_session(self,S1, SJO1)
+        # ebgp_session(self,S2, PAR1)
         
 
         #=============================================================================
         #BGP setup
-        self.addAS(1,(MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2))
-        set_rr(self, rr=SIN1, peers=[SYD1, MRS1, SIN2, MRS2, SJO1, SJO2])
-        set_rr(self, rr=SYD2, peers=[SYD1, SIN2, SJO1, LAX1, LAX2])
-        set_rr(self, rr=ASH1, peers=[SJO1, SJO2, LAX1, LAX2, PAR1, ASH2])
-        set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2])
-        bgp_fullmesh(self, [SIN1, SYD2, ASH1, PAR2])
-        # bgp_fullmesh(self, [MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2])
+        # self.addAS(1,(MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2))
+        # set_rr(self, rr=SIN1, peers=[SYD1, MRS1, SIN2, MRS2, SJO1, SJO2])
+        # set_rr(self, rr=SYD2, peers=[SYD1, SIN2, SJO1, LAX1, LAX2])
+        # set_rr(self, rr=ASH1, peers=[SJO1, SJO2, LAX1, LAX2, PAR1, ASH2])
+        # set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2])
+        # bgp_fullmesh(self, [SIN1, SYD2, ASH1, PAR2])
+        # # bgp_fullmesh(self, [MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2])
        
-        self.addAS(2, (EQX,))
-        self.addAS(3, (VDF,))
-        self.addAS(4, (NTT,))
+        # self.addAS(2, (EQX,))
+        # self.addAS(3, (VDF,))
+        # self.addAS(4, (NTT,))
 
-        ebgp_session(self, VDF, PAR2)
-        ebgp_session(self, VDF, ASH1)
-        ebgp_session(self, VDF, SIN1)
-        ebgp_session(self, VDF, SIN2)
-        ebgp_session(self, EQX, SIN1)
-        ebgp_session(self, EQX, SYD2)
-        ebgp_session(self, NTT, SYD2)
-        ebgp_session(self, NTT, SYD1)
+        # ebgp_session(self, VDF, PAR2)
+        # ebgp_session(self, VDF, ASH1)
+        # ebgp_session(self, VDF, SIN1)
+        # ebgp_session(self, VDF, SIN2)
+        # ebgp_session(self, EQX, SIN1)
+        # ebgp_session(self, EQX, SYD2)
+        # ebgp_session(self, NTT, SYD2)
+        # ebgp_session(self, NTT, SYD1)
 
 
-        H1 = self.addHost("H1")
-        H2 = self.addHost("H2")
-        H3 = self.addHost("H3")
+        # H1 = self.addHost("H1")
+        # H2 = self.addHost("H2")
+        # H3 = self.addHost("H3")
         
 
 
-        l_H1_VDF = self.addLink(H1, VDF)
-        l_H2_EQX = self.addLink(H2, EQX)
-        l_H3_NTT = self.addLink(H3, NTT)
+        # l_H1_VDF = self.addLink(H1, VDF)
+        # l_H2_EQX = self.addLink(H2, EQX)
+        # l_H3_NTT = self.addLink(H3, NTT)
         
 
 
