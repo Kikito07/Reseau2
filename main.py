@@ -417,22 +417,25 @@ class SimpleBGPTopo(IPTopo):
 
         #Adding BGP daemons to manage failures
 
-        S1.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
-        S2.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
+        # S1.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
+        # S2.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
 
-        self.addAS(64512, (S1,))
-        self.addAS(64512, (S2,))
+        S1.addDaemon(OSPF6)
+        S2.addDaemon(OSPF6)
+
+        # self.addAS(64512, (S1,))
+        # self.addAS(64512, (S2,))
 
         l_S1_SJO1 = self.addLink(S1,SJO1, igp_metric=3)
         l_S1_SJO1[S1].addParams(ip=(server_ipv6 + "a1a::1/64",server_ipv4 + "5/30"))
         l_S1_SJO1[SJO1].addParams(ip=(server_ipv6 + "a1a::2/64",server_ipv4 + "6/30"))
 
         l_S2_PAR1 = self.addLink(S2,PAR1, igp_metric=3)
-        l_S2_PAR1[S2].addParams(ip=(server_ipv6 + "a2a::1/64",server_ipv4 + "9/30"))
-        l_S2_PAR1[PAR1].addParams(ip=(server_ipv6 + "a2a::2/64",server_ipv4 + "10/30"))
+        l_S2_PAR1[S2].addParams(ip=(server_ipv6 + "a1a::3/64",server_ipv4 + "9/30"))
+        l_S2_PAR1[PAR1].addParams(ip=(server_ipv6 + "a1a::4/64",server_ipv4 + "10/30"))
 
-        ebgp_session(self,S1, SJO1)
-        ebgp_session(self,S2, PAR1)
+        # ebgp_session(self,S1, SJO1)
+        # ebgp_session(self,S2, PAR1)
         
 
         #=============================================================================
