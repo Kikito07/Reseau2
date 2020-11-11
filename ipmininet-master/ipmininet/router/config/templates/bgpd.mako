@@ -18,6 +18,7 @@ router bgp ${node.bgpd.asn}
     neighbor ${n.peer} remote-as ${n.asn}
     neighbor ${n.peer} port ${n.port}
     neighbor ${n.peer} description ${n.description}
+    neighbor ${n.peer} password ABC
     % if n.ebgp_multihop:
     neighbor ${n.peer} ttl-security hops ${node.bgpd.hop_limit}
     % endif
