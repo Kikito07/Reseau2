@@ -276,31 +276,31 @@ class SimpleBGPTopo(IPTopo):
       
         # linkin twin datacenters
         #=========================================================
-        l_MRS1_MRS2 = self.addLink(MRS1,MRS2,igp_metric=1)
+        l_MRS1_MRS2 = self.addLink(MRS1,MRS2,igp_metric=2)
         l_MRS1_MRS2[MRS1].addParams(ip=(europe_ipv6 + "00a::1/64", MRS_ipv4 + "129/30"))
         l_MRS1_MRS2[MRS2].addParams(ip=(europe_ipv6 + "00a::2/64", MRS_ipv4 + "130/30"))
 
-        l_SIN1_SIN2 = self.addLink(SIN1,SIN2,igp_metric=1)
+        l_SIN1_SIN2 = self.addLink(SIN1,SIN2,igp_metric=2)
         l_SIN1_SIN2[SIN1].addParams(ip=(asia_ipv6 + "00a::1/64", SIN_ipv4 + "129/30"))
         l_SIN1_SIN2[SIN2].addParams(ip=(asia_ipv6 + "00a::2/64", SIN_ipv4 + "130/30"))
 
-        l_SYD1_SYD2 = self.addLink(SYD1,SYD2,igp_metric=1)
+        l_SYD1_SYD2 = self.addLink(SYD1,SYD2,igp_metric=2)
         l_SYD1_SYD2[SYD1].addParams(ip=(asia_ipv6 + "00c::1/64", SYD_ipv4 + "129/30"))
         l_SYD1_SYD2[SYD2].addParams(ip=(asia_ipv6 + "00c::2/64", SYD_ipv4 + "130/30"))
 
-        l_PAR1_PAR2 = self.addLink(PAR1,PAR2,igp_metric=1)
+        l_PAR1_PAR2 = self.addLink(PAR1,PAR2,igp_metric=2)
         l_PAR1_PAR2[PAR1].addParams(ip=(europe_ipv6 + "00b::1/64", PAR_ipv4 + "129/30"))
         l_PAR1_PAR2[PAR2].addParams(ip=(europe_ipv6 + "00b::2/64", PAR_ipv4 + "130/30"))
 
-        l_ASH1_ASH2 = self.addLink(ASH1, ASH2,igp_metric=1)
+        l_ASH1_ASH2 = self.addLink(ASH1, ASH2,igp_metric=2)
         l_ASH1_ASH2[ASH1].addParams(ip=(NA_ipv6 + "00a::1/64", ASH_ipv4 + "129/30"))
         l_ASH1_ASH2[ASH2].addParams(ip=(NA_ipv6 + "00a::2/64", ASH_ipv4 + "130/30"))
 
-        l_LAX1_LAX2 = self.addLink(LAX1, LAX2,igp_metric=1)
+        l_LAX1_LAX2 = self.addLink(LAX1, LAX2,igp_metric=2)
         l_LAX1_LAX2[LAX1].addParams(ip=(NA_ipv6 + "00b::1/64", LAX_ipv4 + "129/30"))
         l_LAX1_LAX2[LAX2].addParams(ip=(NA_ipv6 + "00b::2/64", LAX_ipv4 + "130/30"))
 
-        l_SJO1_SJO2 = self.addLink(SJO1, SJO2,igp_metric=1)
+        l_SJO1_SJO2 = self.addLink(SJO1, SJO2,igp_metric=2)
         l_SJO1_SJO2[SJO1].addParams(ip=(NA_ipv6 + "00c::1/64", SJO_ipv4 + "129/30"))
         l_SJO1_SJO2[SJO2].addParams(ip=(NA_ipv6 + "00c::2/64", SJO_ipv4 + "130/30"))
 
@@ -341,19 +341,19 @@ class SimpleBGPTopo(IPTopo):
         l_ASH2_LAX2[ASH2].addParams(ip=(NA_ipv6 + "022::1/64", ASH_ipv4 + "9/30"))
         l_ASH2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "022::2/64", ASH_ipv4 + "10/30"))
 
-        l_ASH1_LAX2 = self.addLink(ASH1, LAX2,igp_metric=3)
+        l_ASH1_LAX2 = self.addLink(ASH1, LAX2,igp_metric=10)
         l_ASH1_LAX2[ASH1].addParams(ip=(NA_ipv6 + "012::1/64", ASH_ipv4 + "17/30"))
         l_ASH1_LAX2[LAX2].addParams(ip=(NA_ipv6 + "012::2/64", ASH_ipv4 + "18/30"))
 
-        l_SJO1_LAX1 = self.addLink(SJO1, LAX1,igp_metric=3)
+        l_SJO1_LAX1 = self.addLink(SJO1, LAX1,igp_metric=10)
         l_SJO1_LAX1[SJO1].addParams(ip=(NA_ipv6 + "110::1/64", SJO_ipv4 + "5/30"))
         l_SJO1_LAX1[LAX1].addParams(ip=(NA_ipv6 + "110::2/64", SJO_ipv4 + "6/30"))
 
-        l_SJO2_LAX2 = self.addLink(SJO2,LAX2,igp_metric=3)
+        l_SJO2_LAX2 = self.addLink(SJO2,LAX2,igp_metric=10)
         l_SJO2_LAX2[SJO2].addParams(ip=(NA_ipv6 + "220::1/64", SJO_ipv4 + "9/30"))
         l_SJO2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "220::2/64", SJO_ipv4 + "10/30"))
 
-        l_PAR1_ASH1 = self.addLink(PAR1,ASH1,igp_metric=10)
+        l_PAR1_ASH1 = self.addLink(PAR1,ASH1, igp_metric=10)
         l_PAR1_ASH1[PAR1].addParams(ip=(europe_ipv6 + "110::1/64", PAR_ipv4 + "5/30"))
         l_PAR1_ASH1[ASH1].addParams(ip=(europe_ipv6 + "110::2/64", PAR_ipv4 + "6/30"))
 
@@ -365,7 +365,7 @@ class SimpleBGPTopo(IPTopo):
         l_PAR1_MRS2[PAR1].addParams(ip=(europe_ipv6 + "101::1/64", PAR_ipv4 + "17/30"))
         l_PAR1_MRS2[MRS2].addParams(ip=(europe_ipv6 + "101::2/64", PAR_ipv4 + "18/30"))
 
-        l_PAR2_MRS1 = self.addLink(PAR2, MRS1,igp_metric=3)
+        l_PAR2_MRS1 = self.addLink(PAR2, MRS1,igp_metric=10)
         l_PAR2_MRS1[PAR2].addParams(ip=(europe_ipv6 + "202::1/64", PAR_ipv4 + "33/30"))
         l_PAR2_MRS1[MRS1].addParams(ip=(europe_ipv6 + "202::2/64", PAR_ipv4 + "34/30"))
 
@@ -376,35 +376,35 @@ class SimpleBGPTopo(IPTopo):
         #=============================================================================
         #Peering links
 
-        l_VDF_PAR2 = self.addLink(VDF, PAR2)
+        l_VDF_PAR2 = self.addLink(VDF, PAR2,igp_metric=10)
         l_VDF_PAR2[VDF].addParams(ip=(europe_ipv6 + "ffa::1/64",PAR_ipv4 + "73/30"))
         l_VDF_PAR2[PAR2].addParams(ip=(europe_ipv6 + "ffa::2/64",PAR_ipv4 + "74/30"))
 
-        l_VDF_ASH1 = self.addLink(VDF,ASH1)
+        l_VDF_ASH1 = self.addLink(VDF,ASH1,igp_metric=10)
         l_VDF_ASH1[VDF].addParams(ip=(NA_ipv6 + "ffa::1/64",ASH_ipv4 + "73/30"))
         l_VDF_ASH1[ASH1].addParams(ip=(NA_ipv6 + "ffa::2/64",ASH_ipv4 + "74/30"))
 
-        l_VDF_SIN1 = self.addLink(VDF, SIN1)
+        l_VDF_SIN1 = self.addLink(VDF, SIN1,igp_metric=10)
         l_VDF_SIN1[VDF].addParams(ip=(asia_ipv6 + "ffa::1/64",SIN_ipv4 + "73/30"))
         l_VDF_SIN1[SIN1].addParams(ip=(asia_ipv6 + "ffa::2/64",SIN_ipv4 + "74/30"))
 
-        l_VDF_SIN2 = self.addLink(VDF, SIN2)
+        l_VDF_SIN2 = self.addLink(VDF, SIN2,igp_metric=10)
         l_VDF_SIN2[VDF].addParams(ip=(asia_ipv6 + "1fa::1/64",SIN_ipv4 + "81/30"))
         l_VDF_SIN2[SIN2].addParams(ip=(asia_ipv6 + "1fa::2/64",SIN_ipv4 + "82/30"))
 
-        l_EQX_SIN1 = self.addLink(EQX, SIN1)
+        l_EQX_SIN1 = self.addLink(EQX, SIN1,igp_metric=10)
         l_EQX_SIN1[EQX].addParams(ip=(asia_ipv6 + "2fb::1/64",SIN_ipv4 + "89/30"))
         l_EQX_SIN1[SIN1].addParams(ip=(asia_ipv6 + "2fb::2/64",SIN_ipv4 + "90/30"))
 
-        l_EQX_SYD2 = self.addLink(EQX, SYD2)
+        l_EQX_SYD2 = self.addLink(EQX, SYD2,igp_metric=10)
         l_EQX_SYD2[EQX].addParams(ip=(asia_ipv6 + "3fa::1/64",SYD_ipv4 + "73/30"))
         l_EQX_SYD2[SYD2].addParams(ip=(asia_ipv6 + "3fa::2/64",SYD_ipv4 + "74/30"))
 
-        l_NTT_SYD2 = self.addLink(NTT, SYD2)
+        l_NTT_SYD2 = self.addLink(NTT, SYD2,igp_metric=10)
         l_NTT_SYD2[NTT].addParams(ip=(asia_ipv6 + "4fb::1/64",SYD_ipv4 + "81/30"))
         l_NTT_SYD2[SYD2].addParams(ip=(asia_ipv6 + "4fb::2/64",SYD_ipv4 + "82/30"))
 
-        l_NTT_SYD1 = self.addLink(NTT, SYD1)
+        l_NTT_SYD1 = self.addLink(NTT, SYD1,igp_metric=10)
         l_NTT_SYD1[NTT].addParams(ip=(asia_ipv6 + "5fa::1/64",SYD_ipv4 + "89/30"))
         l_NTT_SYD1[SYD1].addParams(ip=(asia_ipv6 + "5fa::2/64",SYD_ipv4 + "90/30"))
 
@@ -423,11 +423,11 @@ class SimpleBGPTopo(IPTopo):
         self.addAS(64512, (S1,))
         self.addAS(64512, (S2,))
 
-        l_S1_SJO1 = self.addLink(S1,SJO1)
+        l_S1_SJO1 = self.addLink(S1,SJO1, igp_metric=3)
         l_S1_SJO1[S1].addParams(ip=(server_ipv6 + "a1a::1/64",server_ipv4 + "5/30"))
         l_S1_SJO1[SJO1].addParams(ip=(server_ipv6 + "a1a::2/64",server_ipv4 + "6/30"))
 
-        l_S2_PAR1 = self.addLink(S2,PAR1)
+        l_S2_PAR1 = self.addLink(S2,PAR1, igp_metric=3)
         l_S2_PAR1[S2].addParams(ip=(server_ipv6 + "a2a::1/64",server_ipv4 + "9/30"))
         l_S2_PAR1[PAR1].addParams(ip=(server_ipv6 + "a2a::2/64",server_ipv4 + "10/30"))
 
@@ -436,7 +436,7 @@ class SimpleBGPTopo(IPTopo):
         
 
         #=============================================================================
-        #BGP setup
+        # BGP setup
         self.addAS(1,(MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2))
         set_rr(self, rr=SIN1, peers=[SYD1, MRS1, SIN2, MRS2, SJO1, SJO2])
         set_rr(self, rr=SYD2, peers=[SYD1, SIN2, SJO1, LAX1, LAX2])
@@ -450,13 +450,13 @@ class SimpleBGPTopo(IPTopo):
         self.addAS(4, (NTT,))
 
         ebgp_session(self, VDF, PAR2)
-        ebgp_session(self, VDF, ASH1)
-        ebgp_session(self, VDF, SIN1)
-        ebgp_session(self, VDF, SIN2)
+        # ebgp_session(self, VDF, ASH1)
+        # ebgp_session(self, VDF, SIN1)
+        # ebgp_session(self, VDF, SIN2)
         ebgp_session(self, EQX, SIN1)
-        ebgp_session(self, EQX, SYD2)
+        # ebgp_session(self, EQX, SYD2)
         ebgp_session(self, NTT, SYD2)
-        ebgp_session(self, NTT, SYD1)
+        # ebgp_session(self, NTT, SYD1)
 
 
         H1 = self.addHost("H1")
@@ -465,15 +465,15 @@ class SimpleBGPTopo(IPTopo):
         
 
 
-        l_H1_VDF = self.addLink(H1, VDF)
+        l_H1_VDF = self.addLink(H1, VDF,igp_metric=2)
         l_H1_VDF[H1].addParams(ip=(europe_ipv6 + "aaa::2/64", VDF_ipv4 + "5/30"))
         l_H1_VDF[VDF].addParams(ip=(europe_ipv6 + "aaa::a/64", VDF_ipv4 + "6/30"))
 
-        l_H2_EQX = self.addLink(H2, EQX)
+        l_H2_EQX = self.addLink(H2, EQX,igp_metric=2)
         l_H2_EQX[H2].addParams(ip=(europe_ipv6 + "bbb::2/64", EQX_ipv4 + "9/30"))
         l_H2_EQX[EQX].addParams(ip=(europe_ipv6 + "bbb::a/64", EQX_ipv4 + "10/30"))
 
-        l_H3_NTT = self.addLink(H3, NTT)
+        l_H3_NTT = self.addLink(H3, NTT,igp_metric=2)
         l_H3_NTT[H3].addParams(ip=(europe_ipv6 + "ccc::2/64", NTT_ipv4 + "17/30"))
         l_H3_NTT[NTT].addParams(ip=(europe_ipv6 + "ccc::a/64", NTT_ipv4 + "18/30"))
 
