@@ -1,7 +1,7 @@
 from ipmininet.iptopo import IPTopo
 from ipmininet.ipnet import IPNet
 from ipmininet.cli import IPCLI
-from ipmininet.router.config import BorderRouterConfig, BGP, ebgp_session, AccessList
+from ipmininet.router.config import BorderRouterConfig, BGP, ebgp_session, AccessList, CommunityList
 
 
 class SimpleBGPTopo(IPTopo):
@@ -37,9 +37,21 @@ class SimpleBGPTopo(IPTopo):
         ebgp_session(self, as3r1, as2r2)
 
         all_al = AccessList('all', ('any',))
-        as1r1.get_config(BGP).set_community('16276:50', to_peer=as2r1, matching=(all_al,))
         
         
+#===================================================================================================
+
+        loc_pref = CommunityList('loc-pref', '2:80')
+
+        as2r1.get_config(BGP).set_local_pref(80, from_peer=as1r1, matching=(loc_pref,))
+
+        as1r1.get_config(BGP).set_community('2:80', to_peer=as2r1, matching=(all_al,))
+
+        as3r1.get_config(BGP).set_med(50, to_peer=as2r2, matching=(all_al,))
+
+#===================================================================================================
+
+
         # Add test hosts
         for r in self.routers():
             self.addLink(r, self.addHost('h%s' % r))

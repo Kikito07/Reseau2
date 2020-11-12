@@ -423,8 +423,10 @@ class SimpleBGPTopo(IPTopo):
         S1.addDaemon(OSPF6)
         S2.addDaemon(OSPF6)
 
+
         # self.addAS(64512, (S1,))
         # self.addAS(64512, (S2,))
+
 
         l_S1_SJO1 = self.addLink(S1,SJO1, igp_metric=3)
         l_S1_SJO1[S1].addParams(ip=(server_ipv6 + "a1a::1/64",server_ipv4 + "5/30"))
