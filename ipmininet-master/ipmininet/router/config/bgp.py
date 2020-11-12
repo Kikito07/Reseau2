@@ -78,7 +78,8 @@ def bgp_peering(topo: 'IPTopo', a: str, b: str):
 
 
 def ebgp_session(topo: 'IPTopo', a: 'RouterDescription', b: 'RouterDescription',
-                 link_type: Optional[str] = None):
+                 link_type: Optional[str] = None,
+                 bgp_hop_limit = 2):
     """Register an eBGP peering between two nodes, and disable IGP adjacencies
     between them.
 
@@ -369,11 +370,11 @@ class BGP(QuaggaDaemon):
         cfg.community_lists = self.build_community_list()
         cfg.route_maps = self.build_route_map(cfg.neighbors)
         cfg.rr = self._node.get('bgp_rr_info')
+        
         if(self.options.bgp_hop_limit):
             cfg.hop_limit = self.options.bgp_hop_limit
         else:
             cfg.hop_limit = 1
-
         return cfg
 
     def build_community_list(self) -> List[CommunityList]:
