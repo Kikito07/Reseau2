@@ -10,7 +10,7 @@ debug bgp ${section}
 % endfor
 
 router bgp ${node.bgpd.asn}
-    MDR
+    bgp router-id ${node.bgpd.routerid}
     bgp bestpath compare-routerid
     no bgp default ipv4-unicast
 % for n in node.bgpd.neighbors:
@@ -18,9 +18,8 @@ router bgp ${node.bgpd.asn}
     neighbor ${n.peer} remote-as ${n.asn}
     neighbor ${n.peer} port ${n.port}
     neighbor ${n.peer} description ${n.description}
-    neighbor ${n.peer} password ABC
     % if n.ebgp_multihop:
-    neighbor ${n.peer} ttl-security hops ${node.bgpd.hop_limit}
+    neighbor ${n.peer} ebgp-multihop
     % endif
     <%block name="neighbor"/>
 % endfor
@@ -49,7 +48,7 @@ router bgp ${node.bgpd.asn}
         % endif
     % endfor
     % if node.bgpd.rr:
-    bgp cluster-id 10.0.0.0
+    bgp cluster-id ${node.bgpd.routerid}
     % endif
 % endfor
 
