@@ -4,6 +4,7 @@ from ipmininet.ipnet import IPNet
 from ipmininet.cli import IPCLI
 from ipmininet.iptopo import IPTopo
 from ipmininet.router.config import BGP, OSPF6, OSPF, RouterConfig, AF_INET6, AF_INET, set_rr, ebgp_session, SHARE, IP6Tables, InputFilter, Deny, Allow, Rule, bgp_fullmesh, bgp_peering, ebgp_session
+import hashlib
 
 
 monde_ipv6 = "1627:6000:0000"
@@ -29,10 +30,25 @@ VDF_ipv6 = "1627:6100:0000:0"
 EQX_ipv6 = "1627:6200:0000:0"
 NTT_ipv6 = "1627:6300:0000:0"
 
+def createPassword(key):
+    hash_object = hashlib.sha256(bytes(key, encoding='utf-8'))
+    return hash_object.hexdigest()
+    
+secretKey = "Nu798SHkJ6MRwm69rZvu"
+VDF_PW = createPassword("VDF"+secretKey)
+EQX_PW = createPassword("EQX"+secretKey)
+NTT_PW = createPassword("NTT"+secretKey)
+SERVER_PW = createPassword("SER"+secretKey)
+
+
+
+
 
 class SimpleBGPTopo(IPTopo):
     
     def build(self, *args, **kwargs):
+
+       
         # first step, adding routers
         #=========================================================
        
@@ -297,7 +313,7 @@ class SimpleBGPTopo(IPTopo):
 
         # S1.addDaemon(OSPF6)
         # S2.addDaemon(OSPF6)
-
+        
         self.addAS(64512, (S1,))
         self.addAS(64512, (S2,))
 
@@ -368,8 +384,25 @@ if __name__ == '__main__':
     net = IPNet(topo=SimpleBGPTopo(), allocate_IPs = False)
     try:
         net.start()
-        print('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::3", 3,10))
-        net['S2'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}').format("1627.6000:0:3a1a::4", 3,10)
+        #Configuring server to respond faster to failures
+        print(net['PAR1'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::3",1,4)))
+        print(net['S2'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::4",1,4)))
+
+        #Configuring TTL and PASSWORD for PAR1-S2
+        print(net['PAR1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format("1627:6000:0:3a1a::3",2,SERVER_PW)))
+        print(net['S2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format("1627:6000:0:3a1a::4",2,SERVER_PW)))
+        
+        #Configuring TTL and PASSWORD for SIN1-EQX
+        print(net['EQX'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::2",2,EQX_PW)))
+        print(net['SIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::1",2,EQX_PW)))
+
+        #Configuring TTL and PASSWORD for SYD2-NTT
+        print(net['NTT'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "4fb::2",2,NTT_PW)))
+        print(net['SYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "4fb::1",2,NTT_PW)))
+
+        #Configuring TTL and PASSWORD for PAR2-VDF
+        print(net['VDF'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::2",2,VDF_PW)))
+        print(net['PAR2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::1",2,VDF_PW)))
         IPCLI(net)
     finally:
         net.stop()
