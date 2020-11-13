@@ -82,9 +82,9 @@ try:
     net.start()
     # print(net['r11'].cmd('python3 scripts/script_comm_R1.py {}'.format(200)))
     # print(net['r1'].cmd('python3 scripts/script_comm_R1.py {}'.format(300)))
-    print(net['r2'].cmd('python3 scripts/script_comm_R2.py'))
-    print(net['r1'].cmd('python3 scripts/BGP_AS_PREPEND_X1.py'))
-    #print(net['r1'].cmd('python3 scripts/BGP_AS_PREPEND_X1.py'))
+    #print(net['r2'].cmd('python3 scripts/script_comm_R2.py'))
+    print(net['r1'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(300)))
+    print(net['r11'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(200)))
     
     IPCLI(net)
 finally:
