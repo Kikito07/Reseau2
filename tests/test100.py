@@ -86,6 +86,9 @@ class MyTopology(IPTopo):
 net = IPNet(topo=MyTopology(),allocate_IPs = False)  # Disable IP auto-allocation
 try:
     net.start()
+    print(net['r11'].cmd('python3 scripts/script_comm_R1.py {}'.format(200)))
+    print(net['r1'].cmd('python3 scripts/script_comm_R1.py {}'.format(300)))
+    print(net['r2'].cmd('python3 scripts/script_comm_R2.py'))
     IPCLI(net)
 finally:
     net.stop()
