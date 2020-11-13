@@ -16,18 +16,12 @@ class MyTopology(IPTopo):
         h2 = self.addHost("h2")
         # h3 = self.addHost("h3")
 
-        r1.addDaemon(BGP, address_families=(
-            AF_INET(redistribute=('connected','ospf')),
-            AF_INET6(redistribute=('ospf6', 'connected'))))
+        r1.addDaemon(BGP)
+        r11.addDaemon(BGP)
         
         r2.addDaemon(BGP, address_families=(
             AF_INET(redistribute=('connected',)),
             AF_INET6(redistribute=( 'connected',))))
-
-        r11.addDaemon(BGP, address_families=(
-            AF_INET(redistribute=('connected',)),
-            AF_INET6(redistribute=( 'connected',))))
-
         rh1.addDaemon(BGP, address_families=(
             AF_INET(redistribute=('connected',)),
             AF_INET6(redistribute=('connected',))))
@@ -86,9 +80,12 @@ class MyTopology(IPTopo):
 net = IPNet(topo=MyTopology(),allocate_IPs = False)  # Disable IP auto-allocation
 try:
     net.start()
-    print(net['r11'].cmd('python3 scripts/script_comm_R1.py {}'.format(200)))
-    print(net['r1'].cmd('python3 scripts/script_comm_R1.py {}'.format(300)))
+    # print(net['r11'].cmd('python3 scripts/script_comm_R1.py {}'.format(200)))
+    # print(net['r1'].cmd('python3 scripts/script_comm_R1.py {}'.format(300)))
     print(net['r2'].cmd('python3 scripts/script_comm_R2.py'))
+    print(net['r1'].cmd('python3 scripts/BGP_AS_PREPEND_X1.py'))
+    #print(net['r1'].cmd('python3 scripts/BGP_AS_PREPEND_X1.py'))
+    
     IPCLI(net)
 finally:
     net.stop()
