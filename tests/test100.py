@@ -16,15 +16,15 @@ class MyTopology(IPTopo):
         h2 = self.addHost("h2")
         # h3 = self.addHost("h3")
 
-        r1.addDaemon(BGP)
-        r11.addDaemon(BGP)
+        r1.addDaemon(BGP,debug=("updates",))
+        r11.addDaemon(BGP,debug=("updates",))
         
         r2.addDaemon(BGP, address_families=(
             AF_INET(redistribute=('connected',)),
-            AF_INET6(redistribute=( 'connected',))))
+            AF_INET6(redistribute=( 'connected',))),debug=("updates",))
         rh1.addDaemon(BGP, address_families=(
             AF_INET(redistribute=('connected',)),
-            AF_INET6(redistribute=('connected',))))
+            AF_INET6(redistribute=('connected',))),debug=("updates",))
 
         lr1r2 = self.addLink(r1, r2)
         lr1r2[r1].addParams(ip=("2042:12::1/64","10.12.0.1/30"))
@@ -37,11 +37,11 @@ class MyTopology(IPTopo):
         lh1rh1[rh1].addParams(ip=("2042:5e::a/64","10.10.0.2/30"))
 
 
-        lr1rh1 = self.addLink(r1, rh1, igp_metric = 5)
+        lr1rh1 = self.addLink(r1, rh1)
         lr1rh1[r1].addParams(ip=("2042:1a::1/64","10.51.0.1/30"))
         lr1rh1[rh1].addParams(ip=("2042:1a::a/64","10.51.0.2/30"))
 
-        lr11rh1 = self.addLink(r11, rh1 , igp_metric = 10)
+        lr11rh1 = self.addLink(r11, rh1)
         lr11rh1[r11].addParams(ip=("2042:3c::2/64","10.64.0.1/30"))
         lr11rh1[rh1].addParams(ip=("2042:3c::b/64","10.64.0.2/30"))
 
@@ -80,12 +80,10 @@ class MyTopology(IPTopo):
 net = IPNet(topo=MyTopology(),allocate_IPs = False)  # Disable IP auto-allocation
 try:
     net.start()
-    # print(net['r11'].cmd('python3 scripts/script_comm_R1.py {}'.format(200)))
-    # print(net['r1'].cmd('python3 scripts/script_comm_R1.py {}'.format(300)))
-    #print(net['r2'].cmd('python3 scripts/script_comm_R2.py'))
     print(net['r1'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(300)))
     print(net['r11'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(200)))
-    
+    print(net['r2'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(150)))
     IPCLI(net)
+    
 finally:
     net.stop()

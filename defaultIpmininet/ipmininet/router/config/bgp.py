@@ -511,7 +511,7 @@ class Peer:
             -> Tuple[Optional[str], Optional['Router']]:
         """Return the IP address that base should try to contact to establish
         a peering"""
-        visited = set()  # type: Set[IPIntf]
+        visited = set()  # type: Set[str]
         to_visit = {i.name: i for i in realIntfList(base)}
         prio_queue = [(0, i) for i in to_visit.keys()]
         heapq.heapify(prio_queue)
@@ -521,8 +521,8 @@ class Peer:
             path_cost, i = heapq.heappop(prio_queue)
             if i in visited:
                 continue
-            i = to_visit.pop(i)
             visited.add(i)
+            i = to_visit.pop(i)
             for n in i.broadcast_domain.routers:
                 if n.node.name == peer:
                     if not v6:

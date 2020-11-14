@@ -139,30 +139,30 @@ class SimpleBGPTopo(IPTopo):
 
         # adding BGP 
         #=========================================================
-        MRS1.addDaemon(BGP,debug=(("updates",)))
-        MRS2.addDaemon(BGP,debug=(("updates",)))
+        MRS1.addDaemon(BGP,debug=("neighbor",))
+        MRS2.addDaemon(BGP,debug=("neighbor",))
 
-        SIN1.addDaemon(BGP,debug=(("updates",)))
-        SIN2.addDaemon(BGP,debug=(("updates",)))
+        SIN1.addDaemon(BGP,debug=("neighbor",))
+        SIN2.addDaemon(BGP,debug=("neighbor",))
 
-        SYD1.addDaemon(BGP,debug=(("updates",)))
-        SYD2.addDaemon(BGP,debug=(("updates",)))
+        SYD1.addDaemon(BGP,debug=("neighbor",))
+        SYD2.addDaemon(BGP,debug=("neighbor",))
 
-        LAX1.addDaemon(BGP,debug=(("updates",)))       
-        LAX2.addDaemon(BGP,debug=(("updates",)))
+        LAX1.addDaemon(BGP,debug=("neighbor",))       
+        LAX2.addDaemon(BGP,debug=("updates",))
 
-        SJO1.addDaemon(BGP,debug=(("updates",)))
-        SJO2.addDaemon(BGP,debug=(("updates",)))
+        SJO1.addDaemon(BGP,debug=("updates",))
+        SJO2.addDaemon(BGP,debug=("updates",))
 
-        ASH1.addDaemon(BGP,debug=(("updates",)))
-        ASH2.addDaemon(BGP,debug=(("updates",)))
+        ASH1.addDaemon(BGP,debug=("updates",))
+        ASH2.addDaemon(BGP,debug=("updates",))
 
-        PAR1.addDaemon(BGP,debug=(("updates",)))
-        PAR2.addDaemon(BGP,debug=(("updates",)))
+        PAR1.addDaemon(BGP,debug=("updates",))
+        PAR2.addDaemon(BGP,debug=("updates",))
 
-        VDF.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=(("updates",)))
-        EQX.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=(("updates",)))
-        NTT.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=(("updates",)))
+        VDF.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
+        EQX.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
+        NTT.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
 
       
         # linkin twin datacenters
