@@ -5,9 +5,7 @@ args = sys.argv
 NEIGHBORSV6 = args[1]
 TTL = args[2]
 PASSWORD = args[3]
-print(NEIGHBORSV6)
-print(TTL)
-print(PASSWORD)
+
 BGP_FRROUTING = pexpect.spawn('telnet localhost 2605')
 BGP_FRROUTING.expect('Password:')
 BGP_FRROUTING.sendline('zebra')
