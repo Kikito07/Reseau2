@@ -80,8 +80,14 @@ class MyTopology(IPTopo):
 net = IPNet(topo=MyTopology(),allocate_IPs = False)  # Disable IP auto-allocation
 try:
     net.start()
-    print(net['r1'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(300)))
-    print(net['r1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("2042:12::2", "TEST", "in")))
+    print(net['r2'].cmd('python3 scripts/BGP_SET_ANY_COMM_RMNAME.py {} {}'.format("2:100","LPREF_200")))
+    print(net['r2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("2042:12::1","LPREF_200","out")))
+
+    print(net['r1'].cmd('python3 scripts/BGP_C_COMM_NAME.py {} {}'.format("2:100","LPREF_200")))
+    print(net['r1'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME.py {} {} {}'.format("LPREF_200",200,"RM_LPREF_200")))
+    print(net['r1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("2042:12::2","RM_LPREF_200","in")))
+    # print(net['r1'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(300)))
+    # print(net['r11'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("2042:12::2", "TEST", "in")))
     # print(net['r11'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(200)))
     # print(net['r2'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(150)))
     IPCLI(net)

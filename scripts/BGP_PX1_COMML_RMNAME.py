@@ -2,13 +2,17 @@ import pexpect
 import sys
 # xterm r1
 # Sur R1 pour set un local pref sur r3 
+
+community = sys.argv[1]
+route_map = sys.argv[2]
 child = pexpect.spawn('telnet localhost 2605')
 child.expect('Password:')
 child.sendline('zebra')
 child.sendline('enable')
 child.sendline('configure terminal')
-child.sendline('bgp community-list standard AS_PREPEND permit 2:100')
-child.sendline('route-map AS_PREPEND permit 10')
-child.sendline('match community AS_PREPEND')
+child.sendline('route-map {} permit 10'.format(route_map))
+child.sendline('match community {}'.format(community))
 child.sendline('set as-path prepend 1')
+child.sendline('write memory')
+child.sendline('exit')
 child.kill(0)
