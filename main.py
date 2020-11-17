@@ -41,9 +41,6 @@ NTT_PW = createPassword("NTT"+secretKey)
 SERVER_PW = createPassword("SER"+secretKey)
 
 
-
-
-
 class SimpleBGPTopo(IPTopo):
     
     def build(self, *args, **kwargs):
@@ -74,11 +71,17 @@ class SimpleBGPTopo(IPTopo):
         ASH1 = self.addRouter("ASH1",config=RouterConfig, lo_addresses=[NA_ipv6 + "400::/64", ASH_ipv4 + "253/32"])
         ASH2 = self.addRouter("ASH2", config=RouterConfig,lo_addresses=[NA_ipv6 + "500::/64", ASH_ipv4 + "254/32"])
         #routers peering vodafone
-        VDF = self.addRouter("VDF",config=RouterConfig, lo_addresses=[VDF_ipv6 + "000::/64", VDF_ipv4 + "253/32"])
+        VDFSIN1 = self.addRouter("VDFSIN1",config=RouterConfig, lo_addresses=[VDF_ipv6 + "000::/64", VDF_ipv4 + "5/32"])
+        VDFSIN2 = self.addRouter("VDFSIN2",config=RouterConfig, lo_addresses=[VDF_ipv6 + "001::/64", VDF_ipv4 + "9/32"])
+        VDFASH1 = self.addRouter("VDFASH1",config=RouterConfig, lo_addresses=[VDF_ipv6 + "002::/64", VDF_ipv4 + "13/32"])
+        VDFPAR2 = self.addRouter("VDFPAR2",config=RouterConfig, lo_addresses=[VDF_ipv6 + "003::/64", VDF_ipv4 + "17/32"])
         #routers peering equinix
-        EQX = self.addRouter("EQX",config=RouterConfig, lo_addresses=[EQX_ipv6 + "000::/64", EQX_ipv4 + "253/32"])
+        EQXSIN1 = self.addRouter("EQXSIN1",config=RouterConfig, lo_addresses=[EQX_ipv6 + "000::/64", EQX_ipv4 + "5/32"])
+        EQXSYD2 = self.addRouter("EQXSYD2",config=RouterConfig, lo_addresses=[EQX_ipv6 + "001::/64", EQX_ipv4 + "9/32"])
         #routers peering NTT
-        NTT = self.addRouter("NTT",config=RouterConfig, lo_addresses=[NTT_ipv6 + "000::/64", NTT_ipv4 + "253/32"])
+        NTTSYD1 = self.addRouter("NTTSIN1",config=RouterConfig, lo_addresses=[NTT_ipv6 + "000::/64", NTT_ipv4 + "5/32"])
+        NTTSYD2 = self.addRouter("NTTSYD2",config=RouterConfig, lo_addresses=[NTT_ipv6 + "001::/64", NTT_ipv4 + "9/32"])
+
         
         
         
@@ -104,10 +107,18 @@ class SimpleBGPTopo(IPTopo):
 
         PAR1.addDaemon(OSPF6)
         PAR2.addDaemon(OSPF6)
+
+        VDFSIN1.addDaemon(OSPF6)
+        VDFSIN2.addDaemon(OSPF6)
+        VDFASH1.addDaemon(OSPF6)
+        VDFPAR2.addDaemon(OSPF6)
+
+        EQXSIN1.addDaemon(OSPF6)
+        EQXSYD2.addDaemon(OSPF6)
+
+        NTTSYD1.addDaemon(OSPF6)
+        NTTSYD2.addDaemon(OSPF6)
         
-        VDF.addDaemon(OSPF6)
-        EQX.addDaemon(OSPF6)
-        NTT.addDaemon(OSPF6)
 
         # adding OSPF
         #=========================================================
@@ -133,9 +144,16 @@ class SimpleBGPTopo(IPTopo):
         PAR1.addDaemon(OSPF)
         PAR2.addDaemon(OSPF)
 
-        VDF.addDaemon(OSPF)
-        EQX.addDaemon(OSPF)
-        NTT.addDaemon(OSPF)
+        VDFSIN1.addDaemon(OSPF)
+        VDFSIN2.addDaemon(OSPF)
+        VDFASH1.addDaemon(OSPF)
+        VDFPAR2.addDaemon(OSPF)
+
+        EQXSIN1.addDaemon(OSPF)
+        EQXSYD2.addDaemon(OSPF)
+
+        NTTSYD1.addDaemon(OSPF)
+        NTTSYD2.addDaemon(OSPF)
 
         # adding BGP 
         #=========================================================
@@ -160,10 +178,16 @@ class SimpleBGPTopo(IPTopo):
         PAR1.addDaemon(BGP,debug=("updates",))
         PAR2.addDaemon(BGP,debug=("updates",))
 
-        VDF.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
-        EQX.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
-        NTT.addDaemon(BGP,config=RouterConfig,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
+        VDFSIN1.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
+        VDFSIN2.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
+        VDFASH1.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
+        VDFPAR2.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
 
+        EQXSIN1.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
+        EQXSYD2.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
+        
+        NTTSYD1.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
+        NTTSYD2.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
       
         # linkin twin datacenters
         #=========================================================
@@ -197,11 +221,11 @@ class SimpleBGPTopo(IPTopo):
 
         #=========================================================
 
-        l_MRS1_SIN1 = self.addLink(MRS1, SIN1,igp_metric=10)
+        l_MRS1_SIN1 = self.addLink(MRS1, SIN1,igp_metric=11)
         l_MRS1_SIN1[MRS1].addParams(ip=(europe_ipv6 + "011::1/64", MRS_ipv4 + "5/30"))
         l_MRS1_SIN1[SIN1].addParams(ip=(europe_ipv6 + "011::2/64", MRS_ipv4 + "6/30"))
 
-        l_MRS2_SIN2 = self.addLink(MRS2, SIN2,igp_metric=10)
+        l_MRS2_SIN2 = self.addLink(MRS2, SIN2,igp_metric=11)
         l_MRS2_SIN2[MRS2].addParams(ip=(europe_ipv6 + "022::1/64", MRS_ipv4 + "9/30"))
         l_MRS2_SIN2[SIN2].addParams(ip=(europe_ipv6 + "022::2/64", MRS_ipv4 + "10/30"))
 
@@ -213,11 +237,11 @@ class SimpleBGPTopo(IPTopo):
         l_SIN2_SYD2[SIN2].addParams(ip=(asia_ipv6 + "022::1/64", SIN_ipv4 + "9/30"))
         l_SIN2_SYD2[SYD2].addParams(ip=(asia_ipv6 + "022::2/64", SIN_ipv4 + "10/30"))
 
-        l_SIN2_SJO1 = self.addLink(SIN2, SJO1,igp_metric=10)
+        l_SIN2_SJO1 = self.addLink(SIN2, SJO1,igp_metric=11)
         l_SIN2_SJO1[SIN2].addParams(ip=(asia_ipv6 + "021::1/64", SIN_ipv4 + "17/30"))
         l_SIN2_SJO1[SJO1].addParams(ip=(asia_ipv6 + "021::2/64", SIN_ipv4 + "18/30"))
 
-        l_SIN1_SJO2 = self.addLink(SIN1, SJO2,igp_metric=10)
+        l_SIN1_SJO2 = self.addLink(SIN1, SJO2,igp_metric=11)
         l_SIN1_SJO2[SIN1].addParams(ip=(asia_ipv6 + "220::1/64", SIN_ipv4 + "33/30"))
         l_SIN1_SJO2[SJO2].addParams(ip=(asia_ipv6 + "220::2/64", SIN_ipv4 + "34/30"))
 
@@ -232,23 +256,23 @@ class SimpleBGPTopo(IPTopo):
         l_ASH2_LAX2[ASH2].addParams(ip=(NA_ipv6 + "022::1/64", ASH_ipv4 + "9/30"))
         l_ASH2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "022::2/64", ASH_ipv4 + "10/30"))
 
-        l_ASH1_LAX2 = self.addLink(ASH1, LAX2,igp_metric=10)
+        l_ASH1_LAX2 = self.addLink(ASH1, LAX2,igp_metric=11)
         l_ASH1_LAX2[ASH1].addParams(ip=(NA_ipv6 + "012::1/64", ASH_ipv4 + "17/30"))
         l_ASH1_LAX2[LAX2].addParams(ip=(NA_ipv6 + "012::2/64", ASH_ipv4 + "18/30"))
 
-        l_SJO1_LAX1 = self.addLink(SJO1, LAX1,igp_metric=10)
+        l_SJO1_LAX1 = self.addLink(SJO1, LAX1,igp_metric=11)
         l_SJO1_LAX1[SJO1].addParams(ip=(NA_ipv6 + "110::1/64", SJO_ipv4 + "5/30"))
         l_SJO1_LAX1[LAX1].addParams(ip=(NA_ipv6 + "110::2/64", SJO_ipv4 + "6/30"))
 
-        l_SJO2_LAX2 = self.addLink(SJO2,LAX2,igp_metric=10)
+        l_SJO2_LAX2 = self.addLink(SJO2,LAX2,igp_metric=11)
         l_SJO2_LAX2[SJO2].addParams(ip=(NA_ipv6 + "220::1/64", SJO_ipv4 + "9/30"))
         l_SJO2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "220::2/64", SJO_ipv4 + "10/30"))
 
-        l_PAR1_ASH1 = self.addLink(PAR1,ASH1, igp_metric=10)
+        l_PAR1_ASH1 = self.addLink(PAR1,ASH1, igp_metric=11)
         l_PAR1_ASH1[PAR1].addParams(ip=(europe_ipv6 + "110::1/64", PAR_ipv4 + "5/30"))
         l_PAR1_ASH1[ASH1].addParams(ip=(europe_ipv6 + "110::2/64", PAR_ipv4 + "6/30"))
 
-        l_PAR2_ASH2 = self.addLink(PAR2,ASH2,igp_metric=10)
+        l_PAR2_ASH2 = self.addLink(PAR2,ASH2,igp_metric=11)
         l_PAR2_ASH2[PAR2].addParams(ip=(europe_ipv6 + "220::1/64", PAR_ipv4 + "9/30"))
         l_PAR2_ASH2[ASH2].addParams(ip=(europe_ipv6 + "220::2/64", PAR_ipv4 + "10/30"))
 
@@ -256,47 +280,47 @@ class SimpleBGPTopo(IPTopo):
         l_PAR1_MRS2[PAR1].addParams(ip=(europe_ipv6 + "101::1/64", PAR_ipv4 + "17/30"))
         l_PAR1_MRS2[MRS2].addParams(ip=(europe_ipv6 + "101::2/64", PAR_ipv4 + "18/30"))
 
-        l_PAR2_MRS1 = self.addLink(PAR2, MRS1,igp_metric=10)
+        l_PAR2_MRS1 = self.addLink(PAR2, MRS1,igp_metric=11)
         l_PAR2_MRS1[PAR2].addParams(ip=(europe_ipv6 + "202::1/64", PAR_ipv4 + "33/30"))
         l_PAR2_MRS1[MRS1].addParams(ip=(europe_ipv6 + "202::2/64", PAR_ipv4 + "34/30"))
 
-        l_SYD2_LAX2 = self.addLink(SYD2,LAX2,igp_metric=10)
+        l_SYD2_LAX2 = self.addLink(SYD2,LAX2,igp_metric=11)
         l_SYD2_LAX2[SYD2].addParams(ip=(europe_ipv6 + "303::1/64", SYD_ipv4 + "5/30"))
         l_SYD2_LAX2[LAX2].addParams(ip=(europe_ipv6 + "303::2/64", SYD_ipv4 + "6/30"))
 
         #=============================================================================
         #Peering links
 
-        l_VDF_PAR2 = self.addLink(VDF, PAR2,igp_metric=10)
-        l_VDF_PAR2[VDF].addParams(ip=(europe_ipv6 + "ffa::1/64",PAR_ipv4 + "73/30"))
-        l_VDF_PAR2[PAR2].addParams(ip=(europe_ipv6 + "ffa::2/64",PAR_ipv4 + "74/30"))
+        l_HVDFPAR2 = self.addLink(VDFPAR2, PAR2,igp_metric=11)
+        l_HVDFPAR2[VDFPAR2].addParams(ip=(europe_ipv6 + "ffa::1/64",PAR_ipv4 + "73/30"))
+        l_HVDFPAR2[PAR2].addParams(ip=(europe_ipv6 + "ffa::2/64",PAR_ipv4 + "74/30"))
 
-        l_VDF_ASH1 = self.addLink(VDF,ASH1,igp_metric=10)
-        l_VDF_ASH1[VDF].addParams(ip=(NA_ipv6 + "ffa::1/64",ASH_ipv4 + "73/30"))
+        l_VDF_ASH1 = self.addLink(VDFASH1,ASH1,igp_metric=11)
+        l_VDF_ASH1[VDFASH1].addParams(ip=(NA_ipv6 + "ffa::1/64",ASH_ipv4 + "73/30"))
         l_VDF_ASH1[ASH1].addParams(ip=(NA_ipv6 + "ffa::2/64",ASH_ipv4 + "74/30"))
 
-        l_VDF_SIN1 = self.addLink(VDF, SIN1,igp_metric=10)
-        l_VDF_SIN1[VDF].addParams(ip=(asia_ipv6 + "ffa::1/64",SIN_ipv4 + "73/30"))
+        l_VDF_SIN1 = self.addLink(VDFSIN1, SIN1,igp_metric=11)
+        l_VDF_SIN1[VDFSIN1].addParams(ip=(asia_ipv6 + "ffa::1/64",SIN_ipv4 + "73/30"))
         l_VDF_SIN1[SIN1].addParams(ip=(asia_ipv6 + "ffa::2/64",SIN_ipv4 + "74/30"))
 
-        l_VDF_SIN2 = self.addLink(VDF, SIN2,igp_metric=10)
-        l_VDF_SIN2[VDF].addParams(ip=(asia_ipv6 + "1fa::1/64",SIN_ipv4 + "81/30"))
+        l_VDF_SIN2 = self.addLink(VDFSIN2, SIN2,igp_metric=11)
+        l_VDF_SIN2[VDFSIN2].addParams(ip=(asia_ipv6 + "1fa::1/64",SIN_ipv4 + "81/30"))
         l_VDF_SIN2[SIN2].addParams(ip=(asia_ipv6 + "1fa::2/64",SIN_ipv4 + "82/30"))
 
-        l_EQX_SIN1 = self.addLink(EQX, SIN1,igp_metric=10)
-        l_EQX_SIN1[EQX].addParams(ip=(asia_ipv6 + "2fb::1/64",SIN_ipv4 + "89/30"))
+        l_EQX_SIN1 = self.addLink(EQXSIN1, SIN1,igp_metric=11)
+        l_EQX_SIN1[EQXSIN1].addParams(ip=(asia_ipv6 + "2fb::1/64",SIN_ipv4 + "89/30"))
         l_EQX_SIN1[SIN1].addParams(ip=(asia_ipv6 + "2fb::2/64",SIN_ipv4 + "90/30"))
 
-        l_EQX_SYD2 = self.addLink(EQX, SYD2,igp_metric=10)
-        l_EQX_SYD2[EQX].addParams(ip=(asia_ipv6 + "3fa::1/64",SYD_ipv4 + "73/30"))
+        l_EQX_SYD2 = self.addLink(EQXSYD2, SYD2,igp_metric=11)
+        l_EQX_SYD2[EQXSYD2].addParams(ip=(asia_ipv6 + "3fa::1/64",SYD_ipv4 + "73/30"))
         l_EQX_SYD2[SYD2].addParams(ip=(asia_ipv6 + "3fa::2/64",SYD_ipv4 + "74/30"))
 
-        l_NTT_SYD2 = self.addLink(NTT, SYD2,igp_metric=10)
-        l_NTT_SYD2[NTT].addParams(ip=(asia_ipv6 + "4fb::1/64",SYD_ipv4 + "81/30"))
+        l_NTT_SYD2 = self.addLink(NTTSYD2, SYD2,igp_metric=11)
+        l_NTT_SYD2[NTTSYD2].addParams(ip=(asia_ipv6 + "4fb::1/64",SYD_ipv4 + "81/30"))
         l_NTT_SYD2[SYD2].addParams(ip=(asia_ipv6 + "4fb::2/64",SYD_ipv4 + "82/30"))
 
-        l_NTT_SYD1 = self.addLink(NTT, SYD1,igp_metric=10)
-        l_NTT_SYD1[NTT].addParams(ip=(asia_ipv6 + "5fa::1/64",SYD_ipv4 + "89/30"))
+        l_NTT_SYD1 = self.addLink(NTTSYD1, SYD1,igp_metric=11)
+        l_NTT_SYD1[NTTSYD1].addParams(ip=(asia_ipv6 + "5fa::1/64",SYD_ipv4 + "89/30"))
         l_NTT_SYD1[SYD1].addParams(ip=(asia_ipv6 + "5fa::2/64",SYD_ipv4 + "90/30"))
 
 
@@ -339,37 +363,64 @@ class SimpleBGPTopo(IPTopo):
         bgp_fullmesh(self, [SIN1, SYD2, ASH1, PAR2])
         # bgp_fullmesh(self, [MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2])
        
-        self.addAS(2, (EQX,))
-        self.addAS(3, (VDF,))
-        self.addAS(4, (NTT,))
+        self.addAS(2, (EQXSIN1,EQXSYD2))
+        self.addAS(3, (VDFASH1,VDFPAR2,VDFSIN1,VDFSIN2))
+        self.addAS(4, (NTTSYD1,NTTSYD2))
 
-        ebgp_session(self, VDF, PAR2)
-        ebgp_session(self, VDF, ASH1)
-        ebgp_session(self, VDF, SIN1)
-        ebgp_session(self, VDF, SIN2)
-        ebgp_session(self, EQX, SIN1)
-        ebgp_session(self, EQX, SYD2)
-        ebgp_session(self, NTT, SYD2)
-        ebgp_session(self, NTT, SYD1)
+        ebgp_session(self, VDFPAR2, PAR2)
+        ebgp_session(self, VDFASH1, ASH1)
+        ebgp_session(self, VDFSIN1, SIN1)
+        ebgp_session(self, VDFSIN2, SIN2)
+        ebgp_session(self, EQXSIN1, SIN1)
+        ebgp_session(self, EQXSYD2, SYD2)
+        ebgp_session(self, NTTSYD2, SYD2)
+        ebgp_session(self, NTTSYD1, SYD1)
 
 
-        H1 = self.addHost("H1")
-        H2 = self.addHost("H2")
-        H3 = self.addHost("H3")
+        HVDFPAR2 = self.addHost("HVDFPAR2")
+        HVDFASH1 = self.addHost("HVDFASH1")
+        HVDFSIN1 = self.addHost("HVDFSIN1")
+        HVDFSIN2 = self.addHost("HVDFSIN2")
+
+        HEQXSIN1 = self.addHost("HEQXSIN1")
+        HEQXSYD2 = self.addHost("HEQXSYD2")
+
+        HNTTSYD2 = self.addHost("HNTTSYD2")
+        HNTTSYD1 = self.addHost("HNTTSYD1")
         
 
 
-        l_H1_VDF = self.addLink(H1, VDF,igp_metric=2)
-        l_H1_VDF[H1].addParams(ip=(europe_ipv6 + "aaa::2/64", VDF_ipv4 + "5/30"))
-        l_H1_VDF[VDF].addParams(ip=(europe_ipv6 + "aaa::a/64", VDF_ipv4 + "6/30"))
+        l_HVDFPAR2 = self.addLink(HVDFPAR2, VDFPAR2,igp_metric=2)
+        l_HVDFPAR2[HVDFPAR2].addParams(ip=(VDF_ipv6 + "aaa::1/64", VDF_ipv4 + "21/30"))
+        l_HVDFPAR2[VDFPAR2].addParams(ip=(VDF_ipv6 + "aaa::2/64", VDF_ipv4 + "22/30"))
 
-        l_H2_EQX = self.addLink(H2, EQX,igp_metric=2)
-        l_H2_EQX[H2].addParams(ip=(europe_ipv6 + "bbb::2/64", EQX_ipv4 + "9/30"))
-        l_H2_EQX[EQX].addParams(ip=(europe_ipv6 + "bbb::a/64", EQX_ipv4 + "10/30"))
+        l_HVDFASH1 = self.addLink(HVDFASH1, VDFASH1,igp_metric=2)
+        l_HVDFASH1[HVDFASH1].addParams(ip=(VDF_ipv6 + "bbb::1/64", VDF_ipv4 + "25/30"))
+        l_HVDFASH1[VDFASH1].addParams(ip=(VDF_ipv6 + "bbb::2/64", VDF_ipv4 + "26/30"))
 
-        l_H3_NTT = self.addLink(H3, NTT,igp_metric=2)
-        l_H3_NTT[H3].addParams(ip=(europe_ipv6 + "ccc::2/64", NTT_ipv4 + "17/30"))
-        l_H3_NTT[NTT].addParams(ip=(europe_ipv6 + "ccc::a/64", NTT_ipv4 + "18/30"))
+        l_HVDFSIN1 = self.addLink(HVDFSIN1, VDFSIN1,igp_metric=2)
+        l_HVDFSIN1[HVDFSIN1].addParams(ip=(VDF_ipv6 + "ccc::1/64", VDF_ipv4 + "29/30"))
+        l_HVDFSIN1[VDFSIN1].addParams(ip=(VDF_ipv6 + "ccc::2/64", VDF_ipv4 + "30/30"))
+
+        l_HVDFSIN2 = self.addLink(HVDFSIN2, VDFSIN2,igp_metric=2)
+        l_HVDFSIN2[HVDFSIN2].addParams(ip=(VDF_ipv6 + "ddd::1/64", VDF_ipv4 + "33/30"))
+        l_HVDFSIN2[VDFSIN2].addParams(ip=(VDF_ipv6 + "ddd::2/64", VDF_ipv4 + "34/30"))
+
+        l_HEQXSYD2 = self.addLink(HEQXSYD2, EQXSYD2,igp_metric=2)
+        l_HEQXSYD2[HEQXSYD2].addParams(ip=(EQX_ipv6 + "aaa::1/64", EQX_ipv4 + "13/30"))
+        l_HEQXSYD2[EQXSYD2].addParams(ip=(EQX_ipv6 + "aaa::2/64", EQX_ipv4 + "14/30"))
+
+        l_HEQXSIN1 = self.addLink(HEQXSIN1, EQXSIN1,igp_metric=2)
+        l_HEQXSIN1[HEQXSIN1].addParams(ip=(EQX_ipv6 + "bbb::1/64", EQX_ipv4 + "17/30"))
+        l_HEQXSIN1[EQXSIN1].addParams(ip=(EQX_ipv6 + "bbb::2/64", EQX_ipv4 + "18/30"))
+
+        l_HNTTSYD2 = self.addLink(HNTTSYD2, NTTSYD2,igp_metric=2)
+        l_HNTTSYD2[HNTTSYD2].addParams(ip=(NTT_ipv6 + "aaa::1/64", NTT_ipv4 + "13/30"))
+        l_HNTTSYD2[NTTSYD2].addParams(ip=(NTT_ipv6 + "aaa::2/64", NTT_ipv4 + "14/30"))
+
+        l_HNTTSYD1= self.addLink(HNTTSYD1, NTTSYD1,igp_metric=2)
+        l_HNTTSYD1[HNTTSYD1].addParams(ip=(NTT_ipv6 + "bbb::1/64", NTT_ipv4 + "17/30"))
+        l_HNTTSYD1[NTTSYD1].addParams(ip=(NTT_ipv6 + "bbb::2/64", NTT_ipv4 + "18/30"))
 
 
         #=============================================================================
@@ -378,10 +429,9 @@ class SimpleBGPTopo(IPTopo):
 
         super().build(*args, **kwargs)
 
-
 # Press the green button to run the script.
 if __name__ == '__main__':
-    net = IPNet(topo=SimpleBGPTopo(), allocate_IPs = False)
+    net = IPNet(topo=SimpleBGPTopo(), allocate_IPs=False)
     try:
         net.start()
         ########################################
@@ -394,16 +444,16 @@ if __name__ == '__main__':
         print(net['S2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format("1627:6000:0:3a1a::4",2,SERVER_PW)))
         
         #Configuring TTL and PASSWORD for SIN1-EQX
-        print(net['EQX'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::2",2,EQX_PW)))
-        print(net['SIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::1",2,EQX_PW)))
+        # print(net['EQX'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::2",2,EQX_PW)))
+        # print(net['SIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::1",2,EQX_PW)))
 
-        #Configuring TTL and PASSWORD for SYD2-NTT
-        print(net['NTT'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "4fb::2",2,NTT_PW)))
-        print(net['SYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "4fb::1",2,NTT_PW)))
+        # #Configuring TTL and PASSWORD for SYD2-NTT
+        # print(net['NTT'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "4fb::2",2,NTT_PW)))
+        # print(net['SYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "4fb::1",2,NTT_PW)))
 
-        #Configuring TTL and PASSWORD for PAR2-VDF
-        print(net['VDF'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::2",2,VDF_PW)))
-        print(net['PAR2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::1",2,VDF_PW)))
+        # #Configuring TTL and PASSWORD for PAR2-VDF
+        # print(net['VDF'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::2",2,VDF_PW)))
+        # print(net['PAR2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::1",2,VDF_PW)))
         ########################################
 
 
@@ -428,11 +478,10 @@ if __name__ == '__main__':
         print(net['SIN1'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(community_local_pref_200_name, 200, general_route_map,30)))
         #Adding default permit at the end
         print(net['SIN1'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
-
         #applying route-map on neighbors
         print(net['SIN1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "2fb::1",general_route_map,"in")))
         print(net['SIN1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "ffa::1",general_route_map,"in")))
-        
+
         #=================================#
         #=================================#
 
@@ -481,7 +530,6 @@ if __name__ == '__main__':
         print(net['SYD2'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(community_local_pref_200_name, 200, general_route_map,30)))
         #Adding default permit at the end
         print(net['SYD2'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
-
         #applying route-map on neighbors
         print(net['SYD2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "3fa::1",general_route_map,"in")))
         print(net['SYD2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "4fb::1",general_route_map,"in")))
@@ -522,6 +570,14 @@ if __name__ == '__main__':
 
         #=================================#
         #=================================#
+
+        ###TESTING COMMUNITIES#############
+
+        # print(net['VDF'].cmd('python3 scripts/BGP_SET_ANY_COMM_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1,general_route_map,10)))
+        # print(net['VDF'].cmd('python3 scripts/BGP_SET_ANY_COMM_RMNAME_SEQ.py {} {} {}'.format(community_local_pref_200,general_route_map,30)))
+        # print(net['VDF'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
+        # print(net['VDF'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(europe_ipv6 + "ffa::2",general_route_map,"out")))
+
         IPCLI(net)
     finally:
         net.stop()
