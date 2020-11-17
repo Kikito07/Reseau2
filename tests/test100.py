@@ -2,7 +2,7 @@ from ipmininet.iptopo import IPTopo
 from ipmininet.ipnet import IPNet
 from ipmininet.cli import IPCLI
 from ipmininet.router.config import CommunityList, BGP, OSPF6, AccessList, RouterConfig, AF_INET6, AF_INET, set_rr, ebgp_session, SHARE, IP6Tables, InputFilter, Deny, Allow, Rule, bgp_fullmesh, bgp_peering, ebgp_session, CLIENT_PROVIDER, SHARE
-
+import time
 
 class MyTopology(IPTopo):
 
@@ -80,12 +80,32 @@ class MyTopology(IPTopo):
 net = IPNet(topo=MyTopology(),allocate_IPs = False)  # Disable IP auto-allocation
 try:
     net.start()
-    print(net['r2'].cmd('python3 scripts/BGP_SET_ANY_COMM_RMNAME.py {} {}'.format("2:100","LPREF_200")))
-    print(net['r2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("2042:12::1","LPREF_200","out")))
+    general_route_map = "general_route_map"
+    
+    community_as_prepend_x1 = "1:100"
+    community_as_prepend_x1_name = "prepend_x1"
+    community_as_prepend_x2 = "2:100"
+    community_as_prepend_x2_name = "prepend_x2"
 
-    print(net['r1'].cmd('python3 scripts/BGP_C_COMM_NAME.py {} {}'.format("2:100","LPREF_200")))
-    print(net['r1'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME.py {} {} {}'.format("LPREF_200",200,"RM_LPREF_200")))
-    print(net['r1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("2042:12::2","RM_LPREF_200","in")))
+    community_local_pref_200 = "200:200"
+    community_local_pref_200_name = "local_pref_200"
+    # adding x1 and x2 communities to every packet
+    print(net['r2'].cmd('python3 scripts/BGP_SET_ANY_COMM_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1,general_route_map,10)))
+    print(net['r2'].cmd('python3 scripts/BGP_SET_ANY_COMM_RMNAME_SEQ.py {} {} {}'.format(community_local_pref_200,general_route_map,20)))
+    print(net['r2'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
+    print(net['r2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("2042:12::1",general_route_map,"out")))
+
+    print(net['r1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_as_prepend_x1,community_as_prepend_x1_name)))
+    print(net['r1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_local_pref_200,community_local_pref_200_name)))
+
+
+    print(net['r1'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(community_local_pref_200_name,200,general_route_map,10)))
+    print(net['r1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map,20)))
+    print(net['r1'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
+    print(net['r1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("2042:12::2",general_route_map,"in")))
+ 
+
+
     # print(net['r1'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(300)))
     # print(net['r11'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("2042:12::2", "TEST", "in")))
     # print(net['r11'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(200)))

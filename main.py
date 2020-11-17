@@ -344,13 +344,13 @@ class SimpleBGPTopo(IPTopo):
         self.addAS(4, (NTT,))
 
         ebgp_session(self, VDF, PAR2)
-        # ebgp_session(self, VDF, ASH1)
-        # ebgp_session(self, VDF, SIN1)
-        # ebgp_session(self, VDF, SIN2)
+        ebgp_session(self, VDF, ASH1)
+        ebgp_session(self, VDF, SIN1)
+        ebgp_session(self, VDF, SIN2)
         ebgp_session(self, EQX, SIN1)
-        # ebgp_session(self, EQX, SYD2)
+        ebgp_session(self, EQX, SYD2)
         ebgp_session(self, NTT, SYD2)
-        # ebgp_session(self, NTT, SYD1)
+        ebgp_session(self, NTT, SYD1)
 
 
         H1 = self.addHost("H1")
@@ -384,6 +384,7 @@ if __name__ == '__main__':
     net = IPNet(topo=SimpleBGPTopo(), allocate_IPs = False)
     try:
         net.start()
+        ########################################
         #Configuring server to respond faster to failures
         print(net['PAR1'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::3",1,4)))
         print(net['S2'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::4",1,4)))
@@ -403,6 +404,24 @@ if __name__ == '__main__':
         #Configuring TTL and PASSWORD for PAR2-VDF
         print(net['VDF'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::2",2,VDF_PW)))
         print(net['PAR2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::1",2,VDF_PW)))
+        ########################################
+
+
+        ########################################
+        #Defining communities
+        community_as_prepend_x1 = "1:100"
+        community_as_prepend_x1_name = "prepend_x1"
+        community_as_prepend_x2 = "2:100"
+        community_as_prepend_x2_name = "prepend_x2"
+        general_route_map = "general_route_map"
+        #Applying communities
+        print(net['SIN1'].cmd('python3 scripts/BGP_CCL_COMM_NAME.py {} {}'.format(community_as_prepend_x1,community_as_prepend_x1_name)))
+        print(net['SIN1'].cmd('python3 scripts/BGP_CCL_COMM_NAME.py {} {}'.format(community_as_prepend_x2,community_as_prepend_x2_name)))
+        print(net['SIN1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map,10)))
+        print(net['SIN1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2_name,general_route_map,20)))
+        print(net['SIN1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "2fb::1",general_route_map,"in")))
+        print(net['SIN1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "ffa::1",general_route_map,"in")))
+        ########################################
         IPCLI(net)
     finally:
         net.stop()
