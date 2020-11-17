@@ -37,11 +37,11 @@ class MyTopology(IPTopo):
         lh1rh1[rh1].addParams(ip=("2042:5e::a/64","10.10.0.2/30"))
 
 
-        lr1rh1 = self.addLink(r1, rh1)
+        lr1rh1 = self.addLink(r1, rh1,igp_metric=10)
         lr1rh1[r1].addParams(ip=("2042:1a::1/64","10.51.0.1/30"))
         lr1rh1[rh1].addParams(ip=("2042:1a::a/64","10.51.0.2/30"))
 
-        lr11rh1 = self.addLink(r11, rh1)
+        lr11rh1 = self.addLink(r11, rh1, igp_metric=15)
         lr11rh1[r11].addParams(ip=("2042:3c::2/64","10.64.0.1/30"))
         lr11rh1[rh1].addParams(ip=("2042:3c::b/64","10.64.0.2/30"))
 
@@ -81,8 +81,9 @@ net = IPNet(topo=MyTopology(),allocate_IPs = False)  # Disable IP auto-allocatio
 try:
     net.start()
     print(net['r1'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(300)))
-    print(net['r11'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(200)))
-    print(net['r2'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(150)))
+    print(net['r1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("2042:12::2", "TEST", "in")))
+    # print(net['r11'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(200)))
+    # print(net['r2'].cmd('python3 scripts/BGP_LPREF.py  {}'.format(150)))
     IPCLI(net)
     
 finally:

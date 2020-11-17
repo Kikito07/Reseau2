@@ -21,17 +21,17 @@ class MyTopology(IPTopo):
         #     AF_INET(redistribute=('connected',)),
         #     AF_INET6(redistribute=('connected',))))
 
-        lr1r2 = self.addLink(r1, r2)
-        lr1r2[r1].addParams(ip=("2042:12::1/64","10.12.0.1/30"))
-        lr1r2[r2].addParams(ip=("2042:12::2/64","10.12.0.2/30"))
+        lr1r2 = self.addLink(r1, r2, password="test")
+        lr1r2[r1].addParams(ip=("2042:12::1/64","10.12.0.1/30"),password="test")
+        lr1r2[r2].addParams(ip=("2042:12::2/64","10.12.0.2/30"),password="test")
 
         lr1h1 = self.addLink(r1, h1)
-        lr1h1[r1].addParams(ip=("2042:1a::1/64","10.51.0.1/30"))
-        lr1h1[h1].addParams(ip=("2042:1a::a/64","10.51.0.2/30"))
+        lr1h1[r1].addParams(ip=("2042:1a::1/64","10.51.0.1/30"),password="test")
+        lr1h1[h1].addParams(ip=("2042:1a::a/64","10.51.0.2/30"),password="test")
 
         lr2h2 = self.addLink(r2, h2)
-        lr2h2[r2].addParams(ip=("2042:2b::2/64","10.62.0.1/30"))
-        lr2h2[h2].addParams(ip=("2042:2b::b/64","10.62.0.2/30"))
+        lr2h2[r2].addParams(ip=("2042:2b::2/64","10.62.0.1/30"),password="test")
+        lr2h2[h2].addParams(ip=("2042:2b::b/64","10.62.0.2/30"),password="test")
 
         # self.addAS(1, (r1,))
         # self.addAS(2, (r2,))
@@ -41,8 +41,6 @@ class MyTopology(IPTopo):
 net = IPNet(topo=MyTopology(), allocate_IPs=False)  # Disable IP auto-allocation
 try:
     net.start()
-    print(net['r1'].cmd('python3 scripts/OSPF_PASSWORD_INTERFACE.py {} {}'.format("test","r1-eth0")))
-    print(net['r2'].cmd('python3 scripts/OSPF_PASSWORD_INTERFACE.py {} {}'.format("test","r2-eth0")))
     IPCLI(net)
 finally:
     net.stop()

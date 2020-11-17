@@ -18,6 +18,9 @@ interface ${intf.name}
   % if not intf.passive and intf.active:
   ip ospf dead-interval ${intf.dead_int}
   ip ospf hello-interval ${intf.hello_int}
+  % if intf.password is not None:
+  ip ospf authentication-key ${intf.password}
+  % endif
   % endif
   <%block name="interface"/>
 !
@@ -36,6 +39,9 @@ router ospf
   passive-interface ${itf.name}
     % endif
   % endfor
+  % if intf.password is not None:
+  area 0 authentication
+  % endif
 
   <%block name="router"/>
 !

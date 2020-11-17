@@ -26,7 +26,7 @@ class OSPF6(OSPF):
                            i.get('ospf_dead_int', self.options.dead_int)),
             hello_int=i.get('ospf6_hello_int',
                             i.get('ospf_hello_int', self.options.hello_int)),
-            cost=i.igp_metric,
+            cost=i.get("igp_metric",1),
             # Is the interface forcefully disabled?
             passive=i.get('igp_passive', False),
             instance_id=i.get('instance_id', self.options.instance_id),
