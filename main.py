@@ -357,7 +357,7 @@ class SimpleBGPTopo(IPTopo):
         # BGP setup
         self.addAS(1,(MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2))
         set_rr(self, rr=SIN1, peers=[SYD1, MRS1, SIN2, MRS2, SJO1, SJO2])
-        set_rr(self, rr=SYD2, peers=[SYD1, SIN2, SJO1, LAX1, LAX2])
+        set_rr(self, rr=SYD2, peers=[SYD1, SIN2, LAX1, LAX2])
         set_rr(self, rr=ASH1, peers=[SJO1, SJO2, LAX1, LAX2, PAR1, ASH2])
         set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2])
         bgp_fullmesh(self, [SIN1, SYD2, ASH1, PAR2])
@@ -434,7 +434,7 @@ if __name__ == '__main__':
     net = IPNet(topo=SimpleBGPTopo(), allocate_IPs=False)
     try:
         net.start()
-        # ########################################
+        ########################################
         # #Configuring server to respond faster to failures
         # print(net['PAR1'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::3",1,4)))
         # print(net['S2'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::4",1,4)))
