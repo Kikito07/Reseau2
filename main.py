@@ -477,6 +477,39 @@ if __name__ == '__main__':
         # # print(net['PAR2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::1",2,VDF_PW)))
         # ########################################
 
+        #Configuring TTL and PASSWORD for S2
+        # print(net['PAR1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format("1627:6000:0:3a1a::3",2,SERVER_PW)))
+        # print(net['S2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format("1627:6000:0:3a1a::4",2,SERVER_PW)))
+        
+        # #Configuring TTL and PASSWORD for EQX
+        # print(net['EQXSIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::2",2,EQX_PW)))
+        # print(net['SIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::1",2,EQX_PW)))
+
+        # print(net['EQXSYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "3fa::2",2,EQX_PW)))
+        # print(net['SYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "3fa::1",2,EQX_PW)))
+
+        # #Configuring TTL and PASSWORD for NTT
+        # print(net['NTTSYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "4fb::2",2,NTT_PW)))
+        # print(net['SYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {print(net['VDFPAR2'].cmd('python3 scripts/BGP_SET_ANY_COMM_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1,general_route_map,10)))
+        # print(net['VDFPAR2'].cmd('python3 scripts/BGP_SET_ANY_COMM_RMNAME_SEQ.py {} {} {}'.format(community_local_pref_200,general_route_map,30)))
+        # print(net['VDFPAR2'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
+        # print(net['VDFPAR2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(europe_ipv6 + "ffa::2",general_route_map,"out")))} {} {}'.format(asia_ipv6 + "4fb::1",2,NTT_PW)))
+
+        # print(net['NTTSYD1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "5fa::2",2,NTT_PW)))
+        # print(net['SYD1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "5fa::1",2,NTT_PW)))
+        
+        # #Configuring TTL and PASSWORD for VDF
+        # print(net['VDFPAR2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::2",2,VDF_PW)))
+        # print(net['PAR2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::1",2,VDF_PW)))
+
+        # print(net['VDFASH1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(NA_ipv6 + "ffa::2",2,VDF_PW)))
+        # print(net['ASH1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(NA_ipv6 + "ffa::1",2,VDF_PW)))
+
+        # print(net['VDFSIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "ffa::2",2,VDF_PW)))
+        # print(net['SIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "ffa::1",2,VDF_PW)))
+
+        # print(net['VDFSIN2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "1fa::2",2,VDF_PW)))
+        # print(net['SIN2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "1fa::1",2,VDF_PW)))
 
         # ########################################
         ##########################################
