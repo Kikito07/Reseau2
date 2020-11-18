@@ -83,7 +83,7 @@ class SimpleBGPTopo(IPTopo):
         EQXSYD2 = self.addRouter("EQXSYD2",config=RouterConfig, lo_addresses=[EQX_ipv6 + "001::/64", EQX_ipv4 + "110/32"])
         #routers peering NTT
         NTTSYD1 = self.addRouter("NTTSYD1",config=RouterConfig, lo_addresses=[NTT_ipv6 + "000::/64", NTT_ipv4 + "100/32"])
-        NTTSYD2 = self.addRouter("NTTSYD2",config=RouterConfig, lo_addresses=[NTT_ipv6 + "001::/64", NTT_ipv4 + "110/32"])
+        #NTTSYD2 = self.addRouter("NTTSYD2",config=RouterConfig, lo_addresses=[NTT_ipv6 + "001::/64", NTT_ipv4 + "110/32"])
 
         
         
@@ -120,7 +120,7 @@ class SimpleBGPTopo(IPTopo):
         EQXSYD2.addDaemon(OSPF6)
 
         NTTSYD1.addDaemon(OSPF6)
-        NTTSYD2.addDaemon(OSPF6)
+        #NTTSYD2.addDaemon(OSPF6)
         
 
         # adding OSPF
@@ -137,7 +137,6 @@ class SimpleBGPTopo(IPTopo):
 
         LAX1.addDaemon(OSPF)        
         LAX2.addDaemon(OSPF)
-
         SJO1.addDaemon(OSPF)
         SJO2.addDaemon(OSPF)
 
@@ -156,7 +155,7 @@ class SimpleBGPTopo(IPTopo):
         EQXSYD2.addDaemon(OSPF)
 
         NTTSYD1.addDaemon(OSPF)
-        NTTSYD2.addDaemon(OSPF)
+        #NTTSYD2.addDaemon(OSPF)
 
         # adding BGP 
         #=========================================================
@@ -190,7 +189,7 @@ class SimpleBGPTopo(IPTopo):
         EQXSYD2.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
         
         NTTSYD1.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
-        NTTSYD2.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
+        #NTTSYD2.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected']),),debug=("updates",))
       
         # linkin twin datacenters
         #=========================================================
@@ -318,9 +317,9 @@ class SimpleBGPTopo(IPTopo):
         l_EQX_SYD2[EQXSYD2].addParams(ip=(asia_ipv6 + "3fa::1/64",SYD_ipv4 + "9/30"))
         l_EQX_SYD2[SYD2].addParams(ip=(asia_ipv6 + "3fa::2/64",SYD_ipv4 + "10/30"))
 
-        l_NTT_SYD2 = self.addLink(NTTSYD2, SYD2,igp_metric=11)
-        l_NTT_SYD2[NTTSYD2].addParams(ip=(asia_ipv6 + "4fb::1/64",SYD_ipv4 + "13/30"))
-        l_NTT_SYD2[SYD2].addParams(ip=(asia_ipv6 + "4fb::2/64",SYD_ipv4 + "14/30"))
+        # l_NTT_SYD2 = self.addLink(NTTSYD2, SYD2,igp_metric=11)
+        # l_NTT_SYD2[NTTSYD2].addParams(ip=(asia_ipv6 + "4fb::1/64",SYD_ipv4 + "13/30"))
+        # l_NTT_SYD2[SYD2].addParams(ip=(asia_ipv6 + "4fb::2/64",SYD_ipv4 + "14/30"))
 
         l_NTT_SYD1 = self.addLink(NTTSYD1, SYD1,igp_metric=11)
         l_NTT_SYD1[NTTSYD1].addParams(ip=(asia_ipv6 + "5fa::1/64",SYD_ipv4 + "17/30"))
@@ -368,7 +367,7 @@ class SimpleBGPTopo(IPTopo):
        
         self.addAS(2, (EQXSIN1,EQXSYD2))
         self.addAS(3, (VDFASH1,VDFPAR2,VDFSIN1,VDFSIN2))
-        self.addAS(4, (NTTSYD1,NTTSYD2))
+        self.addAS(4, (NTTSYD1,))
 
         ebgp_session(self, VDFPAR2, PAR2)
         ebgp_session(self, VDFASH1, ASH1)
@@ -376,7 +375,7 @@ class SimpleBGPTopo(IPTopo):
         ebgp_session(self, VDFSIN2, SIN2)
         ebgp_session(self, EQXSIN1, SIN1)
         ebgp_session(self, EQXSYD2, SYD2)
-        ebgp_session(self, NTTSYD2, SYD2)
+        #ebgp_session(self, NTTSYD2, SYD2)
         ebgp_session(self, NTTSYD1, SYD1)
 
 
@@ -417,9 +416,9 @@ class SimpleBGPTopo(IPTopo):
         l_hEqxSin1[hEqxSin1].addParams(ip=(EQX_ipv6 + "bbb::1/64", EQX_ipv4 + "17/30"))
         l_hEqxSin1[EQXSIN1].addParams(ip=(EQX_ipv6 + "bbb::2/64", EQX_ipv4 + "18/30"))
 
-        l_hNttSyd2 = self.addLink(hNttSyd2, NTTSYD2,igp_metric=2)
-        l_hNttSyd2[hNttSyd2].addParams(ip=(NTT_ipv6 + "aaa::1/64", NTT_ipv4 + "13/30"))
-        l_hNttSyd2[NTTSYD2].addParams(ip=(NTT_ipv6 + "aaa::2/64", NTT_ipv4 + "14/30"))
+        # l_hNttSyd2 = self.addLink(hNttSyd2, NTTSYD2,igp_metric=2)
+        # l_hNttSyd2[hNttSyd2].addParams(ip=(NTT_ipv6 + "aaa::1/64", NTT_ipv4 + "13/30"))
+        # l_hNttSyd2[NTTSYD2].addParams(ip=(NTT_ipv6 + "aaa::2/64", NTT_ipv4 + "14/30"))
 
         l_hNttSyd1= self.addLink(hNttSyd1, NTTSYD1,igp_metric=2)
         l_hNttSyd1[hNttSyd1].addParams(ip=(NTT_ipv6 + "bbb::1/64", NTT_ipv4 + "17/30"))
