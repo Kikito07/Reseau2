@@ -12,15 +12,15 @@ europe_ipv6 = monde_ipv6 + ":0"
 NA_ipv6 = monde_ipv6 + ":1"
 asia_ipv6 = monde_ipv6 + ":2"
 server_ipv6 = monde_ipv6 + ":3"
-server_ipv4 = "162.76.7."
+server_ipv4 = "162.76.248."
 
-MRS_ipv4 = "162.76.0."
-PAR_ipv4 = "162.76.1."
-SIN_ipv4 = "162.76.2."
-SYD_ipv4 = "162.76.3."
-LAX_ipv4 = "162.76.4."
-SJO_ipv4 = "162.76.5."
-ASH_ipv4 = "162.76.6."
+MRS_ipv4 = "162.76.241."
+PAR_ipv4 = "162.76.242."
+SIN_ipv4 = "162.76.243."
+SYD_ipv4 = "162.76.244."
+LAX_ipv4 = "162.76.245."
+SJO_ipv4 = "162.76.246."
+ASH_ipv4 = "162.76.247."
 
 
 VDF_ipv4 = "160.76.7."
@@ -256,15 +256,15 @@ class SimpleBGPTopo(IPTopo):
         l_ASH2_LAX2[ASH2].addParams(ip=(NA_ipv6 + "022::1/64", ASH_ipv4 + "9/30"))
         l_ASH2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "022::2/64", ASH_ipv4 + "10/30"))
 
-        l_ASH1_LAX2 = self.addLink(ASH1, LAX2,igp_metric=11)
+        l_ASH1_LAX2 = self.addLink(ASH1, LAX2,igp_metric=3)
         l_ASH1_LAX2[ASH1].addParams(ip=(NA_ipv6 + "012::1/64", ASH_ipv4 + "13/30"))
         l_ASH1_LAX2[LAX2].addParams(ip=(NA_ipv6 + "012::2/64", ASH_ipv4 + "14/30"))
 
-        l_SJO1_LAX1 = self.addLink(SJO1, LAX1,igp_metric=11)
+        l_SJO1_LAX1 = self.addLink(SJO1, LAX1,igp_metric=3)
         l_SJO1_LAX1[SJO1].addParams(ip=(NA_ipv6 + "110::1/64", SJO_ipv4 + "5/30"))
         l_SJO1_LAX1[LAX1].addParams(ip=(NA_ipv6 + "110::2/64", SJO_ipv4 + "6/30"))
 
-        l_SJO2_LAX2 = self.addLink(SJO2,LAX2,igp_metric=11)
+        l_SJO2_LAX2 = self.addLink(SJO2,LAX2,igp_metric=3)
         l_SJO2_LAX2[SJO2].addParams(ip=(NA_ipv6 + "220::1/64", SJO_ipv4 + "9/30"))
         l_SJO2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "220::2/64", SJO_ipv4 + "10/30"))
 
@@ -280,7 +280,7 @@ class SimpleBGPTopo(IPTopo):
         l_PAR1_MRS2[PAR1].addParams(ip=(europe_ipv6 + "101::1/64", PAR_ipv4 + "13/30"))
         l_PAR1_MRS2[MRS2].addParams(ip=(europe_ipv6 + "101::2/64", PAR_ipv4 + "14/30"))
 
-        l_PAR2_MRS1 = self.addLink(PAR2, MRS1,igp_metric=11)
+        l_PAR2_MRS1 = self.addLink(PAR2, MRS1,igp_metric=3)
         l_PAR2_MRS1[PAR2].addParams(ip=(europe_ipv6 + "202::1/64", PAR_ipv4 + "17/30"))
         l_PAR2_MRS1[MRS1].addParams(ip=(europe_ipv6 + "202::2/64", PAR_ipv4 + "18/30"))
 
@@ -435,11 +435,28 @@ if __name__ == '__main__':
     try:
         net.start()
         ########################################
+
+        # #Defining communities
+        # community_as_prepend_x1 = "1:100"
+        # community_as_prepend_x1_name = "prepend_x1"
+        # community_as_prepend_x2 = "2:100"
+        # community_as_prepend_x2_name = "prepend_x2"
+        # community_local_pref_200 = "200:200"
+        # community_local_pref_200_name = "local_pref_200"
+        general_route_map = "general_route_map"
+
         print(net['PAR2'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::3",1,4)))
         print(net['S2'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::4",1,4)))
 
         print(net['SJO2'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::1",1,4)))
         print(net['S1'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::2",1,4)))
+
+        print(net['PAR2'].cmd('python3 scripts/BGP_rm_aspath_ASN_RM_SEQ.py {} {} {}'.format(64512,general_route_map,10)))
+        print(net['SJO2'].cmd('python3 scripts/BGP_rm_aspath_ASN_RM_SEQ.py {} {} {}'.format(64512,general_route_map,10)))
+        print(net['PAR2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("1627:6000:0:3a1a::3",general_route_map,"in")))
+        print(net['SJO2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("1627:6000:0:3a1a::1",general_route_map,"in")))
+    
+    
 
         # #Configuring TTL and PASSWORD for PAR1-S2
         # print(net['PAR1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format("1627:6000:0:3a1a::3",2,SERVER_PW)))
@@ -460,14 +477,7 @@ if __name__ == '__main__':
 
 
         # ########################################
-        # #Defining communities
-        # community_as_prepend_x1 = "1:100"
-        # community_as_prepend_x1_name = "prepend_x1"
-        # community_as_prepend_x2 = "2:100"
-        # community_as_prepend_x2_name = "prepend_x2"
-        # community_local_pref_200 = "200:200"
-        # community_local_pref_200_name = "local_pref_200"
-        # general_route_map = "general_route_map"
+        
         # #creating community lists
         # print(net['SIN1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_as_prepend_x1,community_as_prepend_x1_name)))
         # print(net['SIN1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_as_prepend_x2,community_as_prepend_x2_name)))

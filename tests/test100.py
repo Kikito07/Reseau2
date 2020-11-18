@@ -20,11 +20,11 @@ class MyTopology(IPTopo):
         r11.addDaemon(BGP,debug=("updates",))
         
         r2.addDaemon(BGP, address_families=(
-            AF_INET(redistribute=('connected',)),
-            AF_INET6(redistribute=( 'connected',))),debug=("updates",))
+            AF_INET(redistribute=('connected','ospf')),
+            AF_INET6(redistribute=( 'connected''ospf',))),debug=("updates",))
         rh1.addDaemon(BGP, address_families=(
-            AF_INET(redistribute=('connected',)),
-            AF_INET6(redistribute=('connected',))),debug=("updates",))
+            AF_INET(redistribute=('connected','ospf')),
+            AF_INET6(redistribute=('connected','ospf'))),debug=("updates",))
 
         lr1r2 = self.addLink(r1, r2)
         lr1r2[r1].addParams(ip=("2042:12::1/64","10.12.0.1/30"))
