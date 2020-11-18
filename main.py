@@ -39,6 +39,9 @@ VDF_PW = createPassword("VDF"+secretKey)
 EQX_PW = createPassword("EQX"+secretKey)
 NTT_PW = createPassword("NTT"+secretKey)
 SERVER_PW = createPassword("SER"+secretKey)
+OSPF_PW_EU = "99cj8HyU2WTj2Gm"
+OSPF_PW_AS = "7fv8G8J2mT2KvpF"
+OSPF_PW_NA = "v5x6j4S8MBDrLk6"
 
 
 class SimpleBGPTopo(IPTopo):
@@ -356,10 +359,10 @@ class SimpleBGPTopo(IPTopo):
         #=============================================================================
         # BGP setup
         self.addAS(1,(MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2))
-        set_rr(self, rr=SIN1, peers=[SYD1, MRS1, SIN2, MRS2, SJO1, SJO2, SYD2, ASH1, PAR2])
-        set_rr(self, rr=SYD2, peers=[SYD1, SIN2, LAX1, LAX2, SIN1, ASH1, PAR2])
-        set_rr(self, rr=ASH1, peers=[SJO1, SJO2, LAX1, LAX2, PAR1, ASH2, SIN1,SYD2, PAR2])
-        set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2, SIN1, SYD2, ASH1])
+        set_rr(self, rr=SIN1, peers=[SYD1, MRS1, SIN2, MRS2, SJO1, SJO2, SYD2, ASH1, PAR2, SJO1])
+        set_rr(self, rr=SYD2, peers=[SYD1, SIN2, LAX1, LAX2, SIN1, ASH1, PAR2, SJO1])
+        set_rr(self, rr=ASH1, peers=[SJO1, SJO2, LAX1, LAX2, PAR1, ASH2, SIN1,SYD2, PAR2, SJO1])
+        set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2, SIN1, SYD2, ASH1, SJO1])
         set_rr(self, rr=SJO1, peers=[SYD2, PAR2, SIN1, ASH1])
         # bgp_fullmesh(self, [MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2])
        
