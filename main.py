@@ -341,16 +341,16 @@ class SimpleBGPTopo(IPTopo):
         self.addAS(64512, (S1,))
         self.addAS(64512, (S2,))
 
-        l_S1_SJO1 = self.addLink(S1,SJO1, igp_metric=3)
-        l_S1_SJO1[S1].addParams(ip=(server_ipv6 + "a1a::1/64",server_ipv4 + "5/30"))
-        l_S1_SJO1[SJO1].addParams(ip=(server_ipv6 + "a1a::2/64",server_ipv4 + "6/30"))
+        l_S1_SJO2 = self.addLink(S1,SJO2, igp_metric=3)
+        l_S1_SJO2[S1].addParams(ip=(server_ipv6 + "a1a::1/64",server_ipv4 + "5/30"))
+        l_S1_SJO2[SJO2].addParams(ip=(server_ipv6 + "a1a::2/64",server_ipv4 + "6/30"))
 
-        l_S2_PAR1 = self.addLink(S2,PAR1, igp_metric=3)
-        l_S2_PAR1[S2].addParams(ip=(server_ipv6 + "a1a::3/64",server_ipv4 + "9/30"))
-        l_S2_PAR1[PAR1].addParams(ip=(server_ipv6 + "a1a::4/64",server_ipv4 + "10/30"))
+        l_S2_PAR2 = self.addLink(S2,PAR2, igp_metric=3)
+        l_S2_PAR2[S2].addParams(ip=(server_ipv6 + "a1a::3/64",server_ipv4 + "9/30"))
+        l_S2_PAR2[PAR2].addParams(ip=(server_ipv6 + "a1a::4/64",server_ipv4 + "10/30"))
 
-        ebgp_session(self,S1, SJO1)
-        ebgp_session(self,S2, PAR1)
+        ebgp_session(self,S1, SJO2)
+        ebgp_session(self,S2, PAR2)
         
 
         #=============================================================================
@@ -435,9 +435,11 @@ if __name__ == '__main__':
     try:
         net.start()
         ########################################
-        # #Configuring server to respond faster to failures
-        # print(net['PAR1'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::3",1,4)))
-        # print(net['S2'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::4",1,4)))
+        print(net['PAR2'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::3",1,4)))
+        print(net['S2'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::4",1,4)))
+
+        print(net['SJO2'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::1",1,4)))
+        print(net['S1'].cmd('python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'.format("1627:6000:0:3a1a::2",1,4)))
 
         # #Configuring TTL and PASSWORD for PAR1-S2
         # print(net['PAR1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format("1627:6000:0:3a1a::3",2,SERVER_PW)))
