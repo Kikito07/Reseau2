@@ -466,6 +466,22 @@ if __name__ == '__main__':
     
         #Configuring TTL and PASSWORD for EQX
         print("Setting BGP security...")
+        print(net['PAR2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['SIN1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['SIN2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['SYD1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['SYD2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['ASH1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['PAR2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['VDFSIN1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['VDFSIN2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['VDFASH1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['VDFPAR2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['EQXSIN1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['EQXSYD2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['NTTSYD1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['NTTSYD2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        
         print(net['EQXSIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::2",2,EQX_PW)))
         print(net['SIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::1",2,EQX_PW)))
 
