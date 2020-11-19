@@ -1,3 +1,0 @@
-tshark -Y bgp -T json -e ... 
-ip. https://www.wireshark.org/docs/dfref/i/ip.html
-tshark -w output.pcap -F pcap   
