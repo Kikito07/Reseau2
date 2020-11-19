@@ -6,7 +6,7 @@ NEIGHBORSV6 = args[1]
 TTL = args[2]
 PASSWORD = args[3]
 
-child.sendline('telnet localhost 2605')
+child = pexpect.spawn('telnet localhost 2605')
 child.expect('Password:')
 child.sendline('zebra')
 child.sendline('enable')
