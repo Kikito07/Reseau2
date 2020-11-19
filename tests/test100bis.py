@@ -20,11 +20,11 @@ class MyTopology(IPTopo):
         r11.addDaemon(BGP,debug=("updates",))
         
         r2.addDaemon(BGP, address_families=(
-            AF_INET(redistribute=('connected','ospf')),
-            AF_INET6(redistribute=( 'connected''ospf',))),debug=("updates",))
+            AF_INET(redistribute=('connected',)),
+            AF_INET6(redistribute=( 'connected',))),debug=("updates",))
         rh1.addDaemon(BGP, address_families=(
-            AF_INET(redistribute=('connected','ospf')),
-            AF_INET6(redistribute=('connected','ospf'))),debug=("updates",))
+            AF_INET(redistribute=('connected',)),
+            AF_INET6(redistribute=('connected',))),debug=("updates",))
 
         lr1r2 = self.addLink(r1, r2)
         lr1r2[r1].addParams(ip=("2042:12::1/64","10.12.0.1/30"))
@@ -97,6 +97,7 @@ try:
 
     print(net['r1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_as_prepend_x1,community_as_prepend_x1_name)))
     print(net['r1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_local_pref_200,community_local_pref_200_name)))
+
 
     print(net['r1'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(community_local_pref_200_name,200,general_route_map,10)))
     print(net['r1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map,20)))
