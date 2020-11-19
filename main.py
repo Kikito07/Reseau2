@@ -224,11 +224,11 @@ class SimpleBGPTopo(IPTopo):
 
         #=========================================================
 
-        l_MRS1_SIN1 = self.addLink(MRS1, SIN1,igp_metric=11,password = OSPF_PW_EU)
+        l_MRS1_SIN1 = self.addLink(MRS1, SIN1,igp_metric=20,password = OSPF_PW_EU)
         l_MRS1_SIN1[MRS1].addParams(ip=(europe_ipv6 + "011::1/64", MRS_ipv4 + "5/30"))
         l_MRS1_SIN1[SIN1].addParams(ip=(europe_ipv6 + "011::2/64", MRS_ipv4 + "6/30"))
 
-        l_MRS2_SIN2 = self.addLink(MRS2, SIN2,igp_metric=16,password = OSPF_PW_EU)
+        l_MRS2_SIN2 = self.addLink(MRS2, SIN2,igp_metric=26,password = OSPF_PW_EU)
         l_MRS2_SIN2[MRS2].addParams(ip=(europe_ipv6 + "022::1/64", MRS_ipv4 + "9/30"))
         l_MRS2_SIN2[SIN2].addParams(ip=(europe_ipv6 + "022::2/64", MRS_ipv4 + "10/30"))
 
@@ -240,11 +240,11 @@ class SimpleBGPTopo(IPTopo):
         l_SIN2_SYD2[SIN2].addParams(ip=(asia_ipv6 + "022::1/64", SIN_ipv4 + "9/30"))
         l_SIN2_SYD2[SYD2].addParams(ip=(asia_ipv6 + "022::2/64", SIN_ipv4 + "10/30"))
 
-        l_SIN2_SJO1 = self.addLink(SIN2, SJO1,igp_metric=11,password = OSPF_PW_AS)
+        l_SIN2_SJO1 = self.addLink(SIN2, SJO1,igp_metric=20,password = OSPF_PW_AS)
         l_SIN2_SJO1[SIN2].addParams(ip=(asia_ipv6 + "021::1/64", SIN_ipv4 + "13/30"))
         l_SIN2_SJO1[SJO1].addParams(ip=(asia_ipv6 + "021::2/64", SIN_ipv4 + "14/30"))
 
-        l_SIN1_SJO2 = self.addLink(SIN1, SJO2,igp_metric=11,password = OSPF_PW_AS)
+        l_SIN1_SJO2 = self.addLink(SIN1, SJO2,igp_metric=20,password = OSPF_PW_AS)
         l_SIN1_SJO2[SIN1].addParams(ip=(asia_ipv6 + "220::1/64", SIN_ipv4 + "17/30"))
         l_SIN1_SJO2[SJO2].addParams(ip=(asia_ipv6 + "220::2/64", SIN_ipv4 + "18/30"))
 
@@ -271,11 +271,11 @@ class SimpleBGPTopo(IPTopo):
         l_SJO2_LAX2[SJO2].addParams(ip=(NA_ipv6 + "220::1/64", SJO_ipv4 + "9/30"))
         l_SJO2_LAX2[LAX2].addParams(ip=(NA_ipv6 + "220::2/64", SJO_ipv4 + "10/30"))
 
-        l_PAR1_ASH1 = self.addLink(PAR1,ASH1, igp_metric=11,password = OSPF_PW_EU)
+        l_PAR1_ASH1 = self.addLink(PAR1,ASH1, igp_metric=20,password = OSPF_PW_EU)
         l_PAR1_ASH1[PAR1].addParams(ip=(europe_ipv6 + "110::1/64", PAR_ipv4 + "5/30"))
         l_PAR1_ASH1[ASH1].addParams(ip=(europe_ipv6 + "110::2/64", PAR_ipv4 + "6/30"))
 
-        l_PAR2_ASH2 = self.addLink(PAR2,ASH2,igp_metric=11,password = OSPF_PW_EU)
+        l_PAR2_ASH2 = self.addLink(PAR2,ASH2,igp_metric=20,password = OSPF_PW_EU)
         l_PAR2_ASH2[PAR2].addParams(ip=(europe_ipv6 + "220::1/64", PAR_ipv4 + "9/30"))
         l_PAR2_ASH2[ASH2].addParams(ip=(europe_ipv6 + "220::2/64", PAR_ipv4 + "10/30"))
 
@@ -287,7 +287,7 @@ class SimpleBGPTopo(IPTopo):
         l_PAR2_MRS1[PAR2].addParams(ip=(europe_ipv6 + "202::1/64", PAR_ipv4 + "17/30"))
         l_PAR2_MRS1[MRS1].addParams(ip=(europe_ipv6 + "202::2/64", PAR_ipv4 + "18/30"))
 
-        l_SYD2_LAX2 = self.addLink(SYD2,LAX2,igp_metric=11,password = OSPF_PW_AS)
+        l_SYD2_LAX2 = self.addLink(SYD2,LAX2,igp_metric=20,password = OSPF_PW_AS)
         l_SYD2_LAX2[SYD2].addParams(ip=(europe_ipv6 + "303::1/64", SYD_ipv4 + "5/30"))
         l_SYD2_LAX2[LAX2].addParams(ip=(europe_ipv6 + "303::2/64", SYD_ipv4 + "6/30"))
 
@@ -359,11 +359,10 @@ class SimpleBGPTopo(IPTopo):
         #=============================================================================
         # BGP setup
         self.addAS(1,(MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2))
-        set_rr(self, rr=SIN1, peers=[SYD1, MRS1, SIN2, MRS2, SJO1, SJO2, SYD2, ASH1, PAR2, SJO1])
-        set_rr(self, rr=SYD2, peers=[SYD1, SIN2, LAX1, LAX2, SIN1, ASH1, PAR2, SJO1])
-        set_rr(self, rr=ASH1, peers=[SJO1, SJO2, LAX1, LAX2, PAR1, ASH2, SIN1,SYD2, PAR2, SJO1])
-        set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2, SIN1, SYD2, ASH1, SJO1])
-        set_rr(self, rr=SJO1, peers=[SYD2, PAR2, SIN1, ASH1, SIN2, SJO2, LAX1])
+        set_rr(self, rr=SIN1, peers=[SYD1, MRS1, SIN2, MRS2, SJO1, SJO2, SYD2, ASH1, PAR2])
+        set_rr(self, rr=SYD2, peers=[SYD1, SIN2, SJO1, LAX1, LAX2, SIN1, ASH1, PAR2])
+        set_rr(self, rr=ASH1, peers=[SJO1, SJO2, LAX1, LAX2, PAR1, ASH2, SIN1, SYD2, PAR2])
+        set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2, SIN1, SYD2, ASH1])
         # bgp_fullmesh(self, [MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2])
        
         self.addAS(2, (EQXSIN1,EQXSYD2))
