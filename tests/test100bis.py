@@ -9,22 +9,18 @@ class MyTopology(IPTopo):
     def build(self, *args, **kwargs):
 
         r1 = self.addRouter("r1" ,lo_addresses=["2042:1::1/64","10.1.0.1/32"])
-        r11 = self.addRouter("r11", lo_addresses=["2042:2::1/64","10.2.0.1/32"])
-        rh1 = self.addRouter("rh1", lo_addresses=["2042:4::1/64","10.4.0.1/32"])
         r2 = self.addRouter("r2", lo_addresses=["2042:3::1/64","10.3.0.1/32"])
         h1 = self.addHost("h1")
         h2 = self.addHost("h2")
         # h3 = self.addHost("h3")
 
         r1.addDaemon(BGP,debug=("updates",))
-        r11.addDaemon(BGP,debug=("updates",))
+        
         
         r2.addDaemon(BGP, address_families=(
             AF_INET(redistribute=('connected',)),
             AF_INET6(redistribute=( 'connected',))),debug=("updates",))
-        rh1.addDaemon(BGP, address_families=(
-            AF_INET(redistribute=('connected',)),
-            AF_INET6(redistribute=('connected',))),debug=("updates",))
+        
 
         lr1r2 = self.addLink(r1, r2)
         lr1r2[r1].addParams(ip=("2042:12::1/64","10.12.0.1/30"))
@@ -95,10 +91,9 @@ try:
     print(net['r2'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
     print(net['r2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("2042:12::1",general_route_map,"out")))
 
+
     print(net['r1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_as_prepend_x1,community_as_prepend_x1_name)))
     print(net['r1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_local_pref_200,community_local_pref_200_name)))
-
-
     print(net['r1'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(community_local_pref_200_name,200,general_route_map,10)))
     print(net['r1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map,20)))
     print(net['r1'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))

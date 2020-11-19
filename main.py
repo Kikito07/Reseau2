@@ -446,6 +446,7 @@ if __name__ == '__main__':
         community_local_pref_200 = "200:200"
         community_local_pref_200_name = "local_pref_200"
         general_route_map = "general_route_map"
+        general_route_map_2 = "general_route_map2"
 
         #Reducing Timeout to give better response to failures for servers
         print("Configuring anycast servers...")
@@ -465,75 +466,79 @@ if __name__ == '__main__':
         print(net['PAR2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("1627:6000:0:3a1a::3",general_route_map,"in")))
         print(net['SJO2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format("1627:6000:0:3a1a::1",general_route_map,"in")))
     
+        print("Setting BGP security...")
+
+        #########################################
+        #########################################
+        
+        #Setting TTLs for IPV6
+        print(net['PAR2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['SIN1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['SIN2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['SYD1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['SYD2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['ASH1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['PAR2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['VDFSIN1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['VDFSIN2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['VDFASH1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['VDFPAR2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['EQXSIN1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['EQXSYD2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['NTTSYD1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['NTTSYD2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['S1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        print(net['S2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
+        
         #Configuring TTL and PASSWORD for EQX
-        # print("Setting BGP security...")
-        
-        # print(net['PAR2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['SIN1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['SIN2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['SYD1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['SYD2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['ASH1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['PAR2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['VDFSIN1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['VDFSIN2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['VDFASH1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['VDFPAR2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['EQXSIN1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['EQXSYD2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['NTTSYD1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['NTTSYD2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['S1'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        # print(net['S2'].cmd('sysctl net.ipv6.conf.all.hop_limit=255'))
-        
-        # print(net['EQXSIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::2",2,EQX_PW)))
-        # print(net['SIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::1",2,EQX_PW)))
-
-        # print(net['EQXSYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "3fa::2",2,EQX_PW)))
-        # print(net['SYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "3fa::1",2,EQX_PW)))
+        print(net['EQXSIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::2",2,EQX_PW)))
+        print(net['SIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "2fb::1",2,EQX_PW)))
+        print(net['EQXSYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "3fa::2",2,EQX_PW)))
+        print(net['SYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "3fa::1",2,EQX_PW)))
     
-        # #Configuring TTL and PASSWORD for NTT
-        # print(net['NTTSYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "4fb::2",2,NTT_PW)))
-        # print(net['SYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "4fb::1",2,NTT_PW)))
+        #Configuring TTL and PASSWORD for NTT
+        print(net['NTTSYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "4fb::2",2,NTT_PW)))
+        print(net['SYD2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "4fb::1",2,NTT_PW)))
 
-        # print(net['NTTSYD1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "5fa::2",2,NTT_PW)))
-        # print(net['SYD1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "5fa::1",2,NTT_PW)))
+        print(net['NTTSYD1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "5fa::2",2,NTT_PW)))
+        print(net['SYD1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "5fa::1",2,NTT_PW)))
         
-        # #Configuring TTL and PASSWORD for VDF
-        # print(net['VDFPAR2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::2",2,VDF_PW)))
-        # print(net['PAR2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::1",2,VDF_PW)))
+        #Configuring TTL and PASSWORD for VDF
+        print(net['VDFPAR2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::2",2,VDF_PW)))
+        print(net['PAR2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "ffa::1",2,VDF_PW)))
 
-        # print(net['VDFASH1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(NA_ipv6 + "ffa::2",2,VDF_PW)))
-        # print(net['ASH1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(NA_ipv6 + "ffa::1",2,VDF_PW)))
+        print(net['VDFASH1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(NA_ipv6 + "ffa::2",2,VDF_PW)))
+        print(net['ASH1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(NA_ipv6 + "ffa::1",2,VDF_PW)))
 
-        # print(net['VDFSIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "ffa::2",2,VDF_PW)))
-        # print(net['SIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "ffa::1",2,VDF_PW)))
+        print(net['VDFSIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "ffa::2",2,VDF_PW)))
+        print(net['SIN1'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(asia_ipv6 + "ffa::1",2,VDF_PW)))
 
-        # print(net['VDFSIN2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "1fa::2",2,VDF_PW)))
-        # print(net['SIN2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "1fa::1",2,VDF_PW)))
-        # # ########################################
+        print(net['VDFSIN2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "1fa::2",2,VDF_PW)))
+        print(net['SIN2'].cmd('python3 scripts/BGP_V6_TTL_PASSWORD.py {} {} {}'.format(europe_ipv6 + "1fa::1",2,VDF_PW)))
 
+        #########################################
+        #########################################
 
-        # ########################################
-        ##########################################
-        ##START TAG COMMUNITY
-        #creating community lists
+        #Configuring border router with route-map
         print("Configuring communities be patient...")
 
         print(net['SIN1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_as_prepend_x1,community_as_prepend_x1_name)))
         print(net['SIN1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_as_prepend_x2,community_as_prepend_x2_name)))
         print(net['SIN1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_local_pref_200,community_local_pref_200_name)))
         #Adding prepend X1
-        print(net['SIN1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map,10)))
+        print(net['SIN1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map_2,10)))
         #Adding prepend X2
-        print(net['SIN1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2_name,general_route_map,20)))
+        print(net['SIN1'].cmd('python3 scripts/BGP_PX2_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2_name,general_route_map_2,20)))
         #Adding local-pref 200
         print(net['SIN1'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(community_local_pref_200_name, 200, general_route_map,30)))
         #Adding default permit at the end
         print(net['SIN1'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
+        print(net['SIN1'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map_2,100)))
         #applying route-map on neighbors
         print(net['SIN1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "2fb::1",general_route_map,"in")))
         print(net['SIN1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "ffa::1",general_route_map,"in")))
+        print(net['SIN1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "2fb::1",general_route_map_2,"out")))
+        print(net['SIN1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "ffa::1",general_route_map_2,"out")))
 
         #=================================#
         #=================================#
@@ -542,15 +547,17 @@ if __name__ == '__main__':
         print(net['SIN2'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_as_prepend_x2,community_as_prepend_x2_name)))
         print(net['SIN2'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_local_pref_200,community_local_pref_200_name)))
         #Adding prepend X1
-        print(net['SIN2'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map,10)))
+        print(net['SIN2'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map_2,10)))
         #Adding prepend X2
-        print(net['SIN2'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2_name,general_route_map,20)))
+        print(net['SIN2'].cmd('python3 scripts/BGP_PX2_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2_name,general_route_map_2,20)))
         #Adding local-pref 200
         print(net['SIN2'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(community_local_pref_200_name, 200, general_route_map,30)))
         #Adding default permit at the end
         print(net['SIN2'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
+        print(net['SIN2'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map_2,100)))
         #applying route-map on neighbors
         print(net['SIN2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "1fa::1",general_route_map,"in")))
+        print(net['SIN2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "1fa::1",general_route_map_2,"out")))
 
         # #=================================#
         # #=================================#
@@ -559,15 +566,17 @@ if __name__ == '__main__':
         print(net['SYD1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_as_prepend_x2,community_as_prepend_x2_name)))
         print(net['SYD1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_local_pref_200,community_local_pref_200_name)))
         #Adding prepend X1
-        print(net['SYD1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map,10)))
+        print(net['SYD1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map_2,10)))
         #Adding prepend X2
-        print(net['SYD1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2_name,general_route_map,20)))
+        print(net['SYD1'].cmd('python3 scripts/BGP_PX2_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2_name,general_route_map_2,20)))
         #Adding local-pref 200
         print(net['SYD1'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(community_local_pref_200_name, 200, general_route_map,30)))
         #Adding default permit at the end
         print(net['SYD1'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
+        print(net['SYD1'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map_2,100)))
         #applying route-map on neighbors
         print(net['SYD1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "5fa::1",general_route_map,"in")))
+        print(net['SYD1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "5fa::1",general_route_map_2,"out")))
 
         # #=================================#
         # #=================================#
@@ -576,16 +585,19 @@ if __name__ == '__main__':
         print(net['SYD2'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_as_prepend_x2,community_as_prepend_x2_name)))
         print(net['SYD2'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_local_pref_200,community_local_pref_200_name)))
         #Adding prepend X1
-        print(net['SYD2'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map,10)))
+        print(net['SYD2'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map_2,10)))
         #Adding prepend X2
-        print(net['SYD2'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2_name,general_route_map,20)))
+        print(net['SYD2'].cmd('python3 scripts/BGP_PX2_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2_name,general_route_map_2,20)))
         #Adding local-pref 200
-        print(net['SYD2'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(community_local_pref_200_name, 200, general_route_map,30)))
+        print(net['SYD2'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(community_local_pref_200_name, 200, general_route_map,10)))
         #Adding default permit at the end
         print(net['SYD2'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
+        print(net['SYD2'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map_2,100)))
         #applying route-map on neighbors
         print(net['SYD2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "3fa::1",general_route_map,"in")))
         print(net['SYD2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "4fb::1",general_route_map,"in")))
+        print(net['SYD2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "3fa::1",general_route_map_2,"out")))
+        print(net['SYD2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(asia_ipv6 + "4fb::1",general_route_map_2,"out")))
 
         # #=================================#
         # #=================================#
@@ -594,15 +606,17 @@ if __name__ == '__main__':
         print(net['ASH1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_as_prepend_x2,community_as_prepend_x2_name)))
         print(net['ASH1'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_local_pref_200,community_local_pref_200_name)))
         #Adding prepend X1
-        print(net['ASH1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map,10)))
+        print(net['ASH1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map_2,10)))
         #Adding prepend X2
-        print(net['ASH1'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2_name,general_route_map,20)))
+        print(net['ASH1'].cmd('python3 scripts/BGP_PX2_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2_name,general_route_map_2,20)))
         #Adding local-pref 200
         print(net['ASH1'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(community_local_pref_200_name, 200, general_route_map,30)))
         #Adding default permit at the end
         print(net['ASH1'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
+        print(net['ASH1'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map_2,100)))
         #applying route-map on neighbors
         print(net['ASH1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(NA_ipv6 + "ffa::1",general_route_map,"in")))
+        print(net['ASH1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(NA_ipv6 + "ffa::1",general_route_map_2,"out")))
 
         # #=================================#
         # #=================================#
@@ -611,25 +625,37 @@ if __name__ == '__main__':
         print(net['PAR2'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_as_prepend_x2,community_as_prepend_x2_name)))
         print(net['PAR2'].cmd('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(community_local_pref_200,community_local_pref_200_name)))
         #Adding prepend X1
-        print(net['PAR2'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map,10)))
+        print(net['PAR2'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x1_name,general_route_map_2,10)))
         #Adding prepend X2
-        print(net['PAR2'].cmd('python3 scripts/BGP_PX1_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2_name,general_route_map,20)))
+        print(net['PAR2'].cmd('python3 scripts/BGP_PX2_COMML_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2_name,general_route_map_2,20)))
         #Adding local-pref 200
         print(net['PAR2'].cmd('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(community_local_pref_200_name, 200, general_route_map,30)))
         #Adding default permit at the end
         print(net['PAR2'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
+        print(net['PAR2'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map_2,100)))
         #applying route-map on neighbors
         print(net['PAR2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(europe_ipv6 + "ffa::1",general_route_map,"in")))
+        print(net['PAR2'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(europe_ipv6 + "ffa::1",general_route_map_2,"out")))
 
-        ###END TAG COMMUNITY
         #=================================#
         #=================================#
+
+        #########################################
+        #########################################
 
         ###TESTING COMMUNITIES#############
-        print(net['VDFASH1'].cmd('python3 scripts/BGP_SET_ANY_COMM_RMNAME_SEQ.py {} {} {}'.format(community_local_pref_200,general_route_map,10)))
-        print(net['VDFASH1'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map,100)))
-        print(net['VDFASH1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(NA_ipv6 + "ffa::2",general_route_map,"out")))
 
+        #Here you have an example on how to set communities on every prefix annonced by a router. It is usefull for tests
+
+        print(net['VDFASH1'].cmd('python3 scripts/BGP_SET_ANY_COMM_RMNAME_SEQ.py {} {} {}'.format(community_as_prepend_x2,general_route_map,10)))
+        print(net['VDFASH1'].cmd('python3 scripts/BGP_SET_ANY_COMM_RMNAME_SEQ.py {} {} {}'.format(community_local_pref_200,general_route_map,20)))
+        print(net['VDFASH1'].cmd('python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map, 100)))
+        print(net['VDFASH1'].cmd('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(NA_ipv6 + "ffa::2",general_route_map,"out")))
+        
+    
+        print("""You should wait a bit to let the network converge.""")
+        print("""ping6all won't be at 100 because of the way we moddeled our peers.""")
+        print("""For a given Peer its routers are not directly connected thus its prefix can't ping themselves""")
         IPCLI(net)
     finally:
         net.stop()
