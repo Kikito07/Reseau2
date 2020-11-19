@@ -33,7 +33,8 @@ NTT_ipv6 = "1627:6300:0000:0"
 def createPassword(key):
     hash_object = hashlib.sha256(bytes(key, encoding='utf-8'))
     return hash_object.hexdigest()
-    
+
+# Initialisation of the passwords
 secretKey = "Nu798SHkJ6MRwm69rZvu"
 VDF_PW = createPassword("VDF"+secretKey)
 EQX_PW = createPassword("EQX"+secretKey)
@@ -338,9 +339,6 @@ class SimpleBGPTopo(IPTopo):
         S1.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
         S2.addDaemon(BGP,address_families=(AF_INET6(redistribute=['connected']),AF_INET(redistribute=['connected'])))
 
-        # S1.addDaemon(OSPF6)
-        # S2.addDaemon(OSPF6)
-        
         self.addAS(64512, (S1,))
         self.addAS(64512, (S2,))
 
@@ -363,7 +361,6 @@ class SimpleBGPTopo(IPTopo):
         set_rr(self, rr=SYD2, peers=[SYD1, SIN2, SJO1, LAX1, LAX2, SIN1, ASH1, PAR2])
         set_rr(self, rr=ASH1, peers=[SJO1, SJO2, LAX1, LAX2, PAR1, ASH2, SIN1, SYD2, PAR2])
         set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2, SIN1, SYD2, ASH1])
-        # bgp_fullmesh(self, [MRS1,MRS2,PAR1,PAR2,SIN1,SIN2,SYD1,SYD2,SJO1,SJO2,LAX1,LAX2,ASH1,ASH2])
        
         self.addAS(2, (EQXSIN1,EQXSYD2))
         self.addAS(3, (VDFASH1,VDFPAR2,VDFSIN1,VDFSIN2))
@@ -378,7 +375,6 @@ class SimpleBGPTopo(IPTopo):
         ebgp_session(self, NTTSYD2, SYD2)
         ebgp_session(self, NTTSYD1, SYD1)
 
-
         hVdfPar2 = self.addHost("hVdfPar2")
         hVdfAsh1 = self.addHost("hVdfAsh1")
         hVdfSin1 = self.addHost("hVdfSin1")
@@ -392,6 +388,7 @@ class SimpleBGPTopo(IPTopo):
         
 
 
+        # Host setup
         l_hVdfPar2 = self.addLink(hVdfPar2, VDFPAR2,igp_metric=2)
         l_hVdfPar2[hVdfPar2].addParams(ip=(VDF_ipv6 + "aaa::1/64", VDF_ipv4 + "21/30"))
         l_hVdfPar2[VDFPAR2].addParams(ip=(VDF_ipv6 + "aaa::2/64", VDF_ipv4 + "22/30"))
@@ -425,8 +422,7 @@ class SimpleBGPTopo(IPTopo):
         l_hNttSyd1[NTTSYD1].addParams(ip=(NTT_ipv6 + "bbb::2/64", NTT_ipv4 + "18/30"))
 
 
-        #=============================================================================
-        #communities set up
+
 
 
         super().build(*args, **kwargs)
@@ -643,7 +639,8 @@ if __name__ == '__main__':
         #########################################
         #########################################
 
-        ###TESTING COMMUNITIES#############
+        ###TESTING COMMUNITIES###
+        #########################
 
         #Here you have an example on how to set communities on every prefix annonced by a router. It is usefull for tests
 
