@@ -570,20 +570,20 @@ if __name__ == '__main__':
 
         # Configuring TTL and PASSWORD for EQX
 
-        routers = [('SIN1', asia_ipv6+'2fb::2'), ('SIN1', asia_ipv6 + "ffa::2/64"),
-                   ('SYD2', asia_ipv6 + "3fa::2"),('SYD2', asia_ipv6 + "4fb::2"),
+        routers = [('SIN1', asia_ipv6+'2fb::2'), ('SIN1', asia_ipv6 + "ffa::2"),
+                   ('SYD2', asia_ipv6 + "3fa::2"), ('SYD2', asia_ipv6 + "4fb::2"),
                    ('SYD1', asia_ipv6 + "5fa::2"),
                    ('PAR2', europe_ipv6 + "ffa::2"),
                    ('ASH1', NA_ipv6 + "ffa::2"),
-                   ('SIN2', asia_ipv6 + "1fa::2/64")]
-        peers = [('EQXSIN1', asia_ipv6+"2fb::1"), ('VDFSIN1', asia_ipv6 + "ffa::1/64"),
-                 ('EQXSYD2', asia_ipv6 + "3fa::1"),('NTTSYD2', asia_ipv6 + "4fb::1"),
+                   ('SIN2', asia_ipv6 + "1fa::2")]
+        peers = [('EQXSIN1', asia_ipv6+"2fb::1"), ('VDFSIN1', asia_ipv6 + "ffa::1"),
+                 ('EQXSYD2', asia_ipv6 + "3fa::1"), ('NTTSYD2', asia_ipv6 + "4fb::1"),
                  ('NTTSYD1', asia_ipv6 + "5fa::1"),
                  ('VDFPAR2', europe_ipv6 + "ffa::1"),
                  ('VDFASH1', NA_ipv6 + "ffa::1"),
-                 ('VDFSIN2', asia_ipv6 + "1fa::1/64")]
+                 ('VDFSIN2', asia_ipv6 + "1fa::1")]
 
-        ttlPasswordSetup(net, routers,peers)
+        ttlPasswordSetup(net, routers, peers)
 
         #########################################
         #########################################
@@ -591,14 +591,14 @@ if __name__ == '__main__':
         # Configuring border router with route-map
         print("Configuring communities be patient...")
         routersName = ['SIN1', 'SIN2', 'SYD1', 'SYD2', 'ASH1', 'PAR2']
-        peersListAddr = [asia_ipv6 + "2fb::1", asia_ipv6 + "ffa::1",
-                         asia_ipv6 + "1fa::1",
-                         asia_ipv6 + "5fa::1",
-                         asia_ipv6 + "3fa::1", asia_ipv6 + "4fb::1",
-                         NA_ipv6 + "ffa::1",
-                         europe_ipv6 + "ffa::1"]
-
-        communitiesSetup(net, routersName, peersListAddr)
+        peersListAddr = [[asia_ipv6 + "2fb::1", asia_ipv6 + "ffa::1"],
+                         [asia_ipv6 + "1fa::1"],
+                         [asia_ipv6 + "5fa::1"],
+                         [asia_ipv6 + "3fa::1", asia_ipv6 + "4fb::1"],
+                         [NA_ipv6 + "ffa::1"],
+                         [europe_ipv6 + "ffa::1"]]
+        continents = ['ASIA', 'ASIA', 'ASIA', 'ASIA', 'NA', 'EU']
+        communitiesSetup(net, routersName, peersListAddr, continents)
 
         #########################################
         #########################################
@@ -611,8 +611,22 @@ if __name__ == '__main__':
         community_as_prepend_x1_name = "prepend_x1"
         community_as_prepend_x2 = "2:100"
         community_as_prepend_x2_name = "prepend_x2"
+
         community_local_pref_200 = "200:200"
-        applyCommunities(net,'VDFASH1', NA_ipv6 + "ffa::2",[community_as_prepend_x2, community_local_pref_200])
+        community_local_pref_200_name = "local_pref_200"
+
+        community_no_export_NA = "10:15"
+        community_no_export_EU = "20:15"
+        community_no_export_ASIA = "30:15"
+        community_no_export_NA_name = "no_export_NA"
+        community_no_export_EU_name = "no_export_EU"
+        community_no_export_ASIA_name = "no_export_ASIA"
+
+        general_route_map = "general_route_map"
+        general_route_map_2 = "general_route_map2"
+
+        applyCommunities(net, 'EQXSIN1', asia_ipv6+'2fb::2',
+                         [community_as_prepend_x2, community_local_pref_200, community_no_export_EU])
 
         print("""You should wait a bit to let the network converge.""")
         print("""ping6all won't be at 100 because of the way we moddeled our peers.""")
