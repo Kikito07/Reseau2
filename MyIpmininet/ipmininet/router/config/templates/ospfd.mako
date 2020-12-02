@@ -19,7 +19,8 @@ interface ${intf.name}
   ip ospf dead-interval ${intf.dead_int}
   ip ospf hello-interval ${intf.hello_int}
   % if intf.password is not None:
-  ip ospf authentication-key ${intf.password}
+  ip ospf authentication message-digest
+  ip ospf message-digest-key 1 md5 ${intf.name}
   % endif
   % endif
   <%block name="interface"/>
@@ -40,7 +41,7 @@ router ospf
     % endif
   % endfor
   % if intf.password is not None:
-  area 0 authentication
+  area 0 authentication message-digest
   % endif
 
   <%block name="router"/>

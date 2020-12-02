@@ -81,6 +81,7 @@ class OSPF(QuaggaDaemon):
                                            self.options.hello_int),
                            cost=i.get("igp_metric",1),
                            password=i.get('password',None),
+                           key=i.get('key',None),
                            # Is the interface forcefully disabled?
                            passive=i.get('igp_passive', False))
                 for i in interfaces]
