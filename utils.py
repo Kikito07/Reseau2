@@ -33,7 +33,9 @@ general_route_map_2 = "general_route_map2"
 
 def serverScript(network, servers, sRouters):
     script = 'python3 scripts/BGP_V6_KALIVE_TIMEOUT.py {} {} {}'
+    route_map = 'rm_asn'
     script_deny = 'python3 scripts/BGP_deny_server_V6.py {}'
+    script_rm_asn = 'python3 scripts/BGP_rm_aspath_ASN_RM_SEQ.py {} {} {}'
     if(len(servers) != len(sRouters)):
         print("""number of servers and routeurs doesn't match""")
         return
@@ -42,6 +44,11 @@ def serverScript(network, servers, sRouters):
         routerName = sRouters[i][0]
         serverAddr = servers[i][1]
         routerAddr = sRouters[i][1]
+        #removing private AS in AS-path
+        network[routerName].pexec(script_rm_asn.format(64512,route_map,10))
+        network[routerName].pexec(
+            'python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(serverAddr, route_map, "in")
+        )
         network[serverName].pexec(
             'route add -A inet6 default gw {}'.format(routerAddr))
         network[routerName].pexec(script_deny.format(serverAddr))
@@ -120,7 +127,6 @@ def communitiesSetup(network, routersName, peersListAddr, continents):
             'python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map_2, 100))
         for j in range(len(peersListAddr[i])):
             peerAddr = peersListAddr[i][j]
-            print(name + ' ' + peerAddr)
             network[name].pexec('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(
                 peerAddr, general_route_map, "in"))
             network[name].pexec('python3 scripts/BGP_NEIGHBOR_RMAP_INOUT.py {} {} {}'.format(

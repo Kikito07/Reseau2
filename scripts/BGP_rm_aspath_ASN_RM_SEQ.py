@@ -1,12 +1,10 @@
 import pexpect
 import sys
-import time
 #getting into config
 args = sys.argv
 ASN = args[1]
 route_map = args[2]
 sequence = args[3]
-
 
 child = pexpect.spawn('telnet localhost 2605')
 child.expect('Password:')

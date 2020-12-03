@@ -20,7 +20,7 @@ interface ${intf.name}
   ip ospf hello-interval ${intf.hello_int}
   % if intf.password is not None:
   ip ospf authentication message-digest
-  ip ospf message-digest-key 1 md5 ${intf.name}
+  ip ospf message-digest-key 1 md5 ${intf.password}
   % endif
   % endif
   <%block name="interface"/>
