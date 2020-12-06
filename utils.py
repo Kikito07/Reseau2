@@ -115,6 +115,8 @@ def communitiesSetup(network, routersName, peersListAddr, continents):
         network[name].pexec('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(
             community_as_prepend_x3, community_as_prepend_x3_name))
         network[name].pexec('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(
+            community_local_pref_80, community_local_pref_80_name))
+        network[name].pexec('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(
             community_local_pref_200, community_local_pref_200_name))
         # handling "don't export to" communities
         noExportCommunities(network, name, continents[i])
