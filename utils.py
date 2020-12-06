@@ -16,7 +16,12 @@ community_as_prepend_x1 = "1:100"
 community_as_prepend_x1_name = "prepend_x1"
 community_as_prepend_x2 = "2:100"
 community_as_prepend_x2_name = "prepend_x2"
+community_as_prepend_x3 = "3:100"
+community_as_prepend_x3_name = "prepend_x3"
 
+
+community_local_pref_80 = "80:80"
+community_local_pref_80_name ="local_pref_80"
 community_local_pref_200 = "200:200"
 community_local_pref_200_name = "local_pref_200"
 
@@ -108,6 +113,8 @@ def communitiesSetup(network, routersName, peersListAddr, continents):
         network[name].pexec('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(
             community_as_prepend_x2, community_as_prepend_x2_name))
         network[name].pexec('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(
+            community_as_prepend_x3, community_as_prepend_x3_name))
+        network[name].pexec('python3 scripts/BGP_ccl_COMM_NAME.py {} {}'.format(
             community_local_pref_200, community_local_pref_200_name))
         # handling "don't export to" communities
         noExportCommunities(network, name, continents[i])
@@ -117,9 +124,16 @@ def communitiesSetup(network, routersName, peersListAddr, continents):
         # Adding prepend X2
         network[name].pexec('python3 scripts/BGP_PX2_COMML_RMNAME_SEQ.py {} {} {}'.format(
             community_as_prepend_x2_name, general_route_map_2, 30))
+        # Adding prepend X3
+        network[name].pexec('python3 scripts/BGP_PX3_COMML_RMNAME_SEQ.py {} {} {}'.format(
+            community_as_prepend_x3_name, general_route_map_2, 40))
+        # adding local-pref 80
+        network[name].pexec('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(
+            community_local_pref_80_name, 80, general_route_map, 10))
         # Adding local-pref 200
         network[name].pexec('python3 scripts/BGP_COMML_LPREF_RMNAME_SEQ.py {} {} {} {}'.format(
-            community_local_pref_200_name, 200, general_route_map, 10))
+            community_local_pref_200_name, 200, general_route_map, 20))
+        
         # Adding default permit at the end
         network[name].pexec(
             'python3 scripts/BGP_empty_permit_RMNAME_SEQ.py {} {}'.format(general_route_map, 100))
