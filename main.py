@@ -43,9 +43,9 @@ class SimpleBGPTopo(IPTopo):
         # =========================================================
 
         # routers of MRS
-        MRS1 = self.addRouter("MRS1", config=RouterConfig, lo_addresses=[
+        MRSER1 = self.addRouter("MRSER1", config=RouterConfig, lo_addresses=[
                               europe_ipv6 + "000::/64", MRS_ipv4 + "100/32"])
-        MRS2 = self.addRouter("MRS2", config=RouterConfig, lo_addresses=[
+        MRSER2 = self.addRouter("MRSER2", config=RouterConfig, lo_addresses=[
                               europe_ipv6 + "100::/64", MRS_ipv4 + "110/32"])
         # routers of PAR
         PAR1 = self.addRouter("PAR1", config=RouterConfig, lo_addresses=[
@@ -99,8 +99,8 @@ class SimpleBGPTopo(IPTopo):
 
         # adding OSPF6 as IGP
         # =========================================================
-        MRS1.addDaemon(OSPF6)
-        MRS2.addDaemon(OSPF6)
+        MRSER1.addDaemon(OSPF6)
+        MRSER2.addDaemon(OSPF6)
 
         SIN1.addDaemon(OSPF6)
         SIN2.addDaemon(OSPF6)
@@ -134,8 +134,8 @@ class SimpleBGPTopo(IPTopo):
         # adding OSPF
         # =========================================================
 
-        MRS1.addDaemon(OSPF)
-        MRS2.addDaemon(OSPF)
+        MRSER1.addDaemon(OSPF)
+        MRSER2.addDaemon(OSPF)
 
         SIN1.addDaemon(OSPF)
         SIN2.addDaemon(OSPF)
@@ -168,8 +168,8 @@ class SimpleBGPTopo(IPTopo):
 
         # adding BGP
         # =========================================================
-        MRS1.addDaemon(BGP, debug=("neighbor",))
-        MRS2.addDaemon(BGP, debug=("updates",))
+        MRSER1.addDaemon(BGP, debug=("neighbor",))
+        MRSER2.addDaemon(BGP, debug=("updates",))
 
         SIN1.addDaemon(BGP, debug=("neighbor",))
         SIN2.addDaemon(BGP, debug=("neighbor",))
@@ -210,11 +210,11 @@ class SimpleBGPTopo(IPTopo):
 
         # linkin twin datacenters
         # =========================================================
-        l_MRS1_MRS2 = self.addLink(
-            MRS1, MRS2, igp_metric=2, password=OSPF_PW_EU)
-        l_MRS1_MRS2[MRS1].addParams(
+        l_MRSER1_MRSER2 = self.addLink(
+            MRSER1, MRSER2, igp_metric=2, password=OSPF_PW_EU)
+        l_MRSER1_MRSER2[MRSER1].addParams(
             ip=(europe_ipv6 + "00a::1/64", MRS_ipv4 + "129/30"))
-        l_MRS1_MRS2[MRS2].addParams(
+        l_MRSER1_MRSER2[MRSER2].addParams(
             ip=(europe_ipv6 + "00a::2/64", MRS_ipv4 + "130/30"))
 
         l_SIN1_SIN2 = self.addLink(
@@ -261,18 +261,18 @@ class SimpleBGPTopo(IPTopo):
 
         # =========================================================
 
-        l_MRS1_SIN1 = self.addLink(
-            MRS1, SIN1, igp_metric=20, password=OSPF_PW_EU)
-        l_MRS1_SIN1[MRS1].addParams(
+        l_MRSER1_SIN1 = self.addLink(
+            MRSER1, SIN1, igp_metric=20, password=OSPF_PW_EU)
+        l_MRSER1_SIN1[MRSER1].addParams(
             ip=(europe_ipv6 + "011::1/64", MRS_ipv4 + "5/30"))
-        l_MRS1_SIN1[SIN1].addParams(
+        l_MRSER1_SIN1[SIN1].addParams(
             ip=(europe_ipv6 + "011::2/64", MRS_ipv4 + "6/30"))
 
-        l_MRS2_SIN2 = self.addLink(
-            MRS2, SIN2, igp_metric=26, password=OSPF_PW_EU)
-        l_MRS2_SIN2[MRS2].addParams(
+        l_MRSER2_SIN2 = self.addLink(
+            MRSER2, SIN2, igp_metric=26, password=OSPF_PW_EU)
+        l_MRSER2_SIN2[MRSER2].addParams(
             ip=(europe_ipv6 + "022::1/64", MRS_ipv4 + "9/30"))
-        l_MRS2_SIN2[SIN2].addParams(
+        l_MRSER2_SIN2[SIN2].addParams(
             ip=(europe_ipv6 + "022::2/64", MRS_ipv4 + "10/30"))
 
         l_SIN1_SYD1 = self.addLink(
@@ -354,18 +354,18 @@ class SimpleBGPTopo(IPTopo):
         l_PAR2_ASH2[ASH2].addParams(
             ip=(europe_ipv6 + "220::2/64", PAR_ipv4 + "10/30"))
 
-        l_PAR1_MRS2 = self.addLink(
-            PAR1, MRS2, igp_metric=3, password=OSPF_PW_EU)
-        l_PAR1_MRS2[PAR1].addParams(
+        l_PAR1_MRSER2 = self.addLink(
+            PAR1, MRSER2, igp_metric=3, password=OSPF_PW_EU)
+        l_PAR1_MRSER2[PAR1].addParams(
             ip=(europe_ipv6 + "101::1/64", PAR_ipv4 + "13/30"))
-        l_PAR1_MRS2[MRS2].addParams(
+        l_PAR1_MRSER2[MRSER2].addParams(
             ip=(europe_ipv6 + "101::2/64", PAR_ipv4 + "14/30"))
 
-        l_PAR2_MRS1 = self.addLink(
-            PAR2, MRS1, igp_metric=3, password=OSPF_PW_EU)
-        l_PAR2_MRS1[PAR2].addParams(
+        l_PAR2_MRSER1 = self.addLink(
+            PAR2, MRSER1, igp_metric=3, password=OSPF_PW_EU)
+        l_PAR2_MRSER1[PAR2].addParams(
             ip=(europe_ipv6 + "202::1/64", PAR_ipv4 + "17/30"))
-        l_PAR2_MRS1[MRS1].addParams(
+        l_PAR2_MRSER1[MRSER1].addParams(
             ip=(europe_ipv6 + "202::2/64", PAR_ipv4 + "18/30"))
 
         l_SYD2_LAX2 = self.addLink(
@@ -429,47 +429,57 @@ class SimpleBGPTopo(IPTopo):
         # =============================================================================
         # servers
 
-        S1 = self.addRouter("S1", config=RouterConfig, lo_addresses=[
+        SER1 = self.addRouter("SER1", config=RouterConfig, lo_addresses=[
                             server_ipv6 + "::/64", server_ipv4 + "1/32"])
-        S2 = self.addRouter("S2", config=RouterConfig, lo_addresses=[
+        SER2 = self.addRouter("SER2", config=RouterConfig, lo_addresses=[
+                            server_ipv6 + "::/64", server_ipv4 + "1/32"])
+        SER3 = self.addRouter("SER3", config=RouterConfig, lo_addresses=[
                             server_ipv6 + "::/64", server_ipv4 + "1/32"])
 
         # Adding BGP daemons to manage failures
 
-        S1.addDaemon(BGP, address_families=(
+        SER1.addDaemon(BGP, address_families=(
             AF_INET6(redistribute=['connected']), AF_INET(redistribute=['connected'])))
-        S2.addDaemon(BGP, address_families=(
+        SER2.addDaemon(BGP, address_families=(
+            AF_INET6(redistribute=['connected']), AF_INET(redistribute=['connected'])))
+        SER3.addDaemon(BGP, address_families=(
             AF_INET6(redistribute=['connected']), AF_INET(redistribute=['connected'])))
 
-        self.addAS(64512, (S1,))
-        self.addAS(64512, (S2,))
+        self.addAS(64512, (SER1,SER2,SER3))
 
-        l_S1_SJO2 = self.addLink(S1, SJO2, igp_metric=3)
-        l_S1_SJO2[S1].addParams(
-            ip=(server_ipv6 + "a1a::1/64", server_ipv4 + "5/30"))
-        l_S1_SJO2[SJO2].addParams(
-            ip=(server_ipv6 + "a1a::2/64", server_ipv4 + "6/30"))
+        l_SER1_SJO2 = self.addLink(SER1, SJO2, igp_metric=3)
+        l_SER1_SJO2[SER1].addParams(
+            ip=(server_ipv6 + "a1a::1/64", server_ipv4 + "2/27"))
+        l_SER1_SJO2[SJO2].addParams(
+            ip=(server_ipv6 + "a1a::2/64", server_ipv4 + "3/27"))
 
-        l_S2_PAR2 = self.addLink(S2, PAR2, igp_metric=3)
-        l_S2_PAR2[S2].addParams(
-            ip=(server_ipv6 + "a1a::3/64", server_ipv4 + "9/30"))
-        l_S2_PAR2[PAR2].addParams(
-            ip=(server_ipv6 + "a1a::4/64", server_ipv4 + "10/30"))
+        l_SER2_PAR2 = self.addLink(SER2, PAR2, igp_metric=3)
+        l_SER2_PAR2[SER2].addParams(
+            ip=(server_ipv6 + "a1a::3/64", server_ipv4 + "4/27"))
+        l_SER2_PAR2[PAR2].addParams(
+            ip=(server_ipv6 + "a1a::4/64", server_ipv4 + "5/27"))
 
-        ebgp_session(self, S1, SJO2)
-        ebgp_session(self, S2, PAR2)
+        l_SER3_SIN1 = self.addLink(SER3, SIN1, igp_metric=3)
+        l_SER3_SIN1[SER3].addParams(
+            ip=(server_ipv6 + "a1a::5/64", server_ipv4 + "6/27"))
+        l_SER3_SIN1[SIN1].addParams(
+            ip=(server_ipv6 + "a1a::6/64", server_ipv4 + "7/27"))
+
+        ebgp_session(self, SER1, SJO2)
+        ebgp_session(self, SER2, PAR2)
+        ebgp_session(self, SER3, SIN1)
 
         # =============================================================================
         # BGP setup
-        self.addAS(1, (MRS1, MRS2, PAR1, PAR2, SIN1, SIN2, SYD1,
+        self.addAS(1, (MRSER1, MRSER2, PAR1, PAR2, SIN1, SIN2, SYD1,
                        SYD2, SJO1, SJO2, LAX1, LAX2, ASH1, ASH2))
-        set_rr(self, rr=SIN1, peers=[SYD1, MRS1,
-                                     SIN2, MRS2, SJO1, SJO2, SYD2, ASH1, PAR2])
+        set_rr(self, rr=SIN1, peers=[SYD1, MRSER1,
+                                     SIN2, MRSER2, SJO1, SJO2, SYD2, ASH1, PAR2])
         set_rr(self, rr=SYD2, peers=[SYD1, SIN2,
                                      SJO1, LAX1, LAX2, SIN1, ASH1, PAR2])
         set_rr(self, rr=ASH1, peers=[SJO1, SJO2,
                                      LAX1, LAX2, PAR1, ASH2, SIN1, SYD2, PAR2])
-        set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2, SIN1, SYD2, ASH1])
+        set_rr(self, rr=PAR2, peers=[MRSER1, MRSER2, PAR1, ASH2, SIN1, SYD2, ASH1])
 
         self.addAS(2, (EQXSIN1, EQXSYD2))
         self.addAS(3, (VDFASH1, VDFPAR2, VDFSIN1, VDFSIN2))
@@ -552,9 +562,11 @@ if __name__ == '__main__':
     net = IPNet(topo=SimpleBGPTopo(), allocate_IPs=False)
     try:
         net.start()
-        servers = [('S2', '1627:6000:0:3a1a::3'),
-                   ('S1', '1627:6000:0:3a1a::1')]
-        sRouters = [('PAR2', '1627:6000:0:3a1a::4'),
+        servers = [('SER3', '1627:6000:0:3a1a::5'),
+                   ('SER2', '1627:6000:0:3a1a::3'),
+                   ('SER1', '1627:6000:0:3a1a::1')]
+        sRouters = [('SIN1', '1627:6000:0:3a1a::6'),
+                    ('PAR2', '1627:6000:0:3a1a::4'),
                     ('SJO2', '1627:6000:0:3a1a::2')]
         # Reducing Timeout to give better response to failures for servers
         serverScript(net, servers, sRouters)
@@ -562,23 +574,29 @@ if __name__ == '__main__':
         # Setting TTLs for IPV6
         routeurList = ['PAR1', 'PAR2', 'SIN1', 'SIN2', 'SYD1', 'SYD2',
                        'ASH1', 'VDFSIN1', 'VDFSIN2', 'VDFASH1', 'VDFPAR2',
-                       'EQXSIN1', 'EQXSYD2', 'NTTSYD1', 'NTTSYD2', 'S1', 'S2']
+                       'EQXSIN1', 'EQXSYD2', 'NTTSYD1', 'NTTSYD2', 'SER1', 'SER2','SER3']
         ttlCmdSetup(net, routeurList)
 
-        # Configuring TTL and PASSWORD for EQX
+        # Configuring TTL and PASSWORD
 
         routers = [('SIN1', asia_ipv6+'2fb::2'), ('SIN1', asia_ipv6 + "ffa::2"),
                    ('SYD2', asia_ipv6 + "3fa::2"), ('SYD2', asia_ipv6 + "4fb::2"),
                    ('SYD1', asia_ipv6 + "5fa::2"),
                    ('PAR2', europe_ipv6 + "ffa::2"),
                    ('ASH1', NA_ipv6 + "ffa::2"),
-                   ('SIN2', asia_ipv6 + "1fa::2")]
+                   ('SIN2', asia_ipv6 + "1fa::2"),
+                   ('SJO2', server_ipv6 + "a1a::2/64"),
+                   ('PAR2', server_ipv6 + "a1a::4/64" ),
+                   ('SIN1', server_ipv6 + "a1a::6/64")]
         peers = [('EQXSIN1', asia_ipv6+"2fb::1"), ('VDFSIN1', asia_ipv6 + "ffa::1"),
                  ('EQXSYD2', asia_ipv6 + "3fa::1"), ('NTTSYD2', asia_ipv6 + "4fb::1"),
                  ('NTTSYD1', asia_ipv6 + "5fa::1"),
                  ('VDFPAR2', europe_ipv6 + "ffa::1"),
                  ('VDFASH1', NA_ipv6 + "ffa::1"),
-                 ('VDFSIN2', asia_ipv6 + "1fa::1")]
+                 ('VDFSIN2', asia_ipv6 + "1fa::1"),
+                 ('SER1', server_ipv6 + "a1a::1/64"),
+                 ('SER2', server_ipv6 + "a1a::3/64"),
+                 ('SER3', server_ipv6 + "a1a::5/64")]
 
         ttlPasswordSetup(net, routers, peers)
 
