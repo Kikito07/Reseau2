@@ -73,6 +73,8 @@ def findPassword(peerName):
         return NTT_PW
     if(peerName.find('VDF') != -1):
         return VDF_PW
+    if(peerName.find('SER') != -1):
+        return SERVER_PW
 
 
 def applyCommunities(network, routerName, peerAddr, communities):
