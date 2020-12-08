@@ -34,7 +34,6 @@ OSPF_PW_AS = "99cj8HyU2WTj2Gm"
 OSPF_PW_NA = "99cj8HyU2WTj2Gm"
 
 
-
 class SimpleBGPTopo(IPTopo):
 
     def build(self, *args, **kwargs):
@@ -175,7 +174,7 @@ class SimpleBGPTopo(IPTopo):
         SIN2.addDaemon(BGP, debug=("neighbor",))
 
         SYD1.addDaemon(BGP, debug=("neighbor",))
-        SYD2.addDaemon(BGP, debug=("neighbor",))
+        SYD2.addDaemon(BGP, debug=("updates", "neighbor"))
 
         LAX1.addDaemon(BGP, debug=("neighbor",))
         LAX2.addDaemon(BGP, debug=("updates",))
@@ -430,11 +429,11 @@ class SimpleBGPTopo(IPTopo):
         # servers
 
         SER1 = self.addRouter("SER1", config=RouterConfig, lo_addresses=[
-                            server_ipv6 + "::/64", server_ipv4 + "1/32"])
+            server_ipv6 + "1::/64", server_ipv4 + "1/32"])
         SER2 = self.addRouter("SER2", config=RouterConfig, lo_addresses=[
-                            server_ipv6 + "::/64", server_ipv4 + "1/32"])
+            server_ipv6 + "1::/64", server_ipv4 + "1/32"])
         SER3 = self.addRouter("SER3", config=RouterConfig, lo_addresses=[
-                            server_ipv6 + "::/64", server_ipv4 + "1/32"])
+            server_ipv6 + "1::/64", server_ipv4 + "1/32"])
 
         # Adding BGP daemons to manage failures
 
@@ -445,7 +444,7 @@ class SimpleBGPTopo(IPTopo):
         SER3.addDaemon(BGP, address_families=(
             AF_INET6(redistribute=['connected']), AF_INET(redistribute=['connected'])))
 
-        self.addAS(64512, (SER1,SER2,SER3))
+        self.addAS(64512, (SER1, SER2, SER3))
 
         l_SER1_SJO2 = self.addLink(SER1, SJO2, igp_metric=3)
         l_SER1_SJO2[SER1].addParams(
@@ -455,15 +454,15 @@ class SimpleBGPTopo(IPTopo):
 
         l_SER2_PAR2 = self.addLink(SER2, PAR2, igp_metric=3)
         l_SER2_PAR2[SER2].addParams(
-            ip=(server_ipv6 + "a1a::3/64", server_ipv4 + "4/27"))
+            ip=(server_ipv6 + "a2a::1/64", server_ipv4 + "5/27"))
         l_SER2_PAR2[PAR2].addParams(
-            ip=(server_ipv6 + "a1a::4/64", server_ipv4 + "5/27"))
+            ip=(server_ipv6 + "a2a::2/64", server_ipv4 + "6/27"))
 
         l_SER3_SIN1 = self.addLink(SER3, SIN1, igp_metric=3)
         l_SER3_SIN1[SER3].addParams(
-            ip=(server_ipv6 + "a1a::5/64", server_ipv4 + "6/27"))
+            ip=(server_ipv6 + "a3a::1/64", server_ipv4 + "9/27"))
         l_SER3_SIN1[SIN1].addParams(
-            ip=(server_ipv6 + "a1a::6/64", server_ipv4 + "7/27"))
+            ip=(server_ipv6 + "a3a::2/64", server_ipv4 + "10/27"))
 
         ebgp_session(self, SER1, SJO2)
         ebgp_session(self, SER2, PAR2)
@@ -473,13 +472,12 @@ class SimpleBGPTopo(IPTopo):
         # BGP setup
         self.addAS(1, (MRS1, MRS2, PAR1, PAR2, SIN1, SIN2, SYD1,
                        SYD2, SJO1, SJO2, LAX1, LAX2, ASH1, ASH2))
-        set_rr(self, rr=SIN1, peers=[SYD1, MRS1,
-                                     SIN2, MRS2, SJO1, SJO2, SYD2, ASH1, PAR2])
-        set_rr(self, rr=SYD2, peers=[SYD1, SIN2,
-                                     SJO1, LAX1, LAX2, SIN1, ASH1, PAR2])
-        set_rr(self, rr=ASH1, peers=[SJO1, SJO2,
-                                     LAX1, LAX2, PAR1, ASH2, SIN1, SYD2, PAR2])
+        set_rr(self, rr=SIN1, peers=[SYD1, MRS1, SIN2, MRS2, SJO1, SJO2, SYD2, ASH1, PAR2])
+        set_rr(self, rr=SIN2, peers=[SYD1, SYD2, SJO1, LAX1, LAX2, SIN1, ASH1, PAR2])
+        set_rr(self, rr=ASH1, peers=[SJO1, SJO2, LAX1, LAX2, PAR1, ASH2, SIN1, SYD2, PAR2])
         set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2, SIN1, SYD2, ASH1])
+
+        bgp_fullmesh(self, [SIN1, SYD2, ASH1, PAR2, SIN2])
 
         self.addAS(2, (EQXSIN1, EQXSYD2))
         self.addAS(3, (VDFASH1, VDFPAR2, VDFSIN1, VDFSIN2))
@@ -562,19 +560,18 @@ if __name__ == '__main__':
     net = IPNet(topo=SimpleBGPTopo(), allocate_IPs=False)
     try:
         net.start()
-        servers = [('SER3', '1627:6000:0:3a1a::5'),
-                   ('SER2', '1627:6000:0:3a1a::3'),
+        servers = [('SER3', '1627:6000:0:3a3a::1'),
+                   ('SER2', '1627:6000:0:3a2a::1'),
                    ('SER1', '1627:6000:0:3a1a::1')]
-        sRouters = [('SIN1', '1627:6000:0:3a1a::6'),
-                    ('PAR2', '1627:6000:0:3a1a::4'),
+        sRouters = [('SIN1', '1627:6000:0:3a3a::2'),
+                    ('PAR2', '1627:6000:0:3a2a::2'),
                     ('SJO2', '1627:6000:0:3a1a::2')]
-        # Reducing Timeout to give better response to failures for servers
         serverScript(net, servers, sRouters)
         print("Setting BGP security...")
         # Setting TTLs for IPV6
         routeurList = ['PAR1', 'PAR2', 'SIN1', 'SIN2', 'SYD1', 'SYD2',
                        'ASH1', 'VDFSIN1', 'VDFSIN2', 'VDFASH1', 'VDFPAR2',
-                       'EQXSIN1', 'EQXSYD2', 'NTTSYD1', 'NTTSYD2', 'SER1', 'SER2','SER3']
+                       'EQXSIN1', 'EQXSYD2', 'NTTSYD1', 'NTTSYD2', 'SER1', 'SER2', 'SER3']
         ttlCmdSetup(net, routeurList)
 
         # Configuring TTL and PASSWORD
@@ -586,8 +583,8 @@ if __name__ == '__main__':
                    ('ASH1', NA_ipv6 + "ffa::2"),
                    ('SIN2', asia_ipv6 + "1fa::2"),
                    ('SJO2', server_ipv6 + "a1a::2"),
-                   ('PAR2', server_ipv6 + "a1a::4" ),
-                   ('SIN1', server_ipv6 + "a1a::6")]
+                   ('PAR2', server_ipv6 + "a2a::2"),
+                   ('SIN1', server_ipv6 + "a3a::2")]
         peers = [('EQXSIN1', asia_ipv6+"2fb::1"), ('VDFSIN1', asia_ipv6 + "ffa::1"),
                  ('EQXSYD2', asia_ipv6 + "3fa::1"), ('NTTSYD2', asia_ipv6 + "4fb::1"),
                  ('NTTSYD1', asia_ipv6 + "5fa::1"),
@@ -595,8 +592,8 @@ if __name__ == '__main__':
                  ('VDFASH1', NA_ipv6 + "ffa::1"),
                  ('VDFSIN2', asia_ipv6 + "1fa::1"),
                  ('SER1', server_ipv6 + "a1a::1"),
-                 ('SER2', server_ipv6 + "a1a::3"),
-                 ('SER3', server_ipv6 + "a1a::5")]
+                 ('SER2', server_ipv6 + "a2a::1"),
+                 ('SER3', server_ipv6 + "a3a::1")]
 
         ttlPasswordSetup(net, routers, peers)
 
@@ -629,9 +626,8 @@ if __name__ == '__main__':
         community_as_prepend_x3 = "3:100"
         community_as_prepend_x3_name = "prepend_x3"
 
-
         community_local_pref_80 = "80:80"
-        community_local_pref_80_name ="local_pref_80"
+        community_local_pref_80_name = "local_pref_80"
         community_local_pref_200 = "200:200"
         community_local_pref_200_name = "local_pref_200"
 
@@ -645,8 +641,8 @@ if __name__ == '__main__':
         general_route_map = "general_route_map"
         general_route_map_2 = "general_route_map2"
 
-        applyCommunities(net, 'EQXSIN1', asia_ipv6+'2fb::2',
-                         [community_as_prepend_x2, community_local_pref_200, community_no_export_EU])
+        # applyCommunities(net, 'EQXSIN1', asia_ipv6+'2fb::2',
+        #                  [community_as_prepend_x2, community_local_pref_200, community_no_export_EU])
 
         print("""You should wait a bit to let the network converge.""")
         print("""ping6all won't be at 100 because of the way we moddeled our peers.""")
