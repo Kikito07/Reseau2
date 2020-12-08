@@ -458,26 +458,24 @@ class SimpleBGPTopo(IPTopo):
         l_SER2_PAR2[PAR2].addParams(
             ip=(server_ipv6 + "a2a::2/64", server_ipv4 + "6/27"))
 
-        l_SER3_SIN1 = self.addLink(SER3, SIN1, igp_metric=3)
-        l_SER3_SIN1[SER3].addParams(
+        l_SER3_SIN2 = self.addLink(SER3, SIN2, igp_metric=3)
+        l_SER3_SIN2[SER3].addParams(
             ip=(server_ipv6 + "a3a::1/64", server_ipv4 + "9/27"))
-        l_SER3_SIN1[SIN1].addParams(
+        l_SER3_SIN2[SIN2].addParams(
             ip=(server_ipv6 + "a3a::2/64", server_ipv4 + "10/27"))
 
         ebgp_session(self, SER1, SJO2)
         ebgp_session(self, SER2, PAR2)
-        ebgp_session(self, SER3, SIN1)
+        ebgp_session(self, SER3, SIN2)
 
         # =============================================================================
         # BGP setup
         self.addAS(1, (MRS1, MRS2, PAR1, PAR2, SIN1, SIN2, SYD1,
                        SYD2, SJO1, SJO2, LAX1, LAX2, ASH1, ASH2))
         set_rr(self, rr=SIN1, peers=[SYD1, MRS1, SIN2, MRS2, SJO1, SJO2, SYD2, ASH1, PAR2])
-        set_rr(self, rr=SIN2, peers=[SYD1, SYD2, SJO1, LAX1, LAX2, SIN1, ASH1, PAR2])
+        set_rr(self, rr=SYD2, peers=[SYD1, SIN2, SJO1, LAX1, LAX2, SIN1, ASH1, PAR2])
         set_rr(self, rr=ASH1, peers=[SJO1, SJO2, LAX1, LAX2, PAR1, ASH2, SIN1, SYD2, PAR2])
         set_rr(self, rr=PAR2, peers=[MRS1, MRS2, PAR1, ASH2, SIN1, SYD2, ASH1])
-
-        bgp_fullmesh(self, [SIN1, SYD2, ASH1, PAR2, SIN2])
 
         self.addAS(2, (EQXSIN1, EQXSYD2))
         self.addAS(3, (VDFASH1, VDFPAR2, VDFSIN1, VDFSIN2))
@@ -563,7 +561,7 @@ if __name__ == '__main__':
         servers = [('SER3', '1627:6000:0:3a3a::1'),
                    ('SER2', '1627:6000:0:3a2a::1'),
                    ('SER1', '1627:6000:0:3a1a::1')]
-        sRouters = [('SIN1', '1627:6000:0:3a3a::2'),
+        sRouters = [('SIN2', '1627:6000:0:3a3a::2'),
                     ('PAR2', '1627:6000:0:3a2a::2'),
                     ('SJO2', '1627:6000:0:3a1a::2')]
         serverScript(net, servers, sRouters)
@@ -584,7 +582,7 @@ if __name__ == '__main__':
                    ('SIN2', asia_ipv6 + "1fa::2"),
                    ('SJO2', server_ipv6 + "a1a::2"),
                    ('PAR2', server_ipv6 + "a2a::2"),
-                   ('SIN1', server_ipv6 + "a3a::2")]
+                   ('SIN2', server_ipv6 + "a3a::2")]
         peers = [('EQXSIN1', asia_ipv6+"2fb::1"), ('VDFSIN1', asia_ipv6 + "ffa::1"),
                  ('EQXSYD2', asia_ipv6 + "3fa::1"), ('NTTSYD2', asia_ipv6 + "4fb::1"),
                  ('NTTSYD1', asia_ipv6 + "5fa::1"),
