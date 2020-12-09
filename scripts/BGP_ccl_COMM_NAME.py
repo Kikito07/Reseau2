@@ -12,7 +12,6 @@ child.sendline('zebra')
 child.sendline('enable')
 child.sendline('configure terminal')
 child.sendline('bgp community-list standard {} permit {}'.format(name,community))
-child.sendline('write memory')
 child.sendline('exit')
 child.kill(0)
 

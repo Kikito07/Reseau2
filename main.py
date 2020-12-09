@@ -639,8 +639,8 @@ if __name__ == '__main__':
         general_route_map = "general_route_map"
         general_route_map_2 = "general_route_map2"
 
-        # applyCommunities(net, 'EQXSIN1', asia_ipv6+'2fb::2',
-        #                  [community_as_prepend_x2, community_local_pref_200, community_no_export_EU])
+        applyCommunities(net, 'EQXSIN1', asia_ipv6+'2fb::2',
+                         [community_as_prepend_x2, community_local_pref_200, community_no_export_EU])
 
         print("""You should wait a bit to let the network converge.""")
         print("""ping6all won't be at 100 because of the way we moddeled our peers.""")
