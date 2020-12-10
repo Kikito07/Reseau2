@@ -168,25 +168,25 @@ class SimpleBGPTopo(IPTopo):
         # adding BGP
         # =========================================================
         MRS1.addDaemon(BGP, debug=("neighbor","updates"))
-        MRS2.addDaemon(BGP, debug=("updates","updates"))
+        MRS2.addDaemon(BGP, debug=("neighbor","updates"))
 
         SIN1.addDaemon(BGP, debug=("neighbor","updates"))
         SIN2.addDaemon(BGP, debug=("neighbor","updates"))
 
-        SYD1.addDaemon(BGP, debug=("neighbor","updates",))
+        SYD1.addDaemon(BGP, debug=("neighbor","updates"))
         SYD2.addDaemon(BGP, debug=("updates", "neighbor"))
 
-        LAX1.addDaemon(BGP, debug=("neighbor","updates",))
-        LAX2.addDaemon(BGP, debug=("updates",))
+        LAX1.addDaemon(BGP, debug=("neighbor","updates"))
+        LAX2.addDaemon(BGP, debug=("updates","neighbor"))
 
-        SJO1.addDaemon(BGP, debug=("updates",))
-        SJO2.addDaemon(BGP, debug=("updates",))
+        SJO1.addDaemon(BGP, debug=("updates","neighbor"))
+        SJO2.addDaemon(BGP, debug=("updates","neighbor"))
 
-        ASH1.addDaemon(BGP, debug=("updates",))
-        ASH2.addDaemon(BGP, debug=("updates",))
+        ASH1.addDaemon(BGP, debug=("updates","neighbor"))
+        ASH2.addDaemon(BGP, debug=("updates","neighbor"))
 
-        PAR1.addDaemon(BGP, debug=("updates",))
-        PAR2.addDaemon(BGP, debug=("updates",))
+        PAR1.addDaemon(BGP, debug=("updates","neighbor"))
+        PAR2.addDaemon(BGP, debug=("updates","neighbor"))
 
         VDFSIN1.addDaemon(BGP, address_families=(AF_INET6(redistribute=[
                           'connected']), AF_INET(redistribute=['connected']),), debug=("updates",))
