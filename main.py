@@ -167,16 +167,16 @@ class SimpleBGPTopo(IPTopo):
 
         # adding BGP
         # =========================================================
-        MRS1.addDaemon(BGP, debug=("neighbor",))
-        MRS2.addDaemon(BGP, debug=("updates",))
+        MRS1.addDaemon(BGP, debug=("neighbor","updates"))
+        MRS2.addDaemon(BGP, debug=("updates","updates"))
 
-        SIN1.addDaemon(BGP, debug=("neighbor",))
-        SIN2.addDaemon(BGP, debug=("neighbor",))
+        SIN1.addDaemon(BGP, debug=("neighbor","updates"))
+        SIN2.addDaemon(BGP, debug=("neighbor","updates"))
 
-        SYD1.addDaemon(BGP, debug=("neighbor",))
+        SYD1.addDaemon(BGP, debug=("neighbor","updates",))
         SYD2.addDaemon(BGP, debug=("updates", "neighbor"))
 
-        LAX1.addDaemon(BGP, debug=("neighbor",))
+        LAX1.addDaemon(BGP, debug=("neighbor","updates",))
         LAX2.addDaemon(BGP, debug=("updates",))
 
         SJO1.addDaemon(BGP, debug=("updates",))
@@ -370,9 +370,9 @@ class SimpleBGPTopo(IPTopo):
         l_SYD2_LAX2 = self.addLink(
             SYD2, LAX2, igp_metric=20, password=OSPF_PW_AS)
         l_SYD2_LAX2[SYD2].addParams(
-            ip=(europe_ipv6 + "303::1/64", SYD_ipv4 + "5/30"))
+            ip=(NA_ipv6 + "303::1/64", SYD_ipv4 + "5/30"))
         l_SYD2_LAX2[LAX2].addParams(
-            ip=(europe_ipv6 + "303::2/64", SYD_ipv4 + "6/30"))
+            ip=(NA_ipv6 + "303::2/64", SYD_ipv4 + "6/30"))
 
         # =============================================================================
         # Peering links
