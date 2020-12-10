@@ -438,11 +438,11 @@ class SimpleBGPTopo(IPTopo):
         # Adding BGP daemons to manage failures
 
         SER1.addDaemon(BGP, address_families=(
-            AF_INET6(redistribute=['connected']), AF_INET(redistribute=['connected'])))
+            AF_INET6(networks=(server_ipv6 + "1::/64",)), AF_INET(redistribute=['connected'])))
         SER2.addDaemon(BGP, address_families=(
-            AF_INET6(redistribute=['connected']), AF_INET(redistribute=['connected'])))
+            AF_INET6(networks=(server_ipv6 + "1::/64",)), AF_INET(redistribute=['connected'])))
         SER3.addDaemon(BGP, address_families=(
-            AF_INET6(redistribute=['connected']), AF_INET(redistribute=['connected'])))
+            AF_INET6(networks=(server_ipv6 + "1::/64",)), AF_INET(redistribute=['connected'])))
 
         self.addAS(64512, (SER1, SER2, SER3))
 
@@ -564,7 +564,7 @@ if __name__ == '__main__':
         sRouters = [('SIN2', '1627:6000:0:3a3a::2'),
                     ('PAR2', '1627:6000:0:3a2a::2'),
                     ('SJO2', '1627:6000:0:3a1a::2')]
-        serverScript(net, servers, sRouters)
+        # serverScript(net, servers, sRouters)
         print("Setting BGP security...")
         # Setting TTLs for IPV6
         routeurList = ['PAR1', 'PAR2', 'SIN1', 'SIN2', 'SYD1', 'SYD2',
