@@ -57,8 +57,8 @@ def serverScript(network, servers, sRouters):
         network[serverName].pexec(
             'route add -A inet6 default gw {}'.format(routerAddr))
         network[routerName].pexec(script_deny.format(serverAddr))
-        network[serverName].pexec(script.format(routerAddr, 1, 4))
-        network[routerName].pexec(script.format(serverAddr, 1, 4))
+        network[serverName].pexec(script.format(routerAddr, 10, 35))
+        network[routerName].pexec(script.format(serverAddr, 10, 35))
 
 
 def ttlCmdSetup(network, routers):
