@@ -29,9 +29,9 @@ VDF_ipv6 = "1627:6100:0000:0"
 EQX_ipv6 = "1627:6200:0000:0"
 NTT_ipv6 = "1627:6300:0000:0"
 
-OSPF_PW_EU = "99cj8HyU2WTj2Gm"
-OSPF_PW_AS = "99cj8HyU2WTj2Gm"
-OSPF_PW_NA = "99cj8HyU2WTj2Gm"
+OSPF_PW_EU = "AxoGpmvDbHk9bap"
+OSPF_PW_AS = "P0T9B0eR5yEuBCD"
+OSPF_PW_NA = "2SrGgOldWni4L4g"
 
 
 class SimpleBGPTopo(IPTopo):
