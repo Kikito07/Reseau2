@@ -564,7 +564,7 @@ if __name__ == '__main__':
         sRouters = [('SIN2', '1627:6000:0:3a3a::2'),
                     ('PAR2', '1627:6000:0:3a2a::2'),
                     ('SJO2', '1627:6000:0:3a1a::2')]
-        # serverScript(net, servers, sRouters)
+        serverScript(net, servers, sRouters)
         print("Setting BGP security...")
         # Setting TTLs for IPV6
         routeurList = ['PAR1', 'PAR2', 'SIN1', 'SIN2', 'SYD1', 'SYD2',
@@ -645,6 +645,7 @@ if __name__ == '__main__':
         print("""You should wait a bit to let the network converge.""")
         print("""ping6all won't be at 100 because of the way we moddeled our peers.""")
         print("""For a given Peer its routers are not directly connected thus its prefix can't ping themselves""")
+        print("""Plus we added a no-export community on the EQXSIN1 peer so it can't reach the host at VDFPAR2""")
         IPCLI(net)
     finally:
         net.stop()
