@@ -552,8 +552,6 @@ class SimpleBGPTopo(IPTopo):
 
         super().build(*args, **kwargs)
 
-
-# Press the green button to run the script.
 if __name__ == '__main__':
     net = IPNet(topo=SimpleBGPTopo(), allocate_IPs=False)
     try:
